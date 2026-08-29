@@ -1,0 +1,54 @@
+{
+  "Handle error": {
+    "prefix": "iferr",
+    "description": "GoLand 风格：处理返回的 error",
+    "body": [
+      "if err != nil {",
+      "\t${1:return err}",
+      "}"
+    ]
+  },
+  "Wrap error": {
+    "prefix": "iferrw",
+    "description": "为 error 增加上下文并保留错误链",
+    "body": [
+      "if err != nil {",
+      "\treturn fmt.Errorf(\"${1:operation}: %w\", err)",
+      "}"
+    ]
+  },
+  "Go test": {
+    "prefix": "gotest",
+    "description": "创建 Go 测试函数",
+    "body": [
+      "func Test${1:Name}(t *testing.T) {",
+      "\tt.Parallel()",
+      "",
+      "\t${0}",
+      "}"
+    ]
+  },
+  "Go benchmark": {
+    "prefix": "gobench",
+    "description": "创建 Go Benchmark",
+    "body": [
+      "func Benchmark${1:Name}(b *testing.B) {",
+      "\tfor b.Loop() {",
+      "\t\t${0}",
+      "\t}",
+      "}"
+    ]
+  },
+  "Go main": {
+    "prefix": "gomain",
+    "description": "创建 main 入口",
+    "body": [
+      "package main",
+      "",
+      "func main() {",
+      "\t${0}",
+      "}"
+    ]
+  }
+}
+

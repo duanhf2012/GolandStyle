@@ -1,0 +1,106 @@
+[
+  {
+    "id": "jetbrains-style-go.jetbrains-style-go-vscode",
+    "displayName": "Goland Style"
+  },
+  {
+    "id": "MS-CEINTL.vscode-language-pack-zh-hans",
+    "displayName": "Chinese (Simplified) Language Pack"
+  },
+  {
+    "id": "EditorConfig.EditorConfig",
+    "displayName": "EditorConfig"
+  },
+  {
+    "id": "bufbuild.vscode-buf",
+    "displayName": "Buf"
+  },
+  {
+    "id": "fogio.jetbrains-file-icon-theme",
+    "displayName": "JetBrains New UI File Icon Theme Extended"
+  },
+  {
+    "id": "fogio.jetbrains-product-icon-theme",
+    "displayName": "JetBrains New UI Product Icon Theme"
+  },
+  {
+    "id": "golang.go",
+    "displayName": "Go"
+  },
+  {
+    "id": "gruntfuggly.todo-tree",
+    "displayName": "Todo Tree"
+  },
+  {
+    "id": "humao.rest-client",
+    "displayName": "REST Client"
+  },
+  {
+    "id": "k--kato.intellij-idea-keybindings",
+    "displayName": "IntelliJ IDEA Keybindings"
+  },
+  {
+    "id": "ms-vscode.makefile-tools",
+    "displayName": "Makefile Tools"
+  },
+  {
+    "id": "redhat.vscode-yaml",
+    "displayName": "YAML"
+  },
+  {
+    "id": "tamasfe.even-better-toml",
+    "displayName": "Even Better TOML"
+  },
+  {
+    "id": "usernamehw.errorlens",
+    "displayName": "Error Lens"
+  },
+  {
+    "id": "eamodio.gitlens",
+    "displayName": "GitLens"
+  },
+  {
+    "id": "github.vscode-pull-request-github",
+    "displayName": "GitHub Pull Requests"
+  },
+  {
+    "id": "ms-azuretools.vscode-containers",
+    "displayName": "Container Tools"
+  },
+  {
+    "id": "ms-kubernetes-tools.vscode-kubernetes-tools",
+    "displayName": "Kubernetes"
+  },
+  {
+    "id": "ms-vscode-remote.remote-containers",
+    "displayName": "Dev Containers"
+  },
+  {
+    "id": "ms-vscode-remote.remote-ssh",
+    "displayName": "Remote - SSH"
+  },
+  {
+    "id": "mtxr.sqltools",
+    "displayName": "SQLTools"
+  },
+  {
+    "id": "mtxr.sqltools-driver-mysql",
+    "displayName": "SQLTools MySQL/MariaDB/TiDB"
+  },
+  {
+    "id": "mtxr.sqltools-driver-pg",
+    "displayName": "SQLTools PostgreSQL/Cockroach"
+  },
+  {
+    "id": "mtxr.sqltools-driver-sqlite",
+    "displayName": "SQLTools SQLite"
+  },
+  {
+    "id": "redhat.vscode-xml",
+    "displayName": "XML"
+  },
+  {
+    "id": "streetsidesoftware.code-spell-checker",
+    "displayName": "Code Spell Checker"
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "jetbrains-style-go.jetbrains-style-go-vscode",
+    "golang.go",
+    "MS-CEINTL.vscode-language-pack-zh-hans",
+    "EditorConfig.EditorConfig",
+    "bufbuild.vscode-buf",
+    "redhat.vscode-yaml",
+    "tamasfe.even-better-toml"
+  ]
+}

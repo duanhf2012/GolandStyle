@@ -1,0 +1,74 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Go: Build All",
+      "type": "shell",
+      "command": "go build ./...",
+      "group": "build",
+      "problemMatcher": "$go"
+    },
+    {
+      "label": "Go: Generate",
+      "type": "shell",
+      "command": "go generate ./...",
+      "group": "build",
+      "problemMatcher": "$go"
+    },
+    {
+      "label": "Go: Test All",
+      "type": "shell",
+      "command": "go test ./...",
+      "group": "test",
+      "problemMatcher": "$go"
+    },
+    {
+      "label": "Go: Test Coverage",
+      "type": "shell",
+      "command": "go test -coverprofile=coverage.out ./...",
+      "group": "test",
+      "problemMatcher": "$go"
+    },
+    {
+      "label": "Go: Test Race",
+      "type": "shell",
+      "command": "go test -race ./...",
+      "group": "test",
+      "problemMatcher": "$go"
+    },
+    {
+      "label": "Go: Benchmark",
+      "type": "shell",
+      "command": "go test -run=^$ -bench=. -benchmem ./...",
+      "group": "test",
+      "problemMatcher": "$go"
+    },
+    {
+      "label": "Go: Vet",
+      "type": "shell",
+      "command": "go vet ./...",
+      "group": "build",
+      "problemMatcher": "$go"
+    },
+    {
+      "label": "Go: CPU Profile",
+      "type": "shell",
+      "command": "go test -run=^$ -bench=. -cpuprofile=cpu.out .",
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "group": "test",
+      "problemMatcher": "$go"
+    },
+    {
+      "label": "Go: Memory Profile",
+      "type": "shell",
+      "command": "go test -run=^$ -bench=. -memprofile=mem.out .",
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "group": "test",
+      "problemMatcher": "$go"
+    }
+  ]
+}

@@ -1,0 +1,282 @@
+{
+  "name": "jetbrains-style-go-vscode",
+  "displayName": "Goland Style",
+  "description": "A GoLand-style Go development experience for Visual Studio Code.",
+  "version": "0.2.5",
+  "publisher": "jetbrains-style-go",
+  "license": "MIT",
+  "main": "./extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  },
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Extension Packs",
+    "Keymaps",
+    "Themes",
+    "Programming Languages"
+  ],
+  "keywords": [
+    "go",
+    "golang",
+    "goland",
+    "jetbrains",
+    "keymap",
+    "gopls",
+    "darcula"
+  ],
+  "galleryBanner": {
+    "color": "#1e1f22",
+    "theme": "dark"
+  },
+  "extensionPack": [
+    "MS-CEINTL.vscode-language-pack-zh-hans",
+    "EditorConfig.EditorConfig",
+    "bufbuild.vscode-buf",
+    "fogio.jetbrains-file-icon-theme",
+    "fogio.jetbrains-product-icon-theme",
+    "golang.go",
+    "gruntfuggly.todo-tree",
+    "humao.rest-client",
+    "k--kato.intellij-idea-keybindings",
+    "ms-vscode.makefile-tools",
+    "redhat.vscode-yaml",
+    "tamasfe.even-better-toml",
+    "usernamehw.errorlens"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "jetbrainsStyleGo.applySettings",
+        "title": "应用 GoLand 风格设置",
+        "category": "Goland Style"
+      },
+      {
+        "command": "jetbrainsStyleGo.restoreSettings",
+        "title": "恢复应用前的设置",
+        "category": "Goland Style"
+      },
+      {
+        "command": "jetbrainsStyleGo.installFont",
+        "title": "安装 JetBrains Mono 字体",
+        "category": "Goland Style"
+      }
+    ],
+    "themes": [
+      {
+        "label": "JetBrains New UI Dark (Unofficial)",
+        "uiTheme": "vs-dark",
+        "path": "./themes/jetbrains-new-ui-dark-color-theme.json"
+      },
+      {
+        "label": "JetBrains New UI Light (Unofficial)",
+        "uiTheme": "vs",
+        "path": "./themes/jetbrains-new-ui-light-color-theme.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "go",
+        "path": "./snippets/go.json"
+      }
+    ],
+    "configurationDefaults": {
+      "workbench.colorTheme": "JetBrains New UI Dark (Unofficial)",
+      "workbench.iconTheme": "jetbrains-file-icon-theme-dark",
+      "workbench.productIconTheme": "jetbrains-product-icon-theme",
+      "workbench.activityBar.location": "default",
+      "workbench.sideBar.location": "left",
+      "workbench.panel.defaultLocation": "bottom",
+      "workbench.tree.indent": 16,
+      "workbench.tree.renderIndentGuides": "none",
+      "workbench.tree.enableStickyScroll": false,
+      "workbench.list.smoothScrolling": true,
+      "workbench.list.horizontalScrolling": true,
+      "workbench.editor.enablePreview": false,
+      "workbench.editor.highlightModifiedTabs": true,
+      "workbench.editor.showTabs": "multiple",
+      "workbench.editor.tabSizing": "fit",
+      "workbench.editor.wrapTabs": false,
+      "workbench.startupEditor": "none",
+      "workbench.secondarySideBar.defaultVisibility": "hidden",
+      "workbench.layoutControl.enabled": false,
+      "workbench.navigationControl.enabled": false,
+      "window.zoomLevel": 0,
+      "window.commandCenter": false,
+      "window.menuBarVisibility": "compact",
+      "window.titleBarStyle": "custom",
+      "breadcrumbs.enabled": false,
+      "explorer.compactFolders": false,
+      "jetbrains-file-icon-theme.enableGoTestIcons": true,
+      "files.autoSave": "off",
+      "files.trimTrailingWhitespace": true,
+      "files.insertFinalNewline": true,
+      "search.smartCase": true,
+      "editor.fontFamily": "'JetBrains Mono', JetBrainsMono, Consolas, 'Courier New', monospace",
+      "editor.fontSize": 13.5,
+      "editor.lineHeight": 21,
+      "editor.fontWeight": "400",
+      "editor.letterSpacing": 0,
+      "editor.fontLigatures": true,
+      "editor.minimap.enabled": false,
+      "editor.scrollBeyondLastLine": false,
+      "editor.stickyScroll.enabled": true,
+      "editor.renderWhitespace": "selection",
+      "editor.renderControlCharacters": true,
+      "editor.unicodeHighlight.nonBasicASCII": false,
+      "editor.unicodeHighlight.ambiguousCharacters": false,
+      "editor.guides.indentation": true,
+      "editor.guides.highlightActiveIndentation": true,
+      "editor.guides.bracketPairs": false,
+      "editor.bracketPairColorization.enabled": false,
+      "editor.glyphMargin": true,
+      "editor.lineNumbersMinChars": 3,
+      "editor.padding.top": 6,
+      "editor.padding.bottom": 4,
+      "editor.folding": true,
+      "editor.showFoldingControls": "mouseover",
+      "editor.matchBrackets": "always",
+      "editor.parameterHints.enabled": true,
+      "editor.inlayHints.enabled": "on",
+      "editor.codeLens": true,
+      "editor.linkedEditing": true,
+      "editor.hover.delay": 300,
+      "editor.cursorBlinking": "smooth",
+      "editor.cursorSmoothCaretAnimation": "on",
+      "editor.smoothScrolling": true,
+      "editor.wordWrap": "off",
+      "editor.rulers": [
+        120
+      ],
+      "diffEditor.ignoreTrimWhitespace": false,
+      "problems.defaultViewMode": "tree",
+      "terminal.integrated.tabs.enabled": true,
+      "terminal.integrated.defaultLocation": "view",
+      "terminal.integrated.fontFamily": "'JetBrains Mono', JetBrainsMono, Consolas, 'Courier New', monospace",
+      "terminal.integrated.fontSize": 12,
+      "terminal.integrated.lineHeight": 1.15,
+      "intellij-idea-keybindings.useCamelHumpsWords": true,
+      "errorLens.messageBackgroundMode": "message",
+      "errorLens.problemRangeDecorationEnabled": true,
+      "errorLens.gutterIconsEnabled": true,
+      "errorLens.fontFamily": "'JetBrains Mono', JetBrainsMono, Consolas, 'Courier New', monospace",
+      "errorLens.fontSize": "-1px",
+      "errorLens.margin": "2ch",
+      "todo-tree.general.tags": [
+        "TODO",
+        "FIXME",
+        "BUG",
+        "HACK",
+        "XXX"
+      ],
+      "todo-tree.filtering.useBuiltInExcludes": "file and search excludes",
+      "go.useLanguageServer": true,
+      "go.formatTool": "default",
+      "go.lintOnSave": "off",
+      "go.testExplorer.enable": true,
+      "go.testExplorer.packageDisplayMode": "nested",
+      "go.testExplorer.showDynamicSubtestsInEditor": true,
+      "go.testTimeout": "30s",
+      "go.toolsManagement.autoUpdate": false,
+      "go.toolsManagement.checkForUpdates": "proxy",
+      "gopls": {
+        "formatting.gofumpt": true,
+        "ui.completion.usePlaceholders": true,
+        "ui.semanticTokens": true,
+        "ui.diagnostic.staticcheck": true,
+        "ui.inlayhint.hints": {
+          "assignVariableTypes": true,
+          "compositeLiteralFields": true,
+          "compositeLiteralTypes": true,
+          "constantValues": true,
+          "functionTypeParameters": true,
+          "parameterNames": true,
+          "rangeVariableTypes": true
+        }
+      },
+      "[go]": {
+        "editor.defaultFormatter": "golang.go",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.organizeImports": "explicit"
+        },
+        "editor.semanticHighlighting.enabled": true,
+        "editor.suggest.snippetsPreventQuickSuggestions": false
+      },
+      "[go.mod]": {
+        "editor.defaultFormatter": "golang.go",
+        "editor.formatOnSave": true
+      },
+      "[go.work]": {
+        "editor.defaultFormatter": "golang.go",
+        "editor.formatOnSave": true
+      },
+      "[yaml]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml",
+        "editor.formatOnSave": true,
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2
+      },
+      "[toml]": {
+        "editor.defaultFormatter": "tamasfe.even-better-toml",
+        "editor.formatOnSave": true
+      },
+      "[proto]": {
+        "editor.defaultFormatter": "bufbuild.vscode-buf",
+        "editor.formatOnSave": true
+      }
+    },
+    "keybindings": [
+      {
+        "command": "editor.action.quickFix",
+        "key": "alt+enter",
+        "mac": "alt+enter",
+        "when": "editorHasCodeActionsProvider && textInputFocus && !editorReadonly"
+      },
+      {
+        "command": "editor.action.formatDocument",
+        "key": "ctrl+alt+l",
+        "mac": "cmd+alt+l",
+        "when": "editorHasDocumentFormattingEditProvider && editorTextFocus && !editorReadonly"
+      },
+      {
+        "command": "editor.action.organizeImports",
+        "key": "ctrl+alt+o",
+        "mac": "cmd+alt+o",
+        "when": "editorLangId == go && editorTextFocus && !editorReadonly"
+      },
+      {
+        "command": "editor.action.refactor",
+        "key": "ctrl+alt+shift+t",
+        "mac": "ctrl+alt+shift+t",
+        "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly"
+      },
+      {
+        "command": "editor.action.rename",
+        "key": "shift+f6",
+        "mac": "shift+f6",
+        "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly"
+      }
+    ]
+  },
+  "scripts": {
+    "build:profile": "node ./scripts/build-profile.mjs",
+    "prepare:dist": "node ./scripts/prepare-dist.mjs",
+    "check:js": "node --check ./extension.js",
+    "check:runtime": "node ./scripts/test-extension.mjs",
+    "check": "node ./scripts/validate.mjs",
+    "test": "npm run build:profile && npm run check:js && npm run check:runtime && npm run check",
+    "package": "npm run test && npm run prepare:dist && vsce package --allow-missing-repository --out dist/Goland-Style.vsix",
+    "publish": "npm run test && vsce publish"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.9.2"
+  }
+}
