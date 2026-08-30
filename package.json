@@ -2,7 +2,7 @@
   "name": "jetbrains-style-go-vscode",
   "displayName": "Goland Style",
   "description": "An unofficial GoLand-style Go development experience for Visual Studio Code.",
-  "version": "0.2.7",
+  "version": "0.2.9",
   "publisher": "goland-style",
   "icon": "assets/icon.png",
   "license": "SEE LICENSE IN LICENSE",
@@ -10,6 +10,9 @@
   "main": "./extension.js",
   "activationEvents": [
     "onStartupFinished"
+  ],
+  "extensionKind": [
+    "ui"
   ],
   "capabilities": {
     "untrustedWorkspaces": {
@@ -38,18 +41,64 @@
   },
   "extensionPack": [
     "MS-CEINTL.vscode-language-pack-zh-hans",
-    "EditorConfig.EditorConfig",
-    "bufbuild.vscode-buf",
     "fogio.jetbrains-file-icon-theme",
     "fogio.jetbrains-product-icon-theme",
-    "golang.go",
-    "gruntfuggly.todo-tree",
-    "humao.rest-client",
-    "ms-vscode.makefile-tools",
-    "redhat.vscode-yaml",
-    "tamasfe.even-better-toml",
-    "usernamehw.errorlens"
+    "golang.go"
   ],
+  "golandStyle": {
+    "runtimeSettings": {
+      "go.useLanguageServer": true,
+      "go.formatTool": "default",
+      "go.lintOnSave": "off",
+      "go.testExplorer.enable": true,
+      "go.testExplorer.packageDisplayMode": "nested",
+      "go.testExplorer.showDynamicSubtestsInEditor": true,
+      "go.testTimeout": "30s",
+      "go.coverageDecorator": {
+        "type": "highlight",
+        "coveredHighlightColor": "rgba(64,128,128,0.5)",
+        "uncoveredHighlightColor": "rgba(128,64,64,0.25)",
+        "coveredBorderColor": "rgba(64,128,128,0.5)",
+        "uncoveredBorderColor": "rgba(128,64,64,0.25)",
+        "coveredGutterStyle": "blockblue",
+        "uncoveredGutterStyle": "slashyellow"
+      },
+      "go.toolsManagement.autoUpdate": false,
+      "go.toolsManagement.checkForUpdates": "proxy",
+      "gopls": {
+        "formatting.gofumpt": true,
+        "ui.completion.usePlaceholders": true,
+        "ui.semanticTokens": true,
+        "ui.diagnostic.staticcheck": true,
+        "ui.inlayhint.hints": {
+          "assignVariableTypes": true,
+          "compositeLiteralFields": true,
+          "compositeLiteralTypes": true,
+          "constantValues": true,
+          "functionTypeParameters": true,
+          "parameterNames": true,
+          "rangeVariableTypes": true
+        }
+      },
+      "[go]": {
+        "editor.defaultFormatter": "golang.go",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.organizeImports": "explicit"
+        },
+        "editor.semanticHighlighting.enabled": true,
+        "editor.suggest.snippetsPreventQuickSuggestions": false
+      },
+      "[go.mod]": {
+        "editor.defaultFormatter": "golang.go",
+        "editor.formatOnSave": true
+      },
+      "[go.work]": {
+        "editor.defaultFormatter": "golang.go",
+        "editor.formatOnSave": true
+      }
+    }
+  },
   "contributes": {
     "commands": [
       {
@@ -114,11 +163,8 @@
       "workbench.navigationControl.enabled": false,
       "window.zoomLevel": 0,
       "window.commandCenter": false,
-      "window.menuBarVisibility": "compact",
-      "window.titleBarStyle": "custom",
       "breadcrumbs.enabled": false,
       "explorer.compactFolders": false,
-      "jetbrains-file-icon-theme.enableGoTestIcons": true,
       "files.autoSave": "off",
       "files.trimTrailingWhitespace": true,
       "files.insertFinalNewline": true,
@@ -141,7 +187,6 @@
       "editor.guides.bracketPairs": false,
       "editor.bracketPairColorization.enabled": false,
       "editor.glyphMargin": true,
-      "editor.lineNumbersMinChars": 3,
       "editor.padding.top": 6,
       "editor.padding.bottom": 4,
       "editor.folding": true,
@@ -166,76 +211,7 @@
       "terminal.integrated.defaultLocation": "view",
       "terminal.integrated.fontFamily": "'JetBrains Mono', JetBrainsMono, Consolas, 'Courier New', monospace",
       "terminal.integrated.fontSize": 12,
-      "terminal.integrated.lineHeight": 1.15,
-      "errorLens.messageBackgroundMode": "message",
-      "errorLens.problemRangeDecorationEnabled": true,
-      "errorLens.gutterIconsEnabled": true,
-      "errorLens.fontFamily": "'JetBrains Mono', JetBrainsMono, Consolas, 'Courier New', monospace",
-      "errorLens.fontSize": "-1px",
-      "errorLens.margin": "2ch",
-      "todo-tree.general.tags": [
-        "TODO",
-        "FIXME",
-        "BUG",
-        "HACK",
-        "XXX"
-      ],
-      "todo-tree.filtering.useBuiltInExcludes": "file and search excludes",
-      "go.useLanguageServer": true,
-      "go.formatTool": "default",
-      "go.lintOnSave": "off",
-      "go.testExplorer.enable": true,
-      "go.testExplorer.packageDisplayMode": "nested",
-      "go.testExplorer.showDynamicSubtestsInEditor": true,
-      "go.testTimeout": "30s",
-      "go.toolsManagement.autoUpdate": false,
-      "go.toolsManagement.checkForUpdates": "proxy",
-      "gopls": {
-        "formatting.gofumpt": true,
-        "ui.completion.usePlaceholders": true,
-        "ui.semanticTokens": true,
-        "ui.diagnostic.staticcheck": true,
-        "ui.inlayhint.hints": {
-          "assignVariableTypes": true,
-          "compositeLiteralFields": true,
-          "compositeLiteralTypes": true,
-          "constantValues": true,
-          "functionTypeParameters": true,
-          "parameterNames": true,
-          "rangeVariableTypes": true
-        }
-      },
-      "[go]": {
-        "editor.defaultFormatter": "golang.go",
-        "editor.formatOnSave": true,
-        "editor.codeActionsOnSave": {
-          "source.organizeImports": "explicit"
-        },
-        "editor.semanticHighlighting.enabled": true,
-        "editor.suggest.snippetsPreventQuickSuggestions": false
-      },
-      "[go.mod]": {
-        "editor.defaultFormatter": "golang.go",
-        "editor.formatOnSave": true
-      },
-      "[go.work]": {
-        "editor.defaultFormatter": "golang.go",
-        "editor.formatOnSave": true
-      },
-      "[yaml]": {
-        "editor.defaultFormatter": "redhat.vscode-yaml",
-        "editor.formatOnSave": true,
-        "editor.insertSpaces": true,
-        "editor.tabSize": 2
-      },
-      "[toml]": {
-        "editor.defaultFormatter": "tamasfe.even-better-toml",
-        "editor.formatOnSave": true
-      },
-      "[proto]": {
-        "editor.defaultFormatter": "bufbuild.vscode-buf",
-        "editor.formatOnSave": true
-      }
+      "terminal.integrated.lineHeight": 1.15
     }
   },
   "scripts": {

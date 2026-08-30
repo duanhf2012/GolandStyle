@@ -9,24 +9,19 @@
 - JetBrains New UI 风格的文件图标和产品图标；
 - 默认保留 VS Code 原生快捷键：`F12` 跳转定义、`Shift+F12` 查找引用、`F2` 重命名、`Ctrl+.` 快速修复；可按需导入单独的 GoLand Keymap Profile；
 - 官方 Go 插件、`gopls`、Delve 调试、Test Explorer、Benchmark 和覆盖率能力；
-- GoLand 风格的语义色、Inlay Hints、Error Lens、格式化保存和自动整理 import；
-- 微软官方简体中文语言包，以及 EditorConfig、YAML、TOML、Protobuf、HTTP Client、TODO 和 Makefile 支持；
+- GoLand 风格的语义色、Inlay Hints、格式化保存和自动整理 import；
+- 微软官方简体中文语言包；
 - 常用 Go Live Templates，以及可复制到项目的调试和测试任务模板；
-- 核心与 Full 两套可导入 Profile，避免污染用户已有的前端或其他语言配置。
+- 核心与 Full 两套可导入 Profile；核心只保留必要扩展，其他工具按项目需要自行安装。
 
 扩展包会安装以下依赖：
 
 - `golang.go`：官方 Go 语言支持；
 - `MS-CEINTL.vscode-language-pack-zh-hans`：微软官方简体中文界面；
-- `usernamehw.errorlens`：接近 JetBrains Inspection 的行内诊断；
 - `fogio.jetbrains-file-icon-theme`：JetBrains New UI 文件图标；
 - `fogio.jetbrains-product-icon-theme`：JetBrains New UI 产品图标；
-- `EditorConfig.EditorConfig`：读取项目 `.editorconfig`；
-- `redhat.vscode-yaml`、`tamasfe.even-better-toml`：配置文件补全、校验和格式化；
-- `bufbuild.vscode-buf`：Protocol Buffers 语言支持和 Buf 命令；
-- `humao.rest-client`：对应 GoLand HTTP Client 的 `.http` / `.rest` 工作流；
-- `gruntfuggly.todo-tree`：TODO/FIXME 工具窗口；
-- `ms-vscode.makefile-tools`：Makefile 目标和构建支持。
+
+EditorConfig、YAML/TOML、Buf/Protobuf、REST Client、TODO、Makefile、数据库、容器和远程开发等都属于**按项目需要安装**的工具，不再由 Goland Style 自动安装。这能避免第三方扩展的启动错误、外部 CLI 下载和额外后台进程影响 Go 调试与日常编辑。
 
 完整的 GoLand 功能映射、取舍和平台限制见 `docs/goland-feature-matrix.md`。
 

@@ -82,6 +82,11 @@ const context = {
           "editor.lineHeight": 21,
         },
       },
+      golandStyle: {
+        runtimeSettings: {
+          "go.useLanguageServer": true,
+        },
+      },
     },
   },
   globalState: {
@@ -104,16 +109,19 @@ assert(commands.has("jetbrainsStyleGo.repairGoNavigation"));
 await new Promise((resolve) => setImmediate(resolve));
 assert.equal(globalSettings.get("editor.fontSize"), 13.5);
 assert.equal(globalSettings.get("editor.lineHeight"), 21);
+assert.equal(globalSettings.get("go.useLanguageServer"), true);
 assert.equal(globalState.get("appliedSettingsVersion"), "test");
 
 await commands.get("jetbrainsStyleGo.applySettings")();
 assert.equal(globalSettings.get("editor.fontSize"), 13.5);
 assert.equal(globalSettings.get("editor.lineHeight"), 21);
+assert.equal(globalSettings.get("go.useLanguageServer"), true);
 assert(executedCommands.includes("workbench.action.closeAuxiliaryBar"));
 
 await commands.get("jetbrainsStyleGo.restoreSettings")();
 assert.equal(globalSettings.get("editor.fontSize"), 15);
 assert.equal(globalSettings.has("editor.lineHeight"), false);
+assert.equal(globalSettings.has("go.useLanguageServer"), false);
 assert.equal(globalState.has("settingsBackup"), false);
 assert(updates.length >= 4);
 

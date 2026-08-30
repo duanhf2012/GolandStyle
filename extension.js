@@ -140,7 +140,11 @@ async function offerFontInstallation(context) {
 
 async function applySettings(context, { automatic = false } = {}) {
   const configuration = vscode.workspace.getConfiguration();
-  const defaults = context.extension.packageJSON.contributes.configurationDefaults;
+  const packageJSON = context.extension.packageJSON;
+  const defaults = {
+    ...packageJSON.contributes.configurationDefaults,
+    ...packageJSON.golandStyle?.runtimeSettings,
+  };
   const existingBackup = context.globalState.get(backupKey);
 
   if (!existingBackup) {

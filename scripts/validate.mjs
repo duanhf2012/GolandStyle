@@ -18,17 +18,11 @@ function requireValue(condition, message) {
 
 const manifest = await readJson("package.json");
 const defaults = manifest.contributes?.configurationDefaults;
+const runtimeSettings = manifest.golandStyle?.runtimeSettings;
+const profileDefaults = { ...defaults, ...runtimeSettings };
 const requiredExtensions = [
   "MS-CEINTL.vscode-language-pack-zh-hans",
-  "EditorConfig.EditorConfig",
-  "bufbuild.vscode-buf",
   "golang.go",
-  "gruntfuggly.todo-tree",
-  "humao.rest-client",
-  "ms-vscode.makefile-tools",
-  "redhat.vscode-yaml",
-  "tamasfe.even-better-toml",
-  "usernamehw.errorlens",
   "fogio.jetbrains-file-icon-theme",
   "fogio.jetbrains-product-icon-theme",
 ];
@@ -49,6 +43,8 @@ const fullProfileExtensions = [
 
 requireValue(manifest.name === "jetbrains-style-go-vscode", "扩展名称不正确");
 requireValue(manifest.publisher === "goland-style", "Publisher ID 必须为 goland-style");
+requireValue(/^\d+\.\d+\.\d+$/.test(manifest.version), "版本号必须符合 SemVer");
+requireValue(manifest.icon === "assets/icon.png", "Marketplace 图标路径不正确");
 requireValue(Array.isArray(manifest.extensionPack), "extensionPack 必须是数组");
 for (const extensionId of requiredExtensions) {
   requireValue(
@@ -58,6 +54,22 @@ for (const extensionId of requiredExtensions) {
 }
 
 requireValue(defaults && typeof defaults === "object", "缺少默认配置");
+const extensionOwnedDefaults = Object.keys(defaults).filter(
+  (key) =>
+    key === "gopls" ||
+    key.startsWith("go.") ||
+    key === "[go]" ||
+    key === "[go.mod]" ||
+    key === "[go.work]",
+);
+requireValue(
+  extensionOwnedDefaults.length === 0,
+  `第三方扩展设置不能放入 configurationDefaults：${extensionOwnedDefaults.join(", ")}`,
+);
+requireValue(
+  runtimeSettings && typeof runtimeSettings === "object",
+  "缺少 Goland Style 运行时设置",
+);
 requireValue(
   defaults["workbench.colorTheme"] === "JetBrains New UI Dark (Unofficial)",
   "默认主题不正确",
@@ -78,10 +90,6 @@ requireValue(
   defaults["workbench.tree.renderIndentGuides"] === "none",
   "Project 树不应显示竖向缩进线",
 );
-requireValue(
-  defaults["jetbrains-file-icon-theme.enableGoTestIcons"] === true,
-  "应启用 Go 测试文件专用图标",
-);
 requireValue(defaults["breadcrumbs.enabled"] === false, "应隐藏 Breadcrumbs");
 requireValue(
   defaults["editor.unicodeHighlight.nonBasicASCII"] === false,
@@ -91,21 +99,17 @@ requireValue(
   defaults["editor.bracketPairColorization.enabled"] === false,
   "应关闭与 GoLand 不一致的彩虹括号",
 );
-requireValue(defaults["editor.lineNumbersMinChars"] === 3, "行号栏宽度应为 3");
 requireValue(
-  defaults["[yaml]"]?.["editor.defaultFormatter"] === "redhat.vscode-yaml",
-  "YAML 默认格式化器不正确",
+  !Object.hasOwn(defaults, "editor.lineNumbersMinChars"),
+  "editor.lineNumbersMinChars 未被 VS Code 注册，不能作为扩展默认配置",
 );
+const coverageDecorator = runtimeSettings["go.coverageDecorator"];
 requireValue(
-  defaults["[toml]"]?.["editor.defaultFormatter"] ===
-    "tamasfe.even-better-toml",
-  "TOML 默认格式化器不正确",
+  coverageDecorator &&
+    typeof coverageDecorator === "object" &&
+    !Array.isArray(coverageDecorator),
+  "go.coverageDecorator 必须提供对象默认值，避免 Go 扩展初始化失败",
 );
-requireValue(
-  defaults["[proto]"]?.["editor.defaultFormatter"] === "bufbuild.vscode-buf",
-  "Proto 默认格式化器不正确",
-);
-
 const themes = manifest.contributes?.themes ?? [];
 requireValue(themes.length === 2, "必须同时提供深色和浅色主题");
 for (const themeContribution of themes) {
@@ -133,7 +137,7 @@ const settingsPayload = JSON.parse(profile.settings);
 const profileSettings = JSON.parse(settingsPayload.settings);
 const profileExtensions = JSON.parse(profile.extensions);
 requireValue(
-  JSON.stringify(profileSettings) === JSON.stringify(defaults),
+  JSON.stringify(profileSettings) === JSON.stringify(profileDefaults),
   "Profile 设置与扩展默认配置不同步",
 );
 requireValue(
@@ -146,7 +150,7 @@ const fullSettingsPayload = JSON.parse(fullProfile.settings);
 const fullProfileSettings = JSON.parse(fullSettingsPayload.settings);
 const fullExtensions = JSON.parse(fullProfile.extensions);
 requireValue(
-  JSON.stringify(fullProfileSettings) === JSON.stringify(defaults),
+  JSON.stringify(fullProfileSettings) === JSON.stringify(profileDefaults),
   "Full Profile 设置与扩展默认配置不同步",
 );
 for (const extensionId of [...requiredExtensions, ...fullProfileExtensions]) {
@@ -157,6 +161,7 @@ for (const extensionId of [...requiredExtensions, ...fullProfileExtensions]) {
 }
 
 for (const relativePath of [
+  "assets/icon.png",
   "assets/fonts/JetBrainsMono-Regular.ttf",
   "assets/fonts/JetBrainsMono-Bold.ttf",
   "assets/fonts/JetBrainsMono-Italic.ttf",

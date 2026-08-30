@@ -8,10 +8,15 @@ const projectDirectory = path.resolve(scriptDirectory, "..");
 const packageJson = JSON.parse(
   await readFile(path.join(projectDirectory, "package.json"), "utf8"),
 );
-const settings = packageJson.contributes?.configurationDefaults;
-if (!settings || typeof settings !== "object") {
+const configurationDefaults = packageJson.contributes?.configurationDefaults;
+const runtimeSettings = packageJson.golandStyle?.runtimeSettings;
+if (!configurationDefaults || typeof configurationDefaults !== "object") {
   throw new Error("package.json 缺少 contributes.configurationDefaults");
 }
+if (!runtimeSettings || typeof runtimeSettings !== "object") {
+  throw new Error("package.json 缺少 golandStyle.runtimeSettings");
+}
+const settings = { ...configurationDefaults, ...runtimeSettings };
 
 const profileDefinitions = [
   {

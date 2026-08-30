@@ -1,6 +1,6 @@
 # GoLand 功能覆盖矩阵
 
-本项目以 GoLand 的日常 Go 开发工作流为目标，不宣称复制 JetBrains 的专有实现。优先使用 VS Code 内置能力和官方 Go 扩展，只有存在明确缺口时才加入第三方扩展。
+本项目以 GoLand 的日常 Go 开发工作流为目标，不宣称复制 JetBrains 的专有实现。核心只使用 VS Code 内置能力、官方 Go 扩展、微软简体中文包和两套视觉图标主题；其他第三方工具不自动安装。
 
 ## 核心 Profile（默认扩展包）
 
@@ -10,26 +10,26 @@
 | Project 文件树、搜索、结构视图 | VS Code Explorer、Search、Outline、Breadcrumbs | 内置；主题已校准颜色、缩进和选中态 |
 | Go 语义高亮、补全、导航、查找引用 | 官方 Go 扩展 + `gopls` | 已包含 |
 | Rename、Extract、Inline、Quick Fix | 官方 Go 扩展 + `gopls` Code Actions | 已包含；具体重构范围随 `gopls` 演进 |
-| Inspection、静态分析 | `gopls` diagnostics + staticcheck + Error Lens | 已包含 |
+| Inspection、静态分析 | `gopls` diagnostics + staticcheck | 已包含 |
 | 参数名、类型等 Inlay Hints | `gopls` inlay hints | 已包含并默认开启 |
 | 格式化、优化 import | `gofumpt` + `goimports` 能力 | 已配置为保存时执行 |
 | Run/Debug、断点、变量、调用栈 | 官方 Go 扩展 + Delve | 已包含 |
 | Test、子测试、Benchmark、Coverage | 官方 Go 扩展 Test Explorer + 项目任务 | 已包含 |
 | Live Templates | 本扩展的 Go snippets | 已包含 |
 | 快捷键 | VS Code 原生快捷键 | 默认使用；可导入单独 GoLand Keymap Profile |
-| `.editorconfig` | EditorConfig | 已包含 |
-| YAML、JSON Schema、Kubernetes Schema | Red Hat YAML；JSON 由 VS Code 内置 | 已包含 |
-| TOML | Even Better TOML / Taplo | 已包含 |
-| Protocol Buffers | Buf：补全、导航、格式化、诊断和生成命令 | 已包含 |
-| GoLand HTTP Client | REST Client：`.http` / `.rest` 请求、环境变量和历史 | 已包含 |
-| TODO 工具窗口 | Todo Tree | 已包含 |
-| Makefile 目标和构建 | Microsoft Makefile Tools | 已包含；仅在发现 Makefile 时激活 |
+| `.editorconfig` | EditorConfig | 按项目需要单独安装 |
+| YAML、JSON Schema、Kubernetes Schema | Red Hat YAML；JSON 由 VS Code 内置 | 按项目需要单独安装 |
+| TOML | Even Better TOML / Taplo | 按项目需要单独安装 |
+| Protocol Buffers | Buf：补全、导航、格式化、诊断和生成命令 | 按项目需要单独安装 |
+| GoLand HTTP Client | REST Client：`.http` / `.rest` 请求、环境变量和历史 | 按项目需要单独安装 |
+| TODO 工具窗口 | Todo Tree | 不推荐随核心安装；存在兼容性风险 |
+| Makefile 目标和构建 | Microsoft Makefile Tools | 按项目需要单独安装 |
 | Git 提交、分支、合并、差异、时间线 | VS Code 内置 Source Control、Merge Editor、Timeline | 核心 Profile 使用内置能力 |
 | 终端、任务、问题窗口 | VS Code Terminal、Tasks、Problems | 内置 |
 
 ## Full Profile（按需导入）
 
-`profile/jetbrains-style-go-full.code-profile` 在核心能力之上增加下列重型或连接型功能：
+`profile/jetbrains-style-go-full.code-profile` 仅在用户主动导入时，在核心能力之上增加下列重型或连接型功能：
 
 | GoLand 能力 | 扩展 | 说明 |
 | --- | --- | --- |
@@ -44,6 +44,11 @@
 | 拼写检查 | Code Spell Checker | 对注释、字符串和标识符提供额外检查，可能需要按项目维护词典 |
 
 这些扩展不会随 VSIX 默认自动安装，因为它们可能需要账号、外部服务、数据库凭据、Docker/SSH/Kubernetes 权限，或引入额外侧边栏和后台进程。
+
+## 可选工具策略
+
+- Goland Style 不再自动安装 Todo Tree、Error Lens、Buf、REST Client、Makefile、YAML/TOML 或 EditorConfig。
+- 需要这些能力时，在项目实际使用对应文件、服务或工具链后，再从扩展市场单独安装；这样单个插件失败不会影响基础 Go 开发和调试。
 
 ## 不重复安装的能力
 

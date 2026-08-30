@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.2.9
+
+- 移除 VS Code 未注册的 `editor.lineNumbersMinChars` 默认设置，修复启动和 F5 调试时的 `Cannot convert undefined or null to object` 错误。
+- 为 `go.coverageDecorator` 提供完整对象默认值，兼容 Go 扩展在 VS Code 1.135 中的配置读取。
+
+## 0.2.8
+
+- 新增 Marketplace 图标，使用 OriginBlueprint 应用图标。
+- 核心扩展包收敛为官方 Go、微软简体中文包和两套 JetBrains 风格图标主题。
+- 移除 Todo Tree、Error Lens、Buf、REST Client、Makefile、YAML/TOML 与 EditorConfig 的自动安装和默认配置，避免可选第三方扩展影响启动、调试和语言服务。
+- 删除当前 VS Code 不支持作为配置默认值的窗口设置，减少启动告警。
+
 ## 0.2.7
 
 - 默认恢复 VS Code 原生快捷键，不再随核心扩展包安装或覆盖 IntelliJ/GoLand Keybindings。

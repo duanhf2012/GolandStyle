@@ -8,14 +8,6 @@
     "displayName": "Chinese (Simplified) Language Pack"
   },
   {
-    "id": "EditorConfig.EditorConfig",
-    "displayName": "EditorConfig"
-  },
-  {
-    "id": "bufbuild.vscode-buf",
-    "displayName": "Buf"
-  },
-  {
     "id": "fogio.jetbrains-file-icon-theme",
     "displayName": "JetBrains New UI File Icon Theme Extended"
   },
@@ -26,30 +18,6 @@
   {
     "id": "golang.go",
     "displayName": "Go"
-  },
-  {
-    "id": "gruntfuggly.todo-tree",
-    "displayName": "Todo Tree"
-  },
-  {
-    "id": "humao.rest-client",
-    "displayName": "REST Client"
-  },
-  {
-    "id": "ms-vscode.makefile-tools",
-    "displayName": "Makefile Tools"
-  },
-  {
-    "id": "redhat.vscode-yaml",
-    "displayName": "YAML"
-  },
-  {
-    "id": "tamasfe.even-better-toml",
-    "displayName": "Even Better TOML"
-  },
-  {
-    "id": "usernamehw.errorlens",
-    "displayName": "Error Lens"
   },
   {
     "id": "eamodio.gitlens",
