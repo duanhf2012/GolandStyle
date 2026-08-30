@@ -36,10 +36,6 @@
     "displayName": "REST Client"
   },
   {
-    "id": "k--kato.intellij-idea-keybindings",
-    "displayName": "IntelliJ IDEA Keybindings"
-  },
-  {
     "id": "ms-vscode.makefile-tools",
     "displayName": "Makefile Tools"
   },

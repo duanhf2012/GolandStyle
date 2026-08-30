@@ -7,7 +7,7 @@
 - 按参考截图校准的深色主题：编辑器和 Project 树背景 `#191A1C`、目录选中项 `#33353B`、活动页签 `#233558`、当前行 `#27282B`；
 - JetBrains Mono 优先，基准字号 `13`、行高 `21`、字距 `0`、窗口缩放 `0`；
 - JetBrains New UI 风格的文件图标和产品图标；
-- IntelliJ/GoLand 快捷键，包括双击 Shift 搜索、`Alt+Enter` 意图操作、`Ctrl+Alt+L` 格式化、`Ctrl+Alt+O` 优化 import、`Shift+F6` 重命名；
+- 默认保留 VS Code 原生快捷键：`F12` 跳转定义、`Shift+F12` 查找引用、`F2` 重命名、`Ctrl+.` 快速修复；可按需导入单独的 GoLand Keymap Profile；
 - 官方 Go 插件、`gopls`、Delve 调试、Test Explorer、Benchmark 和覆盖率能力；
 - GoLand 风格的语义色、Inlay Hints、Error Lens、格式化保存和自动整理 import；
 - 微软官方简体中文语言包，以及 EditorConfig、YAML、TOML、Protobuf、HTTP Client、TODO 和 Makefile 支持；
@@ -18,7 +18,6 @@
 
 - `golang.go`：官方 Go 语言支持；
 - `MS-CEINTL.vscode-language-pack-zh-hans`：微软官方简体中文界面；
-- `k--kato.intellij-idea-keybindings`：IntelliJ IDEA/GoLand 快捷键；
 - `usernamehw.errorlens`：接近 JetBrains Inspection 的行内诊断；
 - `fogio.jetbrains-file-icon-theme`：JetBrains New UI 文件图标；
 - `fogio.jetbrains-product-icon-theme`：JetBrains New UI 产品图标；
@@ -65,11 +64,19 @@ profile/jetbrains-style-go.code-profile
 
 使用独立 Profile 可以确保主题、布局、字号和扩展组合不受已有用户配置覆盖。首次打开 `.go` 文件时，官方 Go 插件会检查并提示安装兼容版本的 `gopls`、`dlv` 等工具。
 
+默认 Profile 使用 VS Code 原生快捷键。若希望使用 `Ctrl+B` 跳转、`Shift+F6` 重命名等 GoLand/IntelliJ 按键，可改为导入：
+
+```text
+profile/jetbrains-style-go-goland-keymap.code-profile
+```
+
+该 Profile 会额外安装 `IntelliJ IDEA Keybindings`。两套按键不能同时启用；切回 VS Code 快捷键时，请在扩展面板禁用该 Keybindings 扩展，再导入默认 Profile。
+
 如果直接安装 VSIX 到已有 Profile，扩展会在首次启动或升级后自动应用当前版本的主题、图标、紧凑菜单、目录密度、字号和 Go 设置，并提示重新加载。若系统未安装 JetBrains Mono，还会提示是否安装扩展内附的官方 2.304 字体文件。也可随时运行 `Goland Style: 应用 GoLand 风格设置`；扩展会保存首次应用前的全局设置，可通过 `Goland Style: 恢复应用前的设置` 撤销并停止后续自动应用。
 
 为匹配 GoLand，默认关闭了中文等非 ASCII 字符的黄色 Unicode 高亮框和彩虹括号。若项目需要重点审计 Unicode 混淆字符，可以单独重新开启相应安全设置。
 
-若顶部仍显示 `Restricted Mode`，请只在你信任该源码目录时选择 `Trust this folder`。受限模式会停用或限制 Go 语言服务及部分工作区扩展。
+若顶部仍显示 `Restricted Mode`，请只在你信任该源码目录时选择 `Trust this folder`。受限模式会停用 `gopls`，因此 Ctrl+鼠标、`F12`、`Ctrl+B` 跳转定义、重构和 CodeLens 都无法工作。信任后可运行“`Goland Style: 修复 Go 跳转（gopls）`”来启用并重启语言服务；若仍提示缺少工具，再执行“`Go: Install/Update Tools`”安装 `gopls`。
 
 简体中文语言包会随扩展包安装，但 VS Code 不允许普通扩展强制修改全局界面语言。首次使用请运行“配置显示语言”（`Configure Display Language`），选择 `中文（简体）/ zh-cn`，然后重启 VS Code。
 
@@ -161,9 +168,11 @@ profile/jetbrains-style-go-full.code-profile
 
 ## 发布
 
-1. 在 VS Code Marketplace 创建 Publisher；如果 Publisher ID 不是 `jetbrains-style-go`，同步修改 `package.json` 和 `profile/extensions.json`。
-2. 在 GitHub 创建仓库并推送当前项目。
-3. 执行 `npm run publish` 发布到 Marketplace；或者创建 `v*` Tag，让 GitHub Actions 自动生成 Release 和 VSIX。
+完整的 Marketplace 发布步骤见项目中的 `docs/publishing.md`。简要流程是：先创建 Publisher 并将其 ID 与 `package.json` 的 `publisher` 保持一致，再使用 `vsce login` 或 `VSCE_PAT` 完成认证，最后执行 `npm run publish`。
+
+如果 Publisher ID 不是 `jetbrains-style-go`，请同步修改 `package.json` 和 `profile/extensions.json` 中的扩展标识；扩展的 `name` 和 Publisher ID 一旦发布，不要再修改。
+
+在 GitHub 创建仓库并推送当前项目后，可以创建 `v*` Tag，让 GitHub Actions 自动生成 Release；配置 `VSCE_PAT` Secret 后，Marketplace 工作流也会自动发布。
 
 手工打 Tag 示例：
 

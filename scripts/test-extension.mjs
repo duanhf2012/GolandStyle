@@ -100,6 +100,7 @@ extensionModule.exports.activate(context);
 assert(commands.has("jetbrainsStyleGo.applySettings"));
 assert(commands.has("jetbrainsStyleGo.restoreSettings"));
 assert(commands.has("jetbrainsStyleGo.installFont"));
+assert(commands.has("jetbrainsStyleGo.repairGoNavigation"));
 await new Promise((resolve) => setImmediate(resolve));
 assert.equal(globalSettings.get("editor.fontSize"), 13.5);
 assert.equal(globalSettings.get("editor.lineHeight"), 21);

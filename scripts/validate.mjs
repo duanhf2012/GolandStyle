@@ -25,7 +25,6 @@ const requiredExtensions = [
   "golang.go",
   "gruntfuggly.todo-tree",
   "humao.rest-client",
-  "k--kato.intellij-idea-keybindings",
   "ms-vscode.makefile-tools",
   "redhat.vscode-yaml",
   "tamasfe.even-better-toml",

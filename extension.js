@@ -219,11 +219,69 @@ async function warnIfWorkspaceIsRestricted() {
     return;
   }
   const choice = await vscode.window.showWarningMessage(
-    "当前处于 Restricted Mode：gopls 语义颜色、重构、CodeLens 和部分 Go 扩展会被限制。仅在确认源码可信时管理工作区信任。",
+    "当前处于 Restricted Mode：gopls 无法启动，Ctrl+鼠标、F12/Ctrl+B 跳转定义、重构和 CodeLens 会不可用。仅在确认源码可信时管理工作区信任。",
     "管理工作区信任",
   );
   if (choice === "管理工作区信任") {
     await vscode.commands.executeCommand("workbench.trust.manage");
+  }
+}
+
+async function repairGoNavigation() {
+  const goExtension = vscode.extensions.getExtension("golang.go");
+  if (!goExtension) {
+    const choice = await vscode.window.showErrorMessage(
+      "未安装官方 Go 扩展，无法提供跳转定义功能。",
+      "安装 Go 扩展",
+    );
+    if (choice === "安装 Go 扩展") {
+      await vscode.commands.executeCommand(
+        "workbench.extensions.installExtension",
+        "golang.go",
+      );
+    }
+    return;
+  }
+
+  if (!vscode.workspace.isTrusted) {
+    const choice = await vscode.window.showWarningMessage(
+      "当前工作区未受信任，VS Code 已禁用 gopls，因此无法跳转定义。确认源码可信后，请先信任此工作区。",
+      "管理工作区信任",
+    );
+    if (choice === "管理工作区信任") {
+      await vscode.commands.executeCommand("workbench.trust.manage");
+    }
+    return;
+  }
+
+  const goConfiguration = vscode.workspace.getConfiguration("go");
+  const inspected = goConfiguration.inspect("useLanguageServer");
+  if (!goConfiguration.get("useLanguageServer")) {
+    const choice = await vscode.window.showWarningMessage(
+      "检测到 go.useLanguageServer 已关闭。启用 gopls 后即可使用 Ctrl+鼠标、F12 和 Ctrl+B 跳转定义。",
+      "启用并重启",
+    );
+    if (choice !== "启用并重启") return;
+
+    let target = vscode.ConfigurationTarget.Global;
+    if (inspected?.workspaceFolderValue === false) {
+      target = vscode.ConfigurationTarget.WorkspaceFolder;
+    } else if (inspected?.workspaceValue === false) {
+      target = vscode.ConfigurationTarget.Workspace;
+    }
+    await goConfiguration.update("useLanguageServer", true, target);
+  }
+
+  try {
+    await goExtension.activate();
+    await vscode.commands.executeCommand("go.languageserver.restart");
+    await vscode.window.showInformationMessage(
+      "gopls 已启用并已请求重启。等待状态栏的 Go 分析完成后，再使用 Ctrl+鼠标、F12 或 Ctrl+B 跳转。",
+    );
+  } catch (error) {
+    await vscode.window.showErrorMessage(
+      `无法重启 gopls：${error instanceof Error ? error.message : String(error)}`,
+    );
   }
 }
 
@@ -237,6 +295,9 @@ function activate(context) {
     ),
     vscode.commands.registerCommand("jetbrainsStyleGo.installFont", () =>
       installBundledFonts(context),
+    ),
+    vscode.commands.registerCommand("jetbrainsStyleGo.repairGoNavigation", () =>
+      repairGoNavigation(),
     ),
   );
   void applyCurrentVersionIfNeeded(context);

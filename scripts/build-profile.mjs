@@ -26,6 +26,12 @@ const profileDefinitions = [
     source: "extensions-full.json",
     output: "jetbrains-style-go-full.code-profile",
   },
+  {
+    name: "Goland Style + GoLand Keymap",
+    shortName: "Go Keymap",
+    source: "extensions-goland-keymap.json",
+    output: "jetbrains-style-go-goland-keymap.code-profile",
+  },
 ];
 
 for (const definition of profileDefinitions) {

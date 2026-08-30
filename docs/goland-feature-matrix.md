@@ -16,7 +16,7 @@
 | Run/Debug、断点、变量、调用栈 | 官方 Go 扩展 + Delve | 已包含 |
 | Test、子测试、Benchmark、Coverage | 官方 Go 扩展 Test Explorer + 项目任务 | 已包含 |
 | Live Templates | 本扩展的 Go snippets | 已包含 |
-| IntelliJ/GoLand 快捷键 | IntelliJ IDEA Keybindings + 本扩展补充快捷键 | 已包含 |
+| 快捷键 | VS Code 原生快捷键 | 默认使用；可导入单独 GoLand Keymap Profile |
 | `.editorconfig` | EditorConfig | 已包含 |
 | YAML、JSON Schema、Kubernetes Schema | Red Hat YAML；JSON 由 VS Code 内置 | 已包含 |
 | TOML | Even Better TOML / Taplo | 已包含 |
@@ -56,4 +56,3 @@
 以下能力无法由普通 VS Code 扩展完整复制：GoLand 专有重构 UI、Database Tools 的全部对象编辑器、内置 Profiler 的统一界面、圆角工具窗口、Project 树独立字体/行高，以及 JetBrains 自己的索引和检查实现。
 
 性能分析仍可使用 Go 原生工具：模板任务能生成 CPU/内存 profile，再通过 `go tool pprof` 分析。Go SDK、Git、Docker、SSH、数据库服务等外部程序不会被打包进 VSIX。
-

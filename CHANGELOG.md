@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.7
+
+- 默认恢复 VS Code 原生快捷键，不再随核心扩展包安装或覆盖 IntelliJ/GoLand Keybindings。
+- 新增 `jetbrains-style-go-goland-keymap.code-profile`，需要 GoLand 键位时可单独导入。
+
+## 0.2.6
+
+- 固定 `F12` 为跳转定义，并将 Ctrl+单击所需的多光标修饰键设为 `Alt`，避免与跳转操作冲突。
+- 新增“Goland Style: 修复 Go 跳转（gopls）”命令：检测工作区信任和 Go 语言服务开关，并在安全条件满足时重启 gopls。
+- Restricted Mode 提示明确说明其会禁用 Ctrl+鼠标、F12/Ctrl+B 的定义跳转。
+
 ## 0.2.5
 
 - 按最新对比截图将代码字号从 `13` 小幅提高到 `13.5`，行高保持 `21` 不变。

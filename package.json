@@ -1,10 +1,11 @@
 {
   "name": "jetbrains-style-go-vscode",
   "displayName": "Goland Style",
-  "description": "A GoLand-style Go development experience for Visual Studio Code.",
-  "version": "0.2.5",
+  "description": "An unofficial GoLand-style Go development experience for Visual Studio Code.",
+  "version": "0.2.7",
   "publisher": "jetbrains-style-go",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
+  "pricing": "Free",
   "main": "./extension.js",
   "activationEvents": [
     "onStartupFinished"
@@ -19,7 +20,6 @@
   },
   "categories": [
     "Extension Packs",
-    "Keymaps",
     "Themes",
     "Programming Languages"
   ],
@@ -28,7 +28,6 @@
     "golang",
     "goland",
     "jetbrains",
-    "keymap",
     "gopls",
     "darcula"
   ],
@@ -45,7 +44,6 @@
     "golang.go",
     "gruntfuggly.todo-tree",
     "humao.rest-client",
-    "k--kato.intellij-idea-keybindings",
     "ms-vscode.makefile-tools",
     "redhat.vscode-yaml",
     "tamasfe.even-better-toml",
@@ -66,6 +64,11 @@
       {
         "command": "jetbrainsStyleGo.installFont",
         "title": "安装 JetBrains Mono 字体",
+        "category": "Goland Style"
+      },
+      {
+        "command": "jetbrainsStyleGo.repairGoNavigation",
+        "title": "修复 Go 跳转（gopls）",
         "category": "Goland Style"
       }
     ],
@@ -152,6 +155,7 @@
       "editor.cursorSmoothCaretAnimation": "on",
       "editor.smoothScrolling": true,
       "editor.wordWrap": "off",
+      "editor.multiCursorModifier": "alt",
       "editor.rulers": [
         120
       ],
@@ -162,7 +166,6 @@
       "terminal.integrated.fontFamily": "'JetBrains Mono', JetBrainsMono, Consolas, 'Courier New', monospace",
       "terminal.integrated.fontSize": 12,
       "terminal.integrated.lineHeight": 1.15,
-      "intellij-idea-keybindings.useCamelHumpsWords": true,
       "errorLens.messageBackgroundMode": "message",
       "errorLens.problemRangeDecorationEnabled": true,
       "errorLens.gutterIconsEnabled": true,
@@ -232,39 +235,7 @@
         "editor.defaultFormatter": "bufbuild.vscode-buf",
         "editor.formatOnSave": true
       }
-    },
-    "keybindings": [
-      {
-        "command": "editor.action.quickFix",
-        "key": "alt+enter",
-        "mac": "alt+enter",
-        "when": "editorHasCodeActionsProvider && textInputFocus && !editorReadonly"
-      },
-      {
-        "command": "editor.action.formatDocument",
-        "key": "ctrl+alt+l",
-        "mac": "cmd+alt+l",
-        "when": "editorHasDocumentFormattingEditProvider && editorTextFocus && !editorReadonly"
-      },
-      {
-        "command": "editor.action.organizeImports",
-        "key": "ctrl+alt+o",
-        "mac": "cmd+alt+o",
-        "when": "editorLangId == go && editorTextFocus && !editorReadonly"
-      },
-      {
-        "command": "editor.action.refactor",
-        "key": "ctrl+alt+shift+t",
-        "mac": "ctrl+alt+shift+t",
-        "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly"
-      },
-      {
-        "command": "editor.action.rename",
-        "key": "shift+f6",
-        "mac": "shift+f6",
-        "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly"
-      }
-    ]
+    }
   },
   "scripts": {
     "build:profile": "node ./scripts/build-profile.mjs",

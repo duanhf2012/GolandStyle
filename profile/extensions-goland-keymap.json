@@ -20,6 +20,10 @@
     "displayName": "Go"
   },
   {
+    "id": "k--kato.intellij-idea-keybindings",
+    "displayName": "IntelliJ IDEA Keybindings"
+  },
+  {
     "id": "usernamehw.errorlens",
     "displayName": "Error Lens"
   },
