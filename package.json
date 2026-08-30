@@ -4,6 +4,7 @@
   "description": "An unofficial GoLand-style Go development experience for Visual Studio Code.",
   "version": "0.2.7",
   "publisher": "goland-style",
+  "icon": "assets/icon.png",
   "license": "SEE LICENSE IN LICENSE",
   "pricing": "Free",
   "main": "./extension.js",
