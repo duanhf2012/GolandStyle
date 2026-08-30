@@ -48,7 +48,7 @@ const fullProfileExtensions = [
 ];
 
 requireValue(manifest.name === "jetbrains-style-go-vscode", "扩展名称不正确");
-requireValue(manifest.publisher && !manifest.publisher.includes("your"), "请设置有效 publisher");
+requireValue(manifest.publisher === "goland-style", "Publisher ID 必须为 goland-style");
 requireValue(Array.isArray(manifest.extensionPack), "extensionPack 必须是数组");
 for (const extensionId of requiredExtensions) {
   requireValue(

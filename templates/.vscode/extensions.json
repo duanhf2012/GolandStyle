@@ -1,6 +1,6 @@
 {
   "recommendations": [
-    "jetbrains-style-go.jetbrains-style-go-vscode",
+    "goland-style.jetbrains-style-go-vscode",
     "golang.go",
     "MS-CEINTL.vscode-language-pack-zh-hans",
     "EditorConfig.EditorConfig",

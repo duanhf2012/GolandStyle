@@ -170,7 +170,7 @@ profile/jetbrains-style-go-full.code-profile
 
 完整的 Marketplace 发布步骤见项目中的 `docs/publishing.md`。简要流程是：先创建 Publisher 并将其 ID 与 `package.json` 的 `publisher` 保持一致，再使用 `vsce login` 或 `VSCE_PAT` 完成认证，最后执行 `npm run publish`。
 
-如果 Publisher ID 不是 `jetbrains-style-go`，请同步修改 `package.json` 和 `profile/extensions.json` 中的扩展标识；扩展的 `name` 和 Publisher ID 一旦发布，不要再修改。
+Publisher ID 已统一为 `goland-style`，完整扩展标识为 `goland-style.jetbrains-style-go-vscode`；扩展的 `name` 和 Publisher ID 一旦发布，不要再修改。
 
 在 GitHub 创建仓库并推送当前项目后，可以创建 `v*` Tag，让 GitHub Actions 自动生成 Release；配置 `VSCE_PAT` Secret 后，Marketplace 工作流也会自动发布。
 

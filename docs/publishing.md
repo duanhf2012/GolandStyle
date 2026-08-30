@@ -3,7 +3,7 @@
 ## 一次性准备
 
 1. 在 [Marketplace Publisher Management](https://marketplace.visualstudio.com/manage/publishers/) 登录 Microsoft 账号，创建 Publisher。
-2. Publisher 的 **ID** 必须唯一且发布后不能修改。当前项目中的 `package.json` 使用 `jetbrains-style-go`；如果你创建的是其他 ID，请同步修改 `package.json` 的 `publisher`，以及 `profile/extensions.json` 和 `profile/extensions-full.json` 中的扩展 ID 前缀。
+2. Publisher 的 **ID** 必须唯一且发布后不能修改。当前项目中的 `package.json` 和三个 Profile 已统一使用 `goland-style`。
 3. 在 GitHub 创建公开仓库并推送本项目。拿到仓库 URL 后，再把它填入 `package.json` 的 `repository`、`bugs` 和 `homepage` 字段，Marketplace 页面会正确链接源码和问题反馈。
 
 ## 本机手动发布
@@ -12,7 +12,7 @@
 
 ```powershell
 npm ci
-npx vsce login jetbrains-style-go
+npx vsce login goland-style
 # 按提示粘贴 Azure DevOps Personal Access Token
 npm run publish
 ```
