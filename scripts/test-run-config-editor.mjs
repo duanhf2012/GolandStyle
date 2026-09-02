@@ -5,6 +5,7 @@ const require = createRequire(import.meta.url);
 const {
   initialLaunchJson,
   parseLaunchText,
+  readRunConfigurations,
   updateLaunchText,
   validateLaunchModel,
   viewType,
@@ -83,5 +84,41 @@ assert.throws(
   () => updateLaunchText("{ broken", { configurations: [] }),
   /语法错误/,
 );
+
+const folder = { name: "demo", uri: { path: "/demo", toString: () => "file:///demo" } };
+const launchUri = { path: "/demo/.vscode/launch.json", toString: () => "file:///demo/.vscode/launch.json" };
+const loaded = await readRunConfigurations(
+  {
+    Uri: { joinPath: () => launchUri },
+    workspace: {
+      fs: {
+        async readFile() {
+          return Buffer.from(withSecondConfiguration, "utf8");
+        },
+      },
+    },
+  },
+  folder,
+);
+assert.equal(loaded.configurations.length, 2);
+assert.deepEqual(loaded.errors, []);
+
+const missing = await readRunConfigurations(
+  {
+    Uri: { joinPath: () => launchUri },
+    workspace: {
+      fs: {
+        async readFile() {
+          const error = new Error("File not found");
+          error.code = "FileNotFound";
+          throw error;
+        },
+      },
+    },
+  },
+  folder,
+);
+assert.equal(missing.missing, true);
+assert.deepEqual(missing.errors, []);
 
 console.log("运行/调试配置 JSONC 保真与校验测试通过。");

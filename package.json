@@ -2,7 +2,7 @@
   "name": "jetbrains-style-go-vscode",
   "displayName": "Goland Style",
   "description": "An unofficial GoLand-style Go development experience for Visual Studio Code.",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "publisher": "goland-style",
   "icon": "assets/icon.png",
   "license": "SEE LICENSE IN LICENSE",
@@ -11,7 +11,8 @@
   "activationEvents": [
     "onStartupFinished",
     "onCommand:jetbrainsStyleGo.runConfigurations.open",
-    "onCustomEditor:jetbrainsStyleGo.runConfigurationEditor"
+    "onCustomEditor:jetbrainsStyleGo.runConfigurationEditor",
+    "onView:jetbrainsStyleGo.runConfigurationsView"
   ],
   "extensionKind": [
     "ui"
@@ -128,6 +129,30 @@
         "title": "编辑运行/调试配置",
         "category": "Goland Style",
         "icon": "$(settings-gear)"
+      },
+      {
+        "command": "jetbrainsStyleGo.runConfigurations.refresh",
+        "title": "刷新运行配置",
+        "category": "Goland Style",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "jetbrainsStyleGo.runConfigurations.editItem",
+        "title": "编辑运行配置",
+        "category": "Goland Style",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "jetbrainsStyleGo.runConfigurations.runItem",
+        "title": "运行配置",
+        "category": "Goland Style",
+        "icon": "$(play)"
+      },
+      {
+        "command": "jetbrainsStyleGo.runConfigurations.debugItem",
+        "title": "调试配置",
+        "category": "Goland Style",
+        "icon": "$(debug-alt)"
       },
       {
         "command": "jetbrainsStyleGo.bookmarks.toggle",
@@ -521,6 +546,15 @@
       ]
     },
     "views": {
+      "debug": [
+        {
+          "id": "jetbrainsStyleGo.runConfigurationsView",
+          "name": "运行配置",
+          "icon": "$(debug-alt)",
+          "contextualTitle": "运行配置",
+          "visibility": "visible"
+        }
+      ],
       "jetbrainsStyleGo-bookmarks": [
         {
           "id": "jetbrainsStyleGo.bookmarksView",
@@ -536,7 +570,24 @@
           "group": "navigation@10"
         }
       ],
+      "editor/title/run": [
+        {
+          "command": "jetbrainsStyleGo.runConfigurations.open",
+          "when": "editorLangId == go",
+          "group": "navigation@100"
+        }
+      ],
       "view/title": [
+        {
+          "command": "jetbrainsStyleGo.runConfigurations.open",
+          "when": "view == jetbrainsStyleGo.runConfigurationsView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "jetbrainsStyleGo.runConfigurations.refresh",
+          "when": "view == jetbrainsStyleGo.runConfigurationsView",
+          "group": "navigation@2"
+        },
         {
           "command": "jetbrainsStyleGo.bookmarks.createList",
           "when": "view == jetbrainsStyleGo.bookmarksView",
@@ -549,6 +600,21 @@
         }
       ],
       "view/item/context": [
+        {
+          "command": "jetbrainsStyleGo.runConfigurations.runItem",
+          "when": "view == jetbrainsStyleGo.runConfigurationsView && viewItem == runConfiguration",
+          "group": "inline@1"
+        },
+        {
+          "command": "jetbrainsStyleGo.runConfigurations.debugItem",
+          "when": "view == jetbrainsStyleGo.runConfigurationsView && viewItem == runConfiguration",
+          "group": "inline@2"
+        },
+        {
+          "command": "jetbrainsStyleGo.runConfigurations.editItem",
+          "when": "view == jetbrainsStyleGo.runConfigurationsView && viewItem == runConfiguration",
+          "group": "navigation@1"
+        },
         {
           "command": "jetbrainsStyleGo.bookmarks.renameBookmark",
           "when": "view == jetbrainsStyleGo.bookmarksView && (viewItem == bookmark || viewItem == mnemonicBookmark)",
@@ -636,6 +702,12 @@
         }
       ]
     },
+    "viewsWelcome": [
+      {
+        "view": "jetbrainsStyleGo.runConfigurationsView",
+        "contents": "当前工作区还没有运行配置。\n[创建运行/调试配置](command:jetbrainsStyleGo.runConfigurations.open)"
+      }
+    ],
     "themes": [
       {
         "label": "JetBrains New UI Dark (Unofficial)",

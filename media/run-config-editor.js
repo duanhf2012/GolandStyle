@@ -340,6 +340,12 @@
       file = message.file || "";
       workspace = message.workspace || "";
       parseErrors = message.errors || [];
+      if (message.selectedName) {
+        const requestedIndex = model.configurations.findIndex(
+          (configuration) => configuration.name === message.selectedName,
+        );
+        if (requestedIndex >= 0) selectedIndex = requestedIndex;
+      }
       selectedIndex = Math.min(Math.max(selectedIndex, 0), model.configurations.length - 1);
       dirty = false;
       statusText = parseErrors.length ? "请在原始 JSON 中修复语法错误" : "配置已同步";

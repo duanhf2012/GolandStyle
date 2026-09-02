@@ -13,7 +13,7 @@
 | Inspection、静态分析 | `gopls` diagnostics + staticcheck | 已包含 |
 | 参数名、类型等 Inlay Hints | `gopls` inlay hints | 已包含并默认开启 |
 | 格式化、优化 import | `gofumpt` + `goimports` 能力 | 已配置为保存时执行 |
-| Run/Debug、断点、变量、调用栈 | 官方 Go 扩展 + Delve + 本扩展的 `launch.json` 可视化配置编辑器 | 已包含；支持配置列表、Go 常用字段、原始 JSONC、运行和调试 |
+| Run/Debug、断点、变量、调用栈 | 官方 Go 扩展 + Delve + 本扩展的 `launch.json` 可视化配置编辑器 | 已包含；原生 Run and Debug 侧栏显示配置列表和运行/调试按钮，支持 Go 常用字段与原始 JSONC |
 | Test、子测试、Benchmark、Coverage | 官方 Go 扩展 Test Explorer + 项目任务 | 已包含 |
 | Live Templates | 本扩展的 Go snippets | 已包含 |
 | Bookmarks | 本扩展的 Bookmarks 工具窗口、行号栏装饰和工作区持久化 | 已包含；支持匿名/助记书签、文件与目录、多列表、断点汇总及 GoLand Keymap 快捷键 |

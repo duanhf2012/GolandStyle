@@ -68,12 +68,18 @@ const bookmarkCommandIds = [
   ...Array.from({ length: 10 }, (_, digit) => `jetbrainsStyleGo.bookmarks.goTo${digit}`),
 ];
 const contributedCommands = manifest.contributes?.commands ?? [];
-requireValue(
-  contributedCommands.some(
-    ({ command }) => command === "jetbrainsStyleGo.runConfigurations.open",
-  ),
-  "缺少运行/调试配置编辑器命令",
-);
+for (const commandId of [
+  "jetbrainsStyleGo.runConfigurations.open",
+  "jetbrainsStyleGo.runConfigurations.refresh",
+  "jetbrainsStyleGo.runConfigurations.editItem",
+  "jetbrainsStyleGo.runConfigurations.runItem",
+  "jetbrainsStyleGo.runConfigurations.debugItem",
+]) {
+  requireValue(
+    contributedCommands.some(({ command }) => command === commandId),
+    `缺少运行配置命令 ${commandId}`,
+  );
+}
 const runConfigurationEditor = manifest.contributes?.customEditors?.find(
   ({ viewType }) => viewType === "jetbrainsStyleGo.runConfigurationEditor",
 );
@@ -93,6 +99,53 @@ requireValue(
     "onCustomEditor:jetbrainsStyleGo.runConfigurationEditor",
   ),
   "缺少运行/调试配置编辑器激活事件",
+);
+requireValue(
+  manifest.activationEvents?.includes("onView:jetbrainsStyleGo.runConfigurationsView"),
+  "缺少运行配置侧栏激活事件",
+);
+requireValue(
+  manifest.contributes?.views?.debug?.some(
+    ({ id }) => id === "jetbrainsStyleGo.runConfigurationsView",
+  ),
+  "运行配置列表必须位于 VS Code 原生 Run and Debug 侧栏",
+);
+const contributionMenus = manifest.contributes?.menus ?? {};
+requireValue(
+  contributionMenus["view/title"]?.some(
+    ({ command, when }) =>
+      command === "jetbrainsStyleGo.runConfigurations.open" &&
+      when === "view == jetbrainsStyleGo.runConfigurationsView",
+  ),
+  "运行配置列表标题栏缺少编辑入口",
+);
+for (const commandId of [
+  "jetbrainsStyleGo.runConfigurations.runItem",
+  "jetbrainsStyleGo.runConfigurations.debugItem",
+]) {
+  requireValue(
+    contributionMenus["view/item/context"]?.some(
+      ({ command, when, group }) =>
+        command === commandId &&
+        when?.includes("viewItem == runConfiguration") &&
+        group?.startsWith("inline"),
+    ),
+    `运行配置列表缺少内联操作 ${commandId}`,
+  );
+}
+requireValue(
+  contributionMenus["editor/title/run"]?.some(
+    ({ command }) => command === "jetbrainsStyleGo.runConfigurations.open",
+  ),
+  "Go 编辑器运行菜单缺少运行配置入口",
+);
+requireValue(
+  manifest.contributes?.viewsWelcome?.some(
+    ({ view, contents }) =>
+      view === "jetbrainsStyleGo.runConfigurationsView" &&
+      contents.includes("jetbrainsStyleGo.runConfigurations.open"),
+  ),
+  "空运行配置列表缺少创建入口",
 );
 requireValue(
   manifest.dependencies?.["jsonc-parser"],

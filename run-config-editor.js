@@ -9,6 +9,8 @@ const {
 
 const viewType = "jetbrainsStyleGo.runConfigurationEditor";
 const openCommand = "jetbrainsStyleGo.runConfigurations.open";
+const treeViewId = "jetbrainsStyleGo.runConfigurationsView";
+const runCommandPrefix = "jetbrainsStyleGo.runConfigurations";
 
 function parseLaunchText(text) {
   const parseErrors = [];
@@ -206,6 +208,30 @@ async function ensureLaunchJson(vscode, uri) {
   }
 }
 
+async function readRunConfigurations(vscode, folder) {
+  const uri = pathForLaunch(folder.uri, vscode);
+  try {
+    const bytes = await vscode.workspace.fs.readFile(uri);
+    const parsed = parseLaunchText(Buffer.from(bytes).toString("utf8"));
+    return {
+      uri,
+      errors: parsed.errors,
+      configurations: Array.isArray(parsed.value?.configurations)
+        ? parsed.value.configurations
+        : [],
+    };
+  } catch (error) {
+    if (error?.code === "FileNotFound" || error?.name === "EntryNotFound (FileSystemError)") {
+      return { uri, errors: [], configurations: [], missing: true };
+    }
+    return {
+      uri,
+      errors: [{ code: error instanceof Error ? error.message : String(error) }],
+      configurations: [],
+    };
+  }
+}
+
 function workspaceDisplayPath(uri, folder) {
   if (!folder || uri.scheme !== folder.uri.scheme) return uri.fsPath || uri.toString();
   const relative = path.relative(folder.uri.fsPath, uri.fsPath).replaceAll("\\", "/");
@@ -215,10 +241,31 @@ function workspaceDisplayPath(uri, folder) {
 }
 
 class RunConfigurationEditorProvider {
-  constructor(vscode, context) {
+  constructor(vscode, context, treeProvider) {
     this.vscode = vscode;
     this.context = context;
+    this.treeProvider = treeProvider;
     this.editChain = Promise.resolve();
+    this.pendingSelections = new Map();
+  }
+
+  async open(resourceUri, selectedName) {
+    let launchUri;
+    if (resourceUri?.scheme && path.basename(resourceUri.path || "") === "launch.json") {
+      launchUri = resourceUri;
+    } else {
+      const folder = await chooseWorkspaceFolder(this.vscode);
+      if (!folder) {
+        await this.vscode.window.showWarningMessage(
+          "请先打开一个工作区目录，再编辑运行/调试配置。",
+        );
+        return;
+      }
+      launchUri = pathForLaunch(folder.uri, this.vscode);
+    }
+    await ensureLaunchJson(this.vscode, launchUri);
+    if (selectedName) this.pendingSelections.set(launchUri.toString(), selectedName);
+    await this.vscode.commands.executeCommand("vscode.openWith", launchUri, viewType);
   }
 
   async resolveCustomTextEditor(document, panel) {
@@ -271,6 +318,8 @@ class RunConfigurationEditorProvider {
         }
       : { version: "0.2.0", configurations: [], compounds: [] };
     const folder = this.vscode.workspace.getWorkspaceFolder(document.uri);
+    const selectedName = this.pendingSelections.get(document.uri.toString());
+    this.pendingSelections.delete(document.uri.toString());
     await webview.postMessage({
       type: "state",
       text,
@@ -279,6 +328,7 @@ class RunConfigurationEditorProvider {
       file: document.uri.fsPath || document.uri.toString(),
       workspace: folder?.name || "",
       tasks: await this.taskNames(),
+      selectedName,
     });
   }
 
@@ -294,6 +344,7 @@ class RunConfigurationEditorProvider {
       throw new Error("VS Code 拒绝了 launch.json 编辑操作。");
     }
     if (!(await document.save())) throw new Error("launch.json 保存失败。");
+    this.treeProvider.refresh();
   }
 
   async applyStructured(document, model) {
@@ -402,36 +453,143 @@ class RunConfigurationEditorProvider {
   }
 }
 
+class RunConfigurationsTreeProvider {
+  constructor(vscode, context) {
+    this.vscode = vscode;
+    this.emitter = new vscode.EventEmitter();
+    this.onDidChangeTreeData = this.emitter.event;
+    const watcher = vscode.workspace.createFileSystemWatcher("**/.vscode/launch.json");
+    watcher.onDidCreate(() => this.refresh());
+    watcher.onDidChange(() => this.refresh());
+    watcher.onDidDelete(() => this.refresh());
+    context.subscriptions.push(
+      this.emitter,
+      watcher,
+      vscode.workspace.onDidChangeWorkspaceFolders(() => this.refresh()),
+    );
+  }
+
+  refresh() {
+    this.emitter.fire(undefined);
+  }
+
+  async nodesForFolder(folder, includeCreateNode) {
+    const result = await readRunConfigurations(this.vscode, folder);
+    if (result.errors.length) {
+      return [{ kind: "error", folder, uri: result.uri, error: result.errors[0].code }];
+    }
+    const nodes = result.configurations.map((configuration, index) => ({
+      kind: "configuration",
+      folder,
+      uri: result.uri,
+      configuration,
+      index,
+      name: configuration.name || `未命名配置 ${index + 1}`,
+    }));
+    if (!nodes.length && includeCreateNode) {
+      nodes.push({ kind: "create", folder, uri: result.uri });
+    }
+    return nodes;
+  }
+
+  async getChildren(element) {
+    const folders = this.vscode.workspace.workspaceFolders || [];
+    if (element?.kind === "folder") return this.nodesForFolder(element.folder, true);
+    if (element) return [];
+    if (folders.length > 1) {
+      return folders.map((folder) => ({ kind: "folder", folder }));
+    }
+    if (folders.length === 1) return this.nodesForFolder(folders[0], false);
+    return [];
+  }
+
+  getTreeItem(node) {
+    const { vscode } = this;
+    if (node.kind === "folder") {
+      const item = new vscode.TreeItem(node.folder.name, vscode.TreeItemCollapsibleState.Expanded);
+      item.iconPath = new vscode.ThemeIcon("root-folder");
+      item.contextValue = "runConfigurationFolder";
+      return item;
+    }
+    if (node.kind === "configuration") {
+      const item = new vscode.TreeItem(node.name, vscode.TreeItemCollapsibleState.None);
+      item.description = [node.configuration.type, node.configuration.request]
+        .filter(Boolean)
+        .join(" · ");
+      item.tooltip = `${node.name}\n${item.description || "运行/调试配置"}`;
+      item.iconPath = new vscode.ThemeIcon(
+        node.configuration.request === "attach" ? "plug" : "debug-alt-small",
+      );
+      item.contextValue = "runConfiguration";
+      item.command = {
+        command: `${runCommandPrefix}.editItem`,
+        title: "编辑运行/调试配置",
+        arguments: [node],
+      };
+      return item;
+    }
+    if (node.kind === "error") {
+      const item = new vscode.TreeItem("launch.json 有语法错误", vscode.TreeItemCollapsibleState.None);
+      item.description = node.error;
+      item.tooltip = `打开 launch.json 修复：${node.error}`;
+      item.iconPath = new vscode.ThemeIcon("error");
+      item.contextValue = "runConfigurationError";
+      item.command = { command: "vscode.open", title: "打开 launch.json", arguments: [node.uri] };
+      return item;
+    }
+    const item = new vscode.TreeItem("创建运行/调试配置…", vscode.TreeItemCollapsibleState.None);
+    item.iconPath = new vscode.ThemeIcon("add");
+    item.contextValue = "runConfigurationCreate";
+    item.command = {
+      command: openCommand,
+      title: "创建运行/调试配置",
+      arguments: [node.uri],
+    };
+    return item;
+  }
+}
+
 function activateRunConfigurationEditor(vscode, context) {
-  const provider = new RunConfigurationEditorProvider(vscode, context);
+  const treeProvider = new RunConfigurationsTreeProvider(vscode, context);
+  const provider = new RunConfigurationEditorProvider(vscode, context, treeProvider);
+  const startItem = async (node, noDebug) => {
+    if (!node?.folder || !node?.name) return;
+    const started = await vscode.debug.startDebugging(node.folder, node.name, { noDebug });
+    if (!started) {
+      await vscode.window.showErrorMessage(`无法启动配置“${node.name}”。`);
+    }
+  };
   context.subscriptions.push(
+    vscode.window.createTreeView(treeViewId, {
+      treeDataProvider: treeProvider,
+      showCollapseAll: true,
+    }),
     vscode.window.registerCustomEditorProvider(viewType, provider, {
       supportsMultipleEditorsPerDocument: false,
       webviewOptions: { retainContextWhenHidden: true },
     }),
-    vscode.commands.registerCommand(openCommand, async (resourceUri) => {
-      let launchUri;
-      if (resourceUri?.scheme && path.basename(resourceUri.path || "") === "launch.json") {
-        launchUri = resourceUri;
-      } else {
-        const folder = await chooseWorkspaceFolder(vscode);
-        if (!folder) {
-          await vscode.window.showWarningMessage("请先打开一个工作区目录，再编辑运行/调试配置。");
-          return;
-        }
-        launchUri = pathForLaunch(folder.uri, vscode);
-      }
-      await ensureLaunchJson(vscode, launchUri);
-      await vscode.commands.executeCommand("vscode.openWith", launchUri, viewType);
-    }),
+    vscode.commands.registerCommand(openCommand, (resourceUri) => provider.open(resourceUri)),
+    vscode.commands.registerCommand(`${runCommandPrefix}.refresh`, () => treeProvider.refresh()),
+    vscode.commands.registerCommand(`${runCommandPrefix}.editItem`, (node) =>
+      provider.open(node?.uri, node?.name),
+    ),
+    vscode.commands.registerCommand(`${runCommandPrefix}.runItem`, (node) =>
+      startItem(node, true),
+    ),
+    vscode.commands.registerCommand(`${runCommandPrefix}.debugItem`, (node) =>
+      startItem(node, false),
+    ),
   );
-  return provider;
+  return { provider, treeProvider };
 }
 
 module.exports = {
   activateRunConfigurationEditor,
   initialLaunchJson,
   parseLaunchText,
+  readRunConfigurations,
+  RunConfigurationsTreeProvider,
+  treeViewId,
   updateLaunchText,
   validateLaunchModel,
   viewType,
