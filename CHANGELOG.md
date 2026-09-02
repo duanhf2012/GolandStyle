@@ -3,7 +3,7 @@
 ## Unreleased
 
 - 重构 README，将安装、Profile、视觉设置、Bookmarks、运行配置、快捷键、Snippets、项目模板和常见问题整理为完整使用手册。
-- 新增整体界面、Bookmarks 和运行/调试配置三张功能示意图，并补充功能覆盖矩阵和发布元数据。
+- 新增实际 VS Code 整体界面、Bookmarks 与运行/调试配置截图，并补充功能覆盖矩阵和发布元数据。
 
 ## 0.4.1
 

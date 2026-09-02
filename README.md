@@ -4,9 +4,9 @@
 
 > 非官方项目，与 JetBrains s.r.o. 没有关联。GoLand、IntelliJ IDEA、JetBrains 和 JetBrains Mono 是其各自权利人的商标或资产名称。
 
-![Goland Style 整体界面示意](docs/images/overview.png)
+![Goland Style 实际运行截图](docs/images/overview.png)
 
-> 上图为功能界面示意，不包含真实项目代码；实际外观会受 VS Code 版本、系统缩放和已安装扩展影响。
+> 上图为 VS Code 实际运行截图，代码与路径来自示例项目；实际外观会受 VS Code 版本、系统缩放和已安装扩展影响。
 
 ## 功能概览
 
@@ -97,7 +97,7 @@ sh ./scripts/install.sh
 
 ## GoLand 风格书签
 
-![GoLand 风格 Bookmarks 界面示意](docs/images/bookmarks.png)
+![GoLand 风格 Bookmarks 实际运行截图](docs/images/bookmarks.png)
 
 Bookmarks 工具窗口按工作区保存书签，并提供以下能力：
 
@@ -146,7 +146,7 @@ macOS 对应键位为 `F3`、`Option+F3`、`Command+F3`、`Command+2` 和 `Contr
 
 ## GoLand 风格运行/调试配置
 
-![GoLand 风格运行配置编辑器示意](docs/images/run-configurations.png)
+![GoLand 风格运行配置编辑器实际运行截图](docs/images/run-configurations.png)
 
 ### 从哪里打开
 

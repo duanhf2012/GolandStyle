@@ -2,7 +2,7 @@
 
 本项目以 GoLand 的日常 Go 开发工作流为目标，不宣称复制 JetBrains 的专有实现。核心只使用 VS Code 内置能力、官方 Go 扩展、微软简体中文包和两套视觉图标主题；其他第三方工具不自动安装。
 
-[返回 README](../README.md) · [查看运行配置界面示意](images/run-configurations.png) · [查看书签界面示意](images/bookmarks.png)
+[返回 README](../README.md) · [查看运行配置实际截图](images/run-configurations.png) · [查看书签实际截图](images/bookmarks.png)
 
 状态说明：
 
