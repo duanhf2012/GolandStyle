@@ -10,6 +10,8 @@ const executedCommands = [];
 const globalState = new Map();
 const globalSettings = new Map([["editor.fontSize", 15]]);
 const updates = [];
+let bookmarksActivated = false;
+let runConfigurationEditorActivated = false;
 
 const configuration = {
   inspect(key) {
@@ -65,6 +67,20 @@ const wrapper = vm.runInNewContext(
 wrapper(
   (id) => {
     if (id === "vscode") return vscode;
+    if (id === "./bookmarks") {
+      return {
+        activateBookmarks() {
+          bookmarksActivated = true;
+        },
+      };
+    }
+    if (id === "./run-config-editor") {
+      return {
+        activateRunConfigurationEditor() {
+          runConfigurationEditorActivated = true;
+        },
+      };
+    }
     return nodeRequire(id);
   },
   extensionModule,
@@ -102,6 +118,8 @@ const context = {
 };
 
 extensionModule.exports.activate(context);
+assert.equal(bookmarksActivated, true);
+assert.equal(runConfigurationEditorActivated, true);
 assert(commands.has("jetbrainsStyleGo.applySettings"));
 assert(commands.has("jetbrainsStyleGo.restoreSettings"));
 assert(commands.has("jetbrainsStyleGo.installFont"));

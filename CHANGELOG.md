@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.4.0
+
+- 新增 GoLand 风格的 `launch.json` 可视化运行/调试配置编辑器，支持配置新增、复制、删除、排序和 Go `launch` / `attach` / `exec` 常用字段。
+- 支持工作目录、程序路径、构建参数、程序参数、环境变量、`preLaunchTask`、远程附加配置，以及直接运行或调试。
+- 提供原始 JSONC 编辑页和普通文本编辑器入口；表单保存会保留未知字段，并在非结构性修改时保留原有注释。
+- 自定义编辑器保持为可选打开方式，不强制替换 VS Code 默认的 `launch.json` 文本编辑器。
+
+## 0.3.0
+
+- 内置 GoLand 风格 Bookmarks 工具窗口，支持匿名与数字/字母助记书签、文件/目录书签、多列表管理、拖放、描述和断点汇总。
+- 书签按工作区持久化，代码编辑、工作区文件重命名和外部文件行位移后自动跟随或重新定位。
+- GoLand Keymap Profile 启用 `F11`、`Ctrl+F11`、`Ctrl+Shift+0` 至 `Ctrl+Shift+9`、`Shift+F11`、`Alt+2` 和 `Ctrl+0` 至 `Ctrl+9` 等平台对应快捷键。
+- 修复 Bookmarks Activity Bar 容器 ID 不符合 VS Code 规则，导致 `Alt+2` 报命令不存在的问题。
+
 ## 0.2.9
 
 - 移除 VS Code 未注册的 `editor.lineNumbersMinChars` 默认设置，修复启动和 F5 调试时的 `Cannot convert undefined or null to object` 错误。

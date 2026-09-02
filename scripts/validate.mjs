@@ -53,6 +53,112 @@ for (const extensionId of requiredExtensions) {
   );
 }
 
+const bookmarkCommandIds = [
+  "jetbrainsStyleGo.bookmarks.toggle",
+  "jetbrainsStyleGo.bookmarks.toggleMnemonic",
+  "jetbrainsStyleGo.bookmarks.show",
+  "jetbrainsStyleGo.bookmarks.next",
+  "jetbrainsStyleGo.bookmarks.previous",
+  "jetbrainsStyleGo.bookmarks.nextInEditor",
+  "jetbrainsStyleGo.bookmarks.previousInEditor",
+  "jetbrainsStyleGo.bookmarks.openView",
+  "jetbrainsStyleGo.bookmarks.createList",
+  "jetbrainsStyleGo.bookmarks.bookmarkOpenTabs",
+  ...Array.from({ length: 10 }, (_, digit) => `jetbrainsStyleGo.bookmarks.toggle${digit}`),
+  ...Array.from({ length: 10 }, (_, digit) => `jetbrainsStyleGo.bookmarks.goTo${digit}`),
+];
+const contributedCommands = manifest.contributes?.commands ?? [];
+requireValue(
+  contributedCommands.some(
+    ({ command }) => command === "jetbrainsStyleGo.runConfigurations.open",
+  ),
+  "缺少运行/调试配置编辑器命令",
+);
+const runConfigurationEditor = manifest.contributes?.customEditors?.find(
+  ({ viewType }) => viewType === "jetbrainsStyleGo.runConfigurationEditor",
+);
+requireValue(runConfigurationEditor, "缺少运行/调试配置自定义编辑器");
+requireValue(
+  runConfigurationEditor.priority === "option",
+  "运行/调试配置编辑器必须保持为可选编辑器，不能强制接管 launch.json",
+);
+requireValue(
+  runConfigurationEditor.selector?.some(
+    ({ filenamePattern }) => filenamePattern === "**/.vscode/launch.json",
+  ),
+  "运行/调试配置编辑器未关联 .vscode/launch.json",
+);
+requireValue(
+  manifest.activationEvents?.includes(
+    "onCustomEditor:jetbrainsStyleGo.runConfigurationEditor",
+  ),
+  "缺少运行/调试配置编辑器激活事件",
+);
+requireValue(
+  manifest.dependencies?.["jsonc-parser"],
+  "运行/调试配置编辑器必须包含 jsonc-parser 运行时依赖",
+);
+for (const commandId of bookmarkCommandIds) {
+  requireValue(
+    contributedCommands.some(({ command }) => command === commandId),
+    `缺少书签命令 ${commandId}`,
+  );
+}
+const bookmarkConfiguration = manifest.contributes?.configuration?.properties;
+requireValue(
+  bookmarkConfiguration?.["golandStyle.bookmarks.golandKeybindings"]?.default === false,
+  "核心 Profile 不应默认覆盖 VS Code 书签快捷键",
+);
+const bookmarkKeybindings = manifest.contributes?.keybindings ?? [];
+for (const [key, command] of [
+  ["f11", "jetbrainsStyleGo.bookmarks.toggle"],
+  ["ctrl+f11", "jetbrainsStyleGo.bookmarks.toggleMnemonic"],
+  ["shift+f11", "jetbrainsStyleGo.bookmarks.show"],
+  ["alt+2", "jetbrainsStyleGo.bookmarks.openView"],
+]) {
+  requireValue(
+    bookmarkKeybindings.some(
+      (binding) =>
+        binding.key === key &&
+        binding.command === command &&
+        binding.when?.includes("golandStyle.bookmarks.golandKeybindings"),
+    ),
+    `GoLand 书签快捷键 ${key} 未正确注册`,
+  );
+}
+for (let digit = 0; digit <= 9; digit += 1) {
+  requireValue(
+    bookmarkKeybindings.some(
+      ({ key, command, when }) =>
+        key === `ctrl+shift+${digit}` &&
+        command === `jetbrainsStyleGo.bookmarks.toggle${digit}` &&
+        when?.includes("editorTextFocus"),
+    ),
+    `缺少数字书签切换快捷键 Ctrl+Shift+${digit}`,
+  );
+  requireValue(
+    bookmarkKeybindings.some(
+      ({ key, command }) =>
+        key === `ctrl+${digit}` && command === `jetbrainsStyleGo.bookmarks.goTo${digit}`,
+    ),
+    `缺少数字书签快捷键 Ctrl+${digit}`,
+  );
+}
+const bookmarkViewContainer = manifest.contributes?.viewsContainers?.activitybar?.find(
+  ({ id }) => id === "jetbrainsStyleGo-bookmarks",
+);
+requireValue(bookmarkViewContainer, "缺少 Bookmarks Activity Bar 容器");
+requireValue(
+  /^[a-z0-9_-]+$/i.test(bookmarkViewContainer.id),
+  "Bookmarks Activity Bar 容器 ID 只能包含字母、数字、下划线和连字符",
+);
+requireValue(
+  manifest.contributes?.views?.["jetbrainsStyleGo-bookmarks"]?.some(
+    ({ id }) => id === "jetbrainsStyleGo.bookmarksView",
+  ),
+  "缺少 Bookmarks 工具窗口",
+);
+
 requireValue(defaults && typeof defaults === "object", "缺少默认配置");
 const extensionOwnedDefaults = Object.keys(defaults).filter(
   (key) =>
@@ -163,8 +269,14 @@ for (const extensionId of [...requiredExtensions, ...fullProfileExtensions]) {
 const keymapProfile = await readJson(
   "profile/jetbrains-style-go-goland-keymap.code-profile",
 );
+const keymapSettingsPayload = JSON.parse(keymapProfile.settings);
+const keymapProfileSettings = JSON.parse(keymapSettingsPayload.settings);
 const keymapPayload = JSON.parse(keymapProfile.keybindings);
 const keymapKeybindings = JSON.parse(keymapPayload.keybindings);
+requireValue(
+  keymapProfileSettings["golandStyle.bookmarks.golandKeybindings"] === true,
+  "GoLand Keymap Profile 必须启用书签快捷键",
+);
 requireValue(keymapPayload.platform === 3, "GoLand Keymap Profile 必须标记为 Windows 键位");
 requireValue(
   keymapKeybindings.some(
@@ -205,6 +317,11 @@ requireValue(
 
 for (const relativePath of [
   "assets/icon.png",
+  "assets/bookmark.svg",
+  "bookmarks.js",
+  "run-config-editor.js",
+  "media/run-config-editor.css",
+  "media/run-config-editor.js",
   "assets/fonts/JetBrainsMono-Regular.ttf",
   "assets/fonts/JetBrainsMono-Bold.ttf",
   "assets/fonts/JetBrainsMono-Italic.ttf",

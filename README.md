@@ -8,6 +8,8 @@
 - JetBrains Mono 优先，基准字号 `13`、行高 `21`、字距 `0`、窗口缩放 `0`；
 - JetBrains New UI 风格的文件图标和产品图标；
 - 默认保留 VS Code 原生快捷键：`F12` 跳转定义、`Shift+F12` 查找引用、`F2` 重命名、`Ctrl+.` 快速修复；可按需导入单独的 GoLand Keymap Profile；
+- 内置 GoLand 风格 Bookmarks：匿名/数字/字母书签、书签列表、文件和目录书签、断点汇总、项目级持久化与代码行位置跟随；
+- 内置 GoLand 风格运行/调试配置编辑器，通过表单管理 `.vscode/launch.json`，并可直接运行或调试；
 - 官方 Go 插件、`gopls`、Delve 调试、Test Explorer、Benchmark 和覆盖率能力；
 - GoLand 风格的语义色、Inlay Hints、格式化保存和自动整理 import；
 - 微软官方简体中文语言包；
@@ -29,7 +31,7 @@ EditorConfig、YAML/TOML、Buf/Protobuf、REST Client、TODO、Makefile、数据
 
 要求：
 
-- Visual Studio Code 1.94 或更高版本；
+- Visual Studio Code 1.95 或更高版本；
 - Go 1.21 或更高版本；
 - Node.js 22 或更高版本仅用于构建扩展；
 - 推荐使用扩展内置命令 `Goland Style: 安装 JetBrains Mono 字体`。安装前会明确请求确认，字体仅安装到当前系统用户；未安装时 VS Code 会回退到 Consolas，字形不会与 GoLand 完全一致。
@@ -68,6 +70,32 @@ profile/jetbrains-style-go-goland-keymap.code-profile
 该 Keymap Profile 在 Windows 上将位置历史的“返回/前进”设为 `Alt+Left` / `Alt+Right`，并取消 IntelliJ IDEA Keybindings 对这两个按键的编辑器标签切换，避免冲突；`Ctrl+Alt+Left` / `Ctrl+Alt+Right` 不再用于这两个导航命令。
 
 该 Profile 会额外安装 `IntelliJ IDEA Keybindings`。两套按键不能同时启用；切回 VS Code 快捷键时，请在扩展面板禁用该 Keybindings 扩展，再导入默认 Profile。
+
+### GoLand 风格书签
+
+扩展内置 Bookmarks 工具窗口，书签按工作区保存。代码行书签在文件编辑时会随文本移动，文件在工作区内重命名时会同步更新；重新打开被外部修改的文件时，会使用当前行及相邻行内容重新定位。
+
+导入 GoLand Keymap Profile 后启用与 GoLand 一致的平台快捷键。Windows/Linux 默认键位如下：
+
+| 操作 | 快捷键 |
+| --- | --- |
+| 切换匿名行书签 | `F11` |
+| 添加或修改数字/字母助记书签 | `Ctrl+F11` |
+| 直接设置/取消数字书签 | `Ctrl+Shift+0` … `Ctrl+Shift+9` |
+| 显示行书签弹窗 | `Shift+F11` |
+| 打开 Bookmarks 工具窗口 | `Alt+2` |
+| 跳转到数字书签 | `Ctrl+0` … `Ctrl+9` |
+| Bookmarks 窗口中跳到下一个/上一个书签 | `Ctrl+Alt+Down` / `Ctrl+Alt+Up` |
+
+macOS 对应 GoLand 默认键位为 `F3`、`Option+F3`、`Command+F3`、`Command+2` 和 `Control+0` … `Control+9`；数字书签同样使用 `Control+Shift+0` … `Control+Shift+9` 直接设置或取消。字母助记书签可在书签弹窗中直接键入字母跳转。文件、目录和编辑器标签可通过右键菜单加入书签；工具窗口支持描述、助记符移除、列表创建/重命名/删除、默认列表、跨列表拖放或移动，以及列表内排序。
+
+### GoLand 风格运行/调试配置
+
+运行命令 `Goland Style: 编辑运行/调试配置`，即可用可视化界面创建或编辑当前工作区的 `.vscode/launch.json`。多目录工作区会先询问目标目录；文件不存在时会创建标准的 `0.2.0` 配置骨架。
+
+编辑器左侧提供配置新增、复制、删除和排序，右侧支持 Go `launch`、`attach`、`exec` 等常见场景，包括程序/软件包、工作目录、调试二进制输出、环境变量文件、Go 构建参数、程序参数、环境变量、启动前任务、控制台和远程 Delve 主机/端口。底部的“运行”和“调试”会先保存配置，再通过 VS Code 调试 API 启动所选项。
+
+该编辑器是 `launch.json` 的可选打开方式，不会强制替换原始文本编辑器。可使用标题栏的“打开 JSON”返回普通文本模式，也可在“原始 JSON”标签页编辑完整 JSONC。表单会保留第三方调试器字段；修改现有字段时会使用 JSONC 增量编辑保留注释。新增、删除或重排整个配置数组时，配置数据和未知字段会保留，但数组内部注释可能由格式化器重新排版。
 
 如果直接安装 VSIX 到已有 Profile，扩展会在首次启动或升级后自动应用当前版本的主题、图标、紧凑菜单、目录密度、字号和 Go 设置，并提示重新加载。若系统未安装 JetBrains Mono，还会提示是否安装扩展内附的官方 2.304 字体文件。也可随时运行 `Goland Style: 应用 GoLand 风格设置`；扩展会保存首次应用前的全局设置，可通过 `Goland Style: 恢复应用前的设置` 撤销并停止后续自动应用。
 
@@ -161,7 +189,7 @@ profile/jetbrains-style-go.code-profile
 profile/jetbrains-style-go-full.code-profile
 ```
 
-`npm test` 会重新生成两套 Profile，并检查核心/完整扩展依赖、主题文件、参考色、字体参数、Snippet 和项目模板。
+`npm test` 会重新生成两套 Profile，并检查核心/完整扩展依赖、主题文件、参考色、字体参数、Snippet、Bookmarks、运行/调试配置 JSONC 保真和项目模板。
 
 ## 发布
 

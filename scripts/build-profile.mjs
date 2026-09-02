@@ -69,6 +69,9 @@ const profileDefinitions = [
     shortName: "Go Keymap",
     source: "extensions-goland-keymap.json",
     output: "jetbrains-style-go-goland-keymap.code-profile",
+    settings: {
+      "golandStyle.bookmarks.golandKeybindings": true,
+    },
     keybindings: golandNavigationKeybindings,
   },
 ];
@@ -84,11 +87,12 @@ for (const definition of profileDefinitions) {
     identifier: { id },
     displayName,
   }));
+  const profileSettings = { ...settings, ...(definition.settings || {}) };
   const profile = {
     name: definition.name,
     shortName: definition.shortName,
     settings: JSON.stringify({
-      settings: JSON.stringify(settings, null, 4),
+      settings: JSON.stringify(profileSettings, null, 4),
     }),
     extensions: JSON.stringify(exportedExtensions),
     ...(definition.keybindings

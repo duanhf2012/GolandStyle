@@ -7,6 +7,5 @@ Goland Style.bat
 scripts/**
 profile/extensions*.json
 templates/**
-node_modules/**
 dist/**
 *.log

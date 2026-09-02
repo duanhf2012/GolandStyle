@@ -2,14 +2,16 @@
   "name": "jetbrains-style-go-vscode",
   "displayName": "Goland Style",
   "description": "An unofficial GoLand-style Go development experience for Visual Studio Code.",
-  "version": "0.2.9",
+  "version": "0.4.0",
   "publisher": "goland-style",
   "icon": "assets/icon.png",
   "license": "SEE LICENSE IN LICENSE",
   "pricing": "Free",
   "main": "./extension.js",
   "activationEvents": [
-    "onStartupFinished"
+    "onStartupFinished",
+    "onCommand:jetbrainsStyleGo.runConfigurations.open",
+    "onCustomEditor:jetbrainsStyleGo.runConfigurationEditor"
   ],
   "extensionKind": [
     "ui"
@@ -120,8 +122,520 @@
         "command": "jetbrainsStyleGo.repairGoNavigation",
         "title": "修复 Go 跳转（gopls）",
         "category": "Goland Style"
+      },
+      {
+        "command": "jetbrainsStyleGo.runConfigurations.open",
+        "title": "编辑运行/调试配置",
+        "category": "Goland Style",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.toggle",
+        "title": "切换匿名书签",
+        "category": "Goland Style: Bookmarks",
+        "icon": "$(bookmark)"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.toggleMnemonic",
+        "title": "切换助记书签",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.show",
+        "title": "显示行书签",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.next",
+        "title": "下一个行书签",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.previous",
+        "title": "上一个行书签",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.nextInEditor",
+        "title": "当前编辑器中的下一个行书签",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.previousInEditor",
+        "title": "当前编辑器中的上一个行书签",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.openView",
+        "title": "打开 Bookmarks 工具窗口",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.addResource",
+        "title": "添加或删除文件/目录书签",
+        "category": "Goland Style: Bookmarks",
+        "icon": "$(bookmark)"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.addResourceMnemonic",
+        "title": "添加文件/目录助记书签",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.renameBookmark",
+        "title": "重命名书签",
+        "category": "Goland Style: Bookmarks",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.removeMnemonic",
+        "title": "移除书签助记符",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.deleteBookmark",
+        "title": "删除书签",
+        "category": "Goland Style: Bookmarks",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.moveBookmark",
+        "title": "移动书签到其他列表",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.moveBookmarkUp",
+        "title": "向上移动书签",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.moveBookmarkDown",
+        "title": "向下移动书签",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.createList",
+        "title": "新建书签列表",
+        "category": "Goland Style: Bookmarks",
+        "icon": "$(add)"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.renameList",
+        "title": "重命名书签列表",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.deleteList",
+        "title": "删除书签列表",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.setDefaultList",
+        "title": "设为默认书签列表",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.bookmarkOpenTabs",
+        "title": "将所有打开的标签加入新书签列表",
+        "category": "Goland Style: Bookmarks",
+        "icon": "$(files)"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.toggle0",
+        "title": "切换数字书签 0",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.toggle1",
+        "title": "切换数字书签 1",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.toggle2",
+        "title": "切换数字书签 2",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.toggle3",
+        "title": "切换数字书签 3",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.toggle4",
+        "title": "切换数字书签 4",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.toggle5",
+        "title": "切换数字书签 5",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.toggle6",
+        "title": "切换数字书签 6",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.toggle7",
+        "title": "切换数字书签 7",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.toggle8",
+        "title": "切换数字书签 8",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.toggle9",
+        "title": "切换数字书签 9",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.goTo0",
+        "title": "跳转到数字书签 0",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.goTo1",
+        "title": "跳转到数字书签 1",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.goTo2",
+        "title": "跳转到数字书签 2",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.goTo3",
+        "title": "跳转到数字书签 3",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.goTo4",
+        "title": "跳转到数字书签 4",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.goTo5",
+        "title": "跳转到数字书签 5",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.goTo6",
+        "title": "跳转到数字书签 6",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.goTo7",
+        "title": "跳转到数字书签 7",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.goTo8",
+        "title": "跳转到数字书签 8",
+        "category": "Goland Style: Bookmarks"
+      },
+      {
+        "command": "jetbrainsStyleGo.bookmarks.goTo9",
+        "title": "跳转到数字书签 9",
+        "category": "Goland Style: Bookmarks"
       }
     ],
+    "customEditors": [
+      {
+        "viewType": "jetbrainsStyleGo.runConfigurationEditor",
+        "displayName": "GoLand 风格运行/调试配置",
+        "selector": [
+          {
+            "filenamePattern": "**/.vscode/launch.json"
+          }
+        ],
+        "priority": "option"
+      }
+    ],
+    "configuration": {
+      "title": "Goland Style: Bookmarks",
+      "properties": {
+        "golandStyle.bookmarks.golandKeybindings": {
+          "type": "boolean",
+          "default": false,
+          "description": "启用 GoLand 默认书签快捷键；GoLand Keymap Profile 会自动开启。"
+        },
+        "golandStyle.bookmarks.askBeforeReplacingMnemonic": {
+          "type": "boolean",
+          "default": true,
+          "description": "覆盖已使用的数字或字母助记符前请求确认。"
+        },
+        "golandStyle.bookmarks.showOnlyLineBookmarksInPopup": {
+          "type": "boolean",
+          "default": true,
+          "description": "Shift+F11 弹窗默认只显示代码行书签。"
+        }
+      }
+    },
+    "keybindings": [
+      {
+        "key": "f11",
+        "mac": "f3",
+        "command": "jetbrainsStyleGo.bookmarks.toggle",
+        "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
+      },
+      {
+        "key": "ctrl+f11",
+        "mac": "alt+f3",
+        "command": "jetbrainsStyleGo.bookmarks.toggleMnemonic",
+        "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
+      },
+      {
+        "key": "shift+f11",
+        "mac": "cmd+f3",
+        "command": "jetbrainsStyleGo.bookmarks.show",
+        "when": "config.golandStyle.bookmarks.golandKeybindings"
+      },
+      {
+        "key": "alt+2",
+        "mac": "cmd+2",
+        "command": "jetbrainsStyleGo.bookmarks.openView",
+        "when": "config.golandStyle.bookmarks.golandKeybindings"
+      },
+      {
+        "key": "ctrl+alt+down",
+        "mac": "cmd+alt+down",
+        "command": "jetbrainsStyleGo.bookmarks.next",
+        "when": "config.golandStyle.bookmarks.golandKeybindings && focusedView == jetbrainsStyleGo.bookmarksView"
+      },
+      {
+        "key": "ctrl+alt+up",
+        "mac": "cmd+alt+up",
+        "command": "jetbrainsStyleGo.bookmarks.previous",
+        "when": "config.golandStyle.bookmarks.golandKeybindings && focusedView == jetbrainsStyleGo.bookmarksView"
+      },
+      {
+        "key": "ctrl+shift+0",
+        "command": "jetbrainsStyleGo.bookmarks.toggle0",
+        "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
+      },
+      {
+        "key": "ctrl+shift+1",
+        "command": "jetbrainsStyleGo.bookmarks.toggle1",
+        "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
+      },
+      {
+        "key": "ctrl+shift+2",
+        "command": "jetbrainsStyleGo.bookmarks.toggle2",
+        "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
+      },
+      {
+        "key": "ctrl+shift+3",
+        "command": "jetbrainsStyleGo.bookmarks.toggle3",
+        "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
+      },
+      {
+        "key": "ctrl+shift+4",
+        "command": "jetbrainsStyleGo.bookmarks.toggle4",
+        "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
+      },
+      {
+        "key": "ctrl+shift+5",
+        "command": "jetbrainsStyleGo.bookmarks.toggle5",
+        "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
+      },
+      {
+        "key": "ctrl+shift+6",
+        "command": "jetbrainsStyleGo.bookmarks.toggle6",
+        "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
+      },
+      {
+        "key": "ctrl+shift+7",
+        "command": "jetbrainsStyleGo.bookmarks.toggle7",
+        "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
+      },
+      {
+        "key": "ctrl+shift+8",
+        "command": "jetbrainsStyleGo.bookmarks.toggle8",
+        "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
+      },
+      {
+        "key": "ctrl+shift+9",
+        "command": "jetbrainsStyleGo.bookmarks.toggle9",
+        "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
+      },
+      {
+        "key": "ctrl+0",
+        "command": "jetbrainsStyleGo.bookmarks.goTo0",
+        "when": "config.golandStyle.bookmarks.golandKeybindings"
+      },
+      {
+        "key": "ctrl+1",
+        "command": "jetbrainsStyleGo.bookmarks.goTo1",
+        "when": "config.golandStyle.bookmarks.golandKeybindings"
+      },
+      {
+        "key": "ctrl+2",
+        "command": "jetbrainsStyleGo.bookmarks.goTo2",
+        "when": "config.golandStyle.bookmarks.golandKeybindings"
+      },
+      {
+        "key": "ctrl+3",
+        "command": "jetbrainsStyleGo.bookmarks.goTo3",
+        "when": "config.golandStyle.bookmarks.golandKeybindings"
+      },
+      {
+        "key": "ctrl+4",
+        "command": "jetbrainsStyleGo.bookmarks.goTo4",
+        "when": "config.golandStyle.bookmarks.golandKeybindings"
+      },
+      {
+        "key": "ctrl+5",
+        "command": "jetbrainsStyleGo.bookmarks.goTo5",
+        "when": "config.golandStyle.bookmarks.golandKeybindings"
+      },
+      {
+        "key": "ctrl+6",
+        "command": "jetbrainsStyleGo.bookmarks.goTo6",
+        "when": "config.golandStyle.bookmarks.golandKeybindings"
+      },
+      {
+        "key": "ctrl+7",
+        "command": "jetbrainsStyleGo.bookmarks.goTo7",
+        "when": "config.golandStyle.bookmarks.golandKeybindings"
+      },
+      {
+        "key": "ctrl+8",
+        "command": "jetbrainsStyleGo.bookmarks.goTo8",
+        "when": "config.golandStyle.bookmarks.golandKeybindings"
+      },
+      {
+        "key": "ctrl+9",
+        "command": "jetbrainsStyleGo.bookmarks.goTo9",
+        "when": "config.golandStyle.bookmarks.golandKeybindings"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "jetbrainsStyleGo-bookmarks",
+          "title": "Bookmarks",
+          "icon": "assets/bookmark.svg"
+        }
+      ]
+    },
+    "views": {
+      "jetbrainsStyleGo-bookmarks": [
+        {
+          "id": "jetbrainsStyleGo.bookmarksView",
+          "name": "Bookmarks"
+        }
+      ]
+    },
+    "menus": {
+      "editor/title": [
+        {
+          "command": "jetbrainsStyleGo.runConfigurations.open",
+          "when": "resourceFilename == launch.json",
+          "group": "navigation@10"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "jetbrainsStyleGo.bookmarks.createList",
+          "when": "view == jetbrainsStyleGo.bookmarksView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "jetbrainsStyleGo.bookmarks.bookmarkOpenTabs",
+          "when": "view == jetbrainsStyleGo.bookmarksView",
+          "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "jetbrainsStyleGo.bookmarks.renameBookmark",
+          "when": "view == jetbrainsStyleGo.bookmarksView && (viewItem == bookmark || viewItem == mnemonicBookmark)",
+          "group": "inline@1"
+        },
+        {
+          "command": "jetbrainsStyleGo.bookmarks.deleteBookmark",
+          "when": "view == jetbrainsStyleGo.bookmarksView && (viewItem == bookmark || viewItem == mnemonicBookmark)",
+          "group": "inline@2"
+        },
+        {
+          "command": "jetbrainsStyleGo.bookmarks.removeMnemonic",
+          "when": "view == jetbrainsStyleGo.bookmarksView && viewItem == mnemonicBookmark",
+          "group": "bookmarks@1"
+        },
+        {
+          "command": "jetbrainsStyleGo.bookmarks.moveBookmark",
+          "when": "view == jetbrainsStyleGo.bookmarksView && (viewItem == bookmark || viewItem == mnemonicBookmark)",
+          "group": "bookmarks@2"
+        },
+        {
+          "command": "jetbrainsStyleGo.bookmarks.moveBookmarkUp",
+          "when": "view == jetbrainsStyleGo.bookmarksView && (viewItem == bookmark || viewItem == mnemonicBookmark)",
+          "group": "bookmarks@3"
+        },
+        {
+          "command": "jetbrainsStyleGo.bookmarks.moveBookmarkDown",
+          "when": "view == jetbrainsStyleGo.bookmarksView && (viewItem == bookmark || viewItem == mnemonicBookmark)",
+          "group": "bookmarks@4"
+        },
+        {
+          "command": "jetbrainsStyleGo.bookmarks.setDefaultList",
+          "when": "view == jetbrainsStyleGo.bookmarksView && viewItem == bookmarkList",
+          "group": "lists@1"
+        },
+        {
+          "command": "jetbrainsStyleGo.bookmarks.renameList",
+          "when": "view == jetbrainsStyleGo.bookmarksView && viewItem == bookmarkList",
+          "group": "lists@2"
+        },
+        {
+          "command": "jetbrainsStyleGo.bookmarks.deleteList",
+          "when": "view == jetbrainsStyleGo.bookmarksView && viewItem == bookmarkList",
+          "group": "lists@3"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "jetbrainsStyleGo.bookmarks.toggle",
+          "group": "navigation@90"
+        },
+        {
+          "command": "jetbrainsStyleGo.bookmarks.toggleMnemonic",
+          "group": "navigation@91"
+        }
+      ],
+      "editor/lineNumber/context": [
+        {
+          "command": "jetbrainsStyleGo.bookmarks.toggle",
+          "group": "navigation@90"
+        },
+        {
+          "command": "jetbrainsStyleGo.bookmarks.toggleMnemonic",
+          "group": "navigation@91"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "jetbrainsStyleGo.bookmarks.addResource",
+          "group": "navigation@90"
+        },
+        {
+          "command": "jetbrainsStyleGo.bookmarks.addResourceMnemonic",
+          "group": "navigation@91"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "jetbrainsStyleGo.bookmarks.addResource",
+          "group": "navigation@90"
+        },
+        {
+          "command": "jetbrainsStyleGo.bookmarks.addResourceMnemonic",
+          "group": "navigation@91"
+        }
+      ]
+    },
     "themes": [
       {
         "label": "JetBrains New UI Dark (Unofficial)",
@@ -218,11 +732,16 @@
     "build:profile": "node ./scripts/build-profile.mjs",
     "prepare:dist": "node ./scripts/prepare-dist.mjs",
     "check:js": "node --check ./extension.js",
+    "check:bookmarks": "node --check ./bookmarks.js && node ./scripts/test-bookmarks.mjs",
+    "check:run-config": "node --check ./run-config-editor.js && node --check ./media/run-config-editor.js && node ./scripts/test-run-config-editor.mjs",
     "check:runtime": "node ./scripts/test-extension.mjs",
     "check": "node ./scripts/validate.mjs",
-    "test": "npm run build:profile && npm run check:js && npm run check:runtime && npm run check",
+    "test": "npm run build:profile && npm run check:js && npm run check:bookmarks && npm run check:run-config && npm run check:runtime && npm run check",
     "package": "npm run test && npm run prepare:dist && vsce package --allow-missing-repository --out dist/Goland-Style.vsix",
     "publish": "npm run test && vsce publish"
+  },
+  "dependencies": {
+    "jsonc-parser": "^3.3.1"
   },
   "devDependencies": {
     "@vscode/vsce": "^3.9.2"
