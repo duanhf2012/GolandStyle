@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">GoLand 风格运行调试配置编辑器示意</title>
+  <desc id="desc">VS Code 运行和调试侧栏中的配置列表，以及 launch.json 可视化编辑表单。</desc>
+  <rect width="1280" height="720" rx="18" fill="#111214"/>
+  <rect x="10" y="10" width="1260" height="700" rx="12" fill="#191A1C" stroke="#34363B"/>
+  <rect x="10" y="10" width="1260" height="43" rx="12" fill="#26282C"/>
+  <text x="32" y="37" fill="#E1E3E8" font-family="Segoe UI, sans-serif" font-size="16" font-weight="600">运行/调试配置</text>
+  <text x="1250" y="37" text-anchor="end" fill="#858A94" font-family="Segoe UI, sans-serif" font-size="13">launch.json 可视化编辑 · 界面示意</text>
+
+  <rect x="10" y="53" width="390" height="657" fill="#191A1C" stroke="#2E3035"/>
+  <text x="30" y="85" fill="#D7D9DE" font-family="Segoe UI, sans-serif" font-size="13" font-weight="600">运行和调试</text>
+  <rect x="23" y="102" width="364" height="36" rx="6" fill="#27282B"/>
+  <text x="40" y="126" fill="#BCBEC4" font-family="Segoe UI, sans-serif" font-size="13">▷  运行和调试</text>
+  <text x="30" y="174" fill="#D7D9DE" font-family="Segoe UI, sans-serif" font-size="13" font-weight="600">⌄  运行配置</text>
+  <text x="330" y="174" fill="#858A94" font-family="Segoe UI Symbol, sans-serif" font-size="18">⚙</text>
+  <text x="365" y="174" fill="#858A94" font-family="Segoe UI Symbol, sans-serif" font-size="17">↻</text>
+  <g font-family="Segoe UI, sans-serif" font-size="13">
+    <rect x="22" y="188" width="366" height="42" rx="6" fill="#33353B"/>
+    <text x="40" y="208" fill="#E1E3E8">🐹  Go: Debug Package</text>
+    <text x="64" y="223" fill="#777B84" font-size="11">go · launch · auto</text>
+    <text x="330" y="214" fill="#7FC97F" font-size="18">▶</text><text x="365" y="214" fill="#69A7E8" font-size="17">◆</text>
+    <text x="40" y="260" fill="#BCBEC4">🐹  Go: Debug Current Test</text>
+    <text x="64" y="275" fill="#777B84" font-size="11">go · launch · test</text>
+    <text x="40" y="312" fill="#BCBEC4">🐹  Go: Attach to Delve</text>
+    <text x="64" y="327" fill="#777B84" font-size="11">go · attach · remote</text>
+  </g>
+  <rect x="22" y="626" width="366" height="55" rx="7" fill="#202124" stroke="#34363B"/>
+  <text x="40" y="650" fill="#BCBEC4" font-family="Segoe UI, sans-serif" font-size="12">单击配置打开表单</text>
+  <text x="40" y="669" fill="#858A94" font-family="Segoe UI, sans-serif" font-size="11">右侧按钮可直接运行或调试</text>
+
+  <rect x="400" y="53" width="870" height="657" fill="#202124"/>
+  <rect x="422" y="72" width="826" height="72" rx="9" fill="#26282C" stroke="#34363B"/>
+  <text x="445" y="100" fill="#858A94" font-family="Segoe UI, sans-serif" font-size="12">名称</text>
+  <rect x="500" y="82" width="550" height="34" rx="5" fill="#191A1C" stroke="#45484F"/>
+  <text x="515" y="104" fill="#E1E3E8" font-family="Segoe UI, sans-serif" font-size="13">Go: Debug Package</text>
+  <rect x="1068" y="82" width="82" height="34" rx="5" fill="#33353B"/>
+  <text x="1109" y="104" text-anchor="middle" fill="#BCBEC4" font-family="Segoe UI, sans-serif" font-size="12">打开 JSON</text>
+  <text x="1190" y="103" fill="#858A94" font-family="Segoe UI, sans-serif" font-size="18">•••</text>
+  <text x="445" y="136" fill="#69A7E8" font-family="Segoe UI, sans-serif" font-size="13">配置</text>
+  <text x="510" y="136" fill="#858A94" font-family="Segoe UI, sans-serif" font-size="13">原始 JSON</text>
+  <rect x="442" y="142" width="38" height="2" fill="#456EC0"/>
+
+  <rect x="422" y="158" width="826" height="448" rx="9" fill="#26282C" stroke="#34363B"/>
+  <g font-family="Segoe UI, sans-serif" font-size="12" fill="#BCBEC4">
+    <text x="447" y="194">调试器类型</text>
+    <text x="447" y="240">请求</text>
+    <text x="447" y="286">模式</text>
+    <text x="447" y="332">程序/软件包</text>
+    <text x="447" y="378">工作目录</text>
+    <text x="447" y="424">构建参数</text>
+    <text x="447" y="470">程序参数</text>
+    <text x="447" y="516">环境变量文件</text>
+    <text x="447" y="562">启动前任务</text>
+  </g>
+  <g fill="#191A1C" stroke="#45484F">
+    <rect x="555" y="172" width="265" height="32" rx="4"/><rect x="555" y="218" width="265" height="32" rx="4"/>
+    <rect x="555" y="264" width="265" height="32" rx="4"/><rect x="555" y="310" width="665" height="32" rx="4"/>
+    <rect x="555" y="356" width="665" height="32" rx="4"/><rect x="555" y="402" width="665" height="32" rx="4"/>
+    <rect x="555" y="448" width="665" height="32" rx="4"/><rect x="555" y="494" width="665" height="32" rx="4"/>
+    <rect x="555" y="540" width="665" height="32" rx="4"/>
+  </g>
+  <g font-family="JetBrains Mono, Consolas, monospace" font-size="12" fill="#D7D9DE">
+    <text x="570" y="193">go</text><text x="570" y="239">launch</text><text x="570" y="285">auto</text>
+    <text x="570" y="331">${workspaceFolder}</text><text x="570" y="377">${workspaceFolder}</text>
+    <text x="570" y="423">-tags=integration</text><text x="570" y="469">--config ./config/dev.yaml</text>
+    <text x="570" y="515">${workspaceFolder}/.env</text><text x="570" y="561">Go: Build All</text>
+  </g>
+  <text x="793" y="194" fill="#858A94" font-family="Segoe UI Symbol, sans-serif">⌄</text>
+  <text x="793" y="240" fill="#858A94" font-family="Segoe UI Symbol, sans-serif">⌄</text>
+  <text x="793" y="286" fill="#858A94" font-family="Segoe UI Symbol, sans-serif">⌄</text>
+
+  <rect x="422" y="622" width="826" height="66" rx="9" fill="#26282C" stroke="#34363B"/>
+  <rect x="1015" y="638" width="94" height="34" rx="5" fill="#33353B" stroke="#50535A"/>
+  <text x="1062" y="660" text-anchor="middle" fill="#D7D9DE" font-family="Segoe UI, sans-serif" font-size="13">运行</text>
+  <rect x="1122" y="638" width="102" height="34" rx="5" fill="#365F95"/>
+  <text x="1173" y="660" text-anchor="middle" fill="#FFFFFF" font-family="Segoe UI, sans-serif" font-size="13">调试</text>
+  <text x="446" y="660" fill="#858A94" font-family="Segoe UI, sans-serif" font-size="12">保存后通过 VS Code 调试 API 启动所选配置</text>
+</svg>

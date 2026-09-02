@@ -2,6 +2,14 @@
   "name": "jetbrains-style-go-vscode",
   "displayName": "Goland Style",
   "description": "An unofficial GoLand-style Go development experience for Visual Studio Code.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/duanhf2012/GolandStyle.git"
+  },
+  "homepage": "https://github.com/duanhf2012/GolandStyle#readme",
+  "bugs": {
+    "url": "https://github.com/duanhf2012/GolandStyle/issues"
+  },
   "version": "0.4.1",
   "publisher": "goland-style",
   "icon": "assets/icon.png",

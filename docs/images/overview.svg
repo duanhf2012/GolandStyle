@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Goland Style 整体界面示意</title>
+  <desc id="desc">采用 JetBrains New UI 配色的 VS Code，包含文件树、Go 编辑器、书签标记和状态栏。</desc>
+  <rect width="1280" height="720" rx="18" fill="#111214"/>
+  <rect x="10" y="10" width="1260" height="700" rx="12" fill="#191A1C" stroke="#34363B"/>
+  <rect x="10" y="10" width="1260" height="42" rx="12" fill="#26282C"/>
+  <rect x="10" y="40" width="1260" height="12" fill="#26282C"/>
+  <circle cx="32" cy="31" r="6" fill="#FF6259"/>
+  <circle cx="52" cy="31" r="6" fill="#FFC14D"/>
+  <circle cx="72" cy="31" r="6" fill="#46C266"/>
+  <text x="640" y="36" text-anchor="middle" fill="#BCBEC4" font-family="Segoe UI, sans-serif" font-size="15">Goland Style · Visual Studio Code</text>
+
+  <rect x="10" y="52" width="54" height="630" fill="#26282C"/>
+  <g fill="none" stroke="#9DA0A8" stroke-width="2">
+    <path d="M26 76h17l6 6v19H26z"/>
+    <path d="M28 129h18M28 136h18M28 143h12"/>
+    <circle cx="37" cy="181" r="10"/><path d="m44 188 8 8"/>
+    <path d="M29 230h18v18H29zM33 226v8M43 226v8"/>
+    <path d="M29 281h16l5 5v16H29zM34 276v11"/>
+  </g>
+  <rect x="16" y="64" width="42" height="48" rx="6" fill="#33353B"/>
+  <path d="M27 76h16l6 6v18H27z" fill="none" stroke="#D7D9DE" stroke-width="2"/>
+  <rect x="10" y="679" width="54" height="3" fill="#456EC0"/>
+
+  <rect x="64" y="52" width="282" height="630" fill="#191A1C" stroke="#2E3035"/>
+  <text x="82" y="83" fill="#D7D9DE" font-family="Segoe UI, sans-serif" font-size="13" font-weight="600">资源管理器</text>
+  <text x="318" y="83" text-anchor="end" fill="#858A94" font-family="Segoe UI Symbol, sans-serif" font-size="17">•••</text>
+  <text x="81" y="116" fill="#BCBEC4" font-family="Segoe UI, sans-serif" font-size="13">⌄  DEMO-SERVICE</text>
+  <g font-family="Segoe UI, sans-serif" font-size="13">
+    <text x="100" y="146" fill="#BCBEC4">⌄  cmd</text>
+    <text x="122" y="174" fill="#BCBEC4">⌄  server</text>
+    <rect x="84" y="183" width="246" height="27" rx="5" fill="#33353B"/>
+    <text x="144" y="202" fill="#E1E3E8">🐹  main.go</text>
+    <text x="100" y="232" fill="#BCBEC4">⌄  internal</text>
+    <text x="122" y="260" fill="#BCBEC4">⌄  handler</text>
+    <text x="144" y="288" fill="#BCBEC4">🐹  health.go</text>
+    <text x="122" y="316" fill="#BCBEC4">⌄  service</text>
+    <text x="144" y="344" fill="#BCBEC4">🐹  user.go</text>
+    <text x="100" y="372" fill="#BCBEC4">▸  config</text>
+    <text x="100" y="400" fill="#BCBEC4">▸  scripts</text>
+    <text x="100" y="428" fill="#BCBEC4">📄  go.mod</text>
+    <text x="100" y="456" fill="#BCBEC4">📄  go.sum</text>
+    <text x="100" y="484" fill="#BCBEC4">📄  README.md</text>
+  </g>
+
+  <rect x="346" y="52" width="924" height="42" fill="#202124"/>
+  <rect x="346" y="52" width="205" height="42" fill="#233558"/>
+  <rect x="346" y="52" width="205" height="3" fill="#456EC0"/>
+  <text x="368" y="79" fill="#E1E3E8" font-family="Segoe UI, sans-serif" font-size="13">🐹  main.go</text>
+  <text x="528" y="79" fill="#AEB1B8" font-family="Segoe UI, sans-serif" font-size="16">×</text>
+  <text x="574" y="79" fill="#858A94" font-family="Segoe UI, sans-serif" font-size="13">🐹  user.go</text>
+
+  <rect x="346" y="94" width="50" height="588" fill="#191A1C"/>
+  <rect x="396" y="94" width="874" height="588" fill="#191A1C"/>
+  <rect x="346" y="257" width="924" height="22" fill="#1F2024"/>
+  <g font-family="JetBrains Mono, Consolas, monospace" font-size="16">
+    <g fill="#64676E" text-anchor="end">
+      <text x="382" y="132">1</text><text x="382" y="156">2</text><text x="382" y="180">3</text>
+      <text x="382" y="204">4</text><text x="382" y="228">5</text><text x="382" y="252">6</text>
+      <text x="382" y="276">7</text><text x="382" y="300">8</text><text x="382" y="324">9</text>
+      <text x="382" y="348">10</text><text x="382" y="372">11</text><text x="382" y="396">12</text>
+    </g>
+    <rect x="353" y="241" width="20" height="20" rx="5" fill="#456EC0"/>
+    <text x="363" y="256" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="700">1</text>
+    <text x="414" y="132" fill="#CF8E6D">package</text><text x="486" y="132" fill="#BCBEC4"> main</text>
+    <text x="414" y="180" fill="#CF8E6D">import</text><text x="470" y="180" fill="#6AAB73"> "net/http"</text>
+    <text x="414" y="228" fill="#CF8E6D">func</text><text x="454" y="228" fill="#56A8F5"> main</text><text x="500" y="228" fill="#BCBEC4">() {</text>
+    <text x="446" y="252" fill="#BCBEC4">mux </text><text x="478" y="252" fill="#CF8E6D">:=</text><text x="510" y="252" fill="#6FAFBD"> http</text><text x="554" y="252" fill="#BCBEC4">.</text><text x="562" y="252" fill="#B09D79">NewServeMux</text><text x="660" y="252" fill="#BCBEC4">()</text>
+    <text x="446" y="276" fill="#BCBEC4">mux.</text><text x="478" y="276" fill="#B09D79">HandleFunc</text><text x="566" y="276" fill="#BCBEC4">(</text><text x="574" y="276" fill="#6AAB73">"/health"</text><text x="654" y="276" fill="#BCBEC4">, health)</text>
+    <text x="446" y="300" fill="#6FAFBD">http</text><text x="478" y="300" fill="#BCBEC4">.</text><text x="486" y="300" fill="#B09D79">ListenAndServe</text><text x="614" y="300" fill="#BCBEC4">(</text><text x="622" y="300" fill="#6AAB73">":8080"</text><text x="686" y="300" fill="#BCBEC4">, mux)</text>
+    <text x="414" y="324" fill="#BCBEC4">}</text>
+    <text x="414" y="372" fill="#CF8E6D">func</text><text x="454" y="372" fill="#56A8F5"> health</text><text x="518" y="372" fill="#BCBEC4">(w http.ResponseWriter, r *http.Request) {</text>
+    <text x="446" y="396" fill="#56A8F5">fmt</text><text x="470" y="396" fill="#BCBEC4">.</text><text x="478" y="396" fill="#B09D79">Fprintln</text><text x="542" y="396" fill="#BCBEC4">(w, </text><text x="574" y="396" fill="#6AAB73">"ok"</text><text x="606" y="396" fill="#BCBEC4">)</text>
+    <text x="414" y="420" fill="#BCBEC4">}</text>
+  </g>
+  <rect x="10" y="682" width="1260" height="28" rx="0" fill="#26282C"/>
+  <text x="78" y="701" fill="#BCBEC4" font-family="Segoe UI, sans-serif" font-size="12">main*</text>
+  <text x="1050" y="701" fill="#BCBEC4" font-family="Segoe UI, sans-serif" font-size="12">Go  ·  UTF-8  ·  LF  ·  Spaces: 4</text>
+</svg>

@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- 重构 README，将安装、Profile、视觉设置、Bookmarks、运行配置、快捷键、Snippets、项目模板和常见问题整理为完整使用手册。
+- 新增整体界面、Bookmarks 和运行/调试配置三张功能示意图，并补充功能覆盖矩阵和发布元数据。
+
 ## 0.4.1
 
 - 在 VS Code 原生“运行和调试”侧栏新增“运行配置”列表，集中显示各工作区 `launch.json` 配置。

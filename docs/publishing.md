@@ -4,7 +4,7 @@
 
 1. 在 [Marketplace Publisher Management](https://marketplace.visualstudio.com/manage/publishers/) 登录 Microsoft 账号，创建 Publisher。
 2. Publisher 的 **ID** 必须唯一且发布后不能修改。当前项目中的 `package.json` 和三个 Profile 已统一使用 `goland-style`。
-3. 在 GitHub 创建公开仓库并推送本项目。拿到仓库 URL 后，再把它填入 `package.json` 的 `repository`、`bugs` 和 `homepage` 字段，Marketplace 页面会正确链接源码和问题反馈。
+3. `package.json` 已包含 GitHub 仓库、Issues 和 README 首页地址；若仓库迁移，需要同步更新这三个字段，Marketplace 页面才能继续正确链接源码和问题反馈。
 
 ## 本机手动发布
 
@@ -33,8 +33,8 @@ npx vsce publish --packagePath .\dist\Goland-Style.vsix --allow-missing-reposito
 在 GitHub 仓库的 **Settings → Secrets and variables → Actions** 新建一个名为 `VSCE_PAT` 的 Secret，然后推送版本 Tag：
 
 ```powershell
-git tag v0.2.5
-git push origin v0.2.5
+git tag v<version>
+git push origin v<version>
 ```
 
 仓库中的 `marketplace.yml` 会先运行测试和打包，再将 `Goland-Style.vsix` 发布到 Marketplace。GitHub Release 仍由 `release.yml` 单独创建。

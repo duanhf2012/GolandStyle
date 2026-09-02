@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">GoLand 风格书签功能示意</title>
+  <desc id="desc">VS Code 的 Bookmarks 工具窗口、代码行书签装饰和快捷键说明。</desc>
+  <rect width="1280" height="720" rx="18" fill="#111214"/>
+  <rect x="10" y="10" width="1260" height="700" rx="12" fill="#191A1C" stroke="#34363B"/>
+  <rect x="10" y="10" width="1260" height="43" rx="12" fill="#26282C"/>
+  <text x="32" y="37" fill="#E1E3E8" font-family="Segoe UI, sans-serif" font-size="16" font-weight="600">Bookmarks</text>
+  <text x="1250" y="37" text-anchor="end" fill="#858A94" font-family="Segoe UI, sans-serif" font-size="13">GoLand 风格书签 · 界面示意</text>
+
+  <rect x="10" y="53" width="50" height="605" fill="#26282C"/>
+  <path d="M25 78h20v27l-10-7-10 7z" fill="#456EC0" stroke="#8CB4FF"/>
+  <g fill="none" stroke="#858A94" stroke-width="2">
+    <path d="M23 140h24M23 147h24M23 154h16"/>
+    <circle cx="35" cy="205" r="10"/><path d="m42 212 8 8"/>
+    <path d="M24 260h21v21H24z"/>
+  </g>
+
+  <rect x="60" y="53" width="420" height="605" fill="#191A1C" stroke="#2E3035"/>
+  <text x="82" y="84" fill="#D7D9DE" font-family="Segoe UI, sans-serif" font-size="13" font-weight="600">BOOKMARKS</text>
+  <text x="388" y="84" fill="#858A94" font-family="Segoe UI Symbol, sans-serif" font-size="19">＋</text>
+  <text x="423" y="84" fill="#858A94" font-family="Segoe UI Symbol, sans-serif" font-size="17">▣</text>
+  <text x="454" y="84" fill="#858A94" font-family="Segoe UI Symbol, sans-serif" font-size="17">•••</text>
+  <rect x="71" y="101" width="398" height="30" rx="5" fill="#27282B"/>
+  <text x="85" y="122" fill="#E1E3E8" font-family="Segoe UI, sans-serif" font-size="13">⌄  Favorites（默认）</text>
+  <g font-family="Segoe UI, sans-serif" font-size="13">
+    <rect x="75" y="139" width="390" height="34" rx="5" fill="#33353B"/>
+    <rect x="88" y="147" width="22" height="22" rx="5" fill="#456EC0"/>
+    <text x="99" y="163" text-anchor="middle" fill="#FFF" font-weight="700">1</text>
+    <text x="122" y="161" fill="#E1E3E8">启动 HTTP 服务</text>
+    <text x="122" y="176" fill="#777B84" font-size="11">cmd/server/main.go:7</text>
+    <rect x="88" y="187" width="22" height="22" rx="5" fill="#7456A8"/>
+    <text x="99" y="203" text-anchor="middle" fill="#FFF" font-weight="700">A</text>
+    <text x="122" y="201" fill="#BCBEC4">注册 API 路由</text>
+    <text x="122" y="216" fill="#777B84" font-size="11">internal/handler/router.go:42</text>
+    <circle cx="99" cy="243" r="7" fill="#D0A34A"/>
+    <text x="122" y="247" fill="#BCBEC4">加载服务配置</text>
+    <text x="122" y="262" fill="#777B84" font-size="11">internal/config/config.go:27</text>
+    <text x="88" y="294" fill="#6FAFBD">▤</text><text x="122" y="294" fill="#BCBEC4">go.mod</text>
+    <text x="88" y="328" fill="#D0A34A">▰</text><text x="122" y="328" fill="#BCBEC4">internal/service</text>
+    <text x="85" y="378" fill="#E1E3E8">⌄  Breakpoints</text>
+    <circle cx="99" cy="412" r="7" fill="#D9544D"/>
+    <text x="122" y="416" fill="#BCBEC4">user.go:68</text>
+  </g>
+
+  <rect x="480" y="53" width="790" height="605" fill="#191A1C"/>
+  <rect x="480" y="53" width="790" height="41" fill="#233558"/>
+  <rect x="480" y="53" width="790" height="3" fill="#456EC0"/>
+  <text x="505" y="80" fill="#E1E3E8" font-family="Segoe UI, sans-serif" font-size="13">🐹  main.go</text>
+  <rect x="480" y="252" width="790" height="23" fill="#1F2024"/>
+  <g font-family="JetBrains Mono, Consolas, monospace" font-size="16">
+    <g fill="#64676E" text-anchor="end">
+      <text x="525" y="133">1</text><text x="525" y="157">2</text><text x="525" y="181">3</text><text x="525" y="205">4</text>
+      <text x="525" y="229">5</text><text x="525" y="253">6</text><text x="525" y="277">7</text><text x="525" y="301">8</text>
+      <text x="525" y="349">10</text><text x="525" y="373">11</text><text x="525" y="397">12</text>
+    </g>
+    <rect x="493" y="238" width="22" height="22" rx="5" fill="#456EC0"/>
+    <text x="504" y="254" text-anchor="middle" fill="#FFF" font-size="12" font-weight="700">1</text>
+    <rect x="493" y="358" width="22" height="22" rx="5" fill="#7456A8"/>
+    <text x="504" y="374" text-anchor="middle" fill="#FFF" font-size="12" font-weight="700">A</text>
+    <text x="548" y="133" fill="#CF8E6D">package</text><text x="620" y="133" fill="#BCBEC4"> main</text>
+    <text x="548" y="181" fill="#CF8E6D">import</text><text x="604" y="181" fill="#6AAB73"> "net/http"</text>
+    <text x="548" y="229" fill="#CF8E6D">func</text><text x="588" y="229" fill="#56A8F5"> main</text><text x="634" y="229" fill="#BCBEC4">() {</text>
+    <text x="580" y="253" fill="#BCBEC4">mux </text><text x="612" y="253" fill="#CF8E6D">:=</text><text x="644" y="253" fill="#6FAFBD"> http</text><text x="688" y="253" fill="#BCBEC4">.</text><text x="696" y="253" fill="#B09D79">NewServeMux</text><text x="794" y="253" fill="#BCBEC4">()</text>
+    <text x="580" y="277" fill="#BCBEC4">mux.</text><text x="612" y="277" fill="#B09D79">HandleFunc</text><text x="700" y="277" fill="#BCBEC4">(</text><text x="708" y="277" fill="#6AAB73">"/health"</text><text x="788" y="277" fill="#BCBEC4">, health)</text>
+    <text x="580" y="301" fill="#6FAFBD">http</text><text x="612" y="301" fill="#BCBEC4">.</text><text x="620" y="301" fill="#B09D79">ListenAndServe</text><text x="748" y="301" fill="#BCBEC4">(</text><text x="756" y="301" fill="#6AAB73">":8080"</text><text x="820" y="301" fill="#BCBEC4">, mux)</text>
+    <text x="548" y="325" fill="#BCBEC4">}</text>
+    <text x="548" y="373" fill="#CF8E6D">func</text><text x="588" y="373" fill="#56A8F5"> health</text><text x="652" y="373" fill="#BCBEC4">(w http.ResponseWriter, r *http.Request) {</text>
+    <text x="548" y="397" fill="#BCBEC4">}</text>
+  </g>
+
+  <rect x="10" y="658" width="1260" height="52" fill="#202124"/>
+  <g font-family="Segoe UI, sans-serif" font-size="13">
+    <text x="32" y="689" fill="#BCBEC4">设置：Ctrl+Shift+数字</text>
+    <text x="270" y="689" fill="#BCBEC4">跳转：Ctrl+数字</text>
+    <text x="468" y="689" fill="#BCBEC4">匿名：F11</text>
+    <text x="610" y="689" fill="#BCBEC4">助记：Ctrl+F11</text>
+    <text x="810" y="689" fill="#BCBEC4">列表：Alt+2</text>
+    <text x="968" y="689" fill="#BCBEC4">弹窗：Shift+F11</text>
+  </g>
+</svg>

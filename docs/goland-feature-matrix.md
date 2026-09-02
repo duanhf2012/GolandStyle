@@ -2,10 +2,21 @@
 
 本项目以 GoLand 的日常 Go 开发工作流为目标，不宣称复制 JetBrains 的专有实现。核心只使用 VS Code 内置能力、官方 Go 扩展、微软简体中文包和两套视觉图标主题；其他第三方工具不自动安装。
 
+[返回 README](../README.md) · [查看运行配置界面示意](images/run-configurations.png) · [查看书签界面示意](images/bookmarks.png)
+
+状态说明：
+
+- **已包含**：安装 VSIX 或导入 Core Profile 后即可使用；
+- **内置**：由 VS Code 自身提供，Goland Style 只负责视觉或设置整合；
+- **按需安装**：不属于核心依赖，需要根据项目单独安装；
+- **平台限制**：普通 VS Code 扩展 API 无法稳定复刻。
+
 ## 核心 Profile（默认扩展包）
 
 | GoLand 能力 | VS Code 对应实现 | 状态 |
 | --- | --- | --- |
+| New UI 深色/浅色外观 | 本扩展主题 + JetBrains 风格文件/产品图标 | 已包含；首次启动或升级后自动应用当前版本设置，也可一键恢复 |
+| JetBrains Mono 排版 | 随扩展附带 JetBrains Mono 2.304 四个基础字形 | 已包含；安装字体命令需用户确认，只安装到当前系统用户 |
 | 简体中文界面 | Microsoft `vscode-language-pack-zh-hans` | 已包含；首次安装后运行“配置显示语言”并选择 `zh-cn` |
 | Project 文件树、搜索、结构视图 | VS Code Explorer、Search、Outline、Breadcrumbs | 内置；主题已校准颜色、缩进和选中态 |
 | Go 语义高亮、补全、导航、查找引用 | 官方 Go 扩展 + `gopls` | 已包含 |
@@ -15,9 +26,10 @@
 | 格式化、优化 import | `gofumpt` + `goimports` 能力 | 已配置为保存时执行 |
 | Run/Debug、断点、变量、调用栈 | 官方 Go 扩展 + Delve + 本扩展的 `launch.json` 可视化配置编辑器 | 已包含；原生 Run and Debug 侧栏显示配置列表和运行/调试按钮，支持 Go 常用字段与原始 JSONC |
 | Test、子测试、Benchmark、Coverage | 官方 Go 扩展 Test Explorer + 项目任务 | 已包含 |
-| Live Templates | 本扩展的 Go snippets | 已包含 |
+| Live Templates | 本扩展 Go Snippets | 已包含 `iferr`、`iferrw`、`gotest`、`gobench`、`gomain` |
 | Bookmarks | 本扩展的 Bookmarks 工具窗口、行号栏装饰和工作区持久化 | 已包含；支持匿名/助记书签、文件与目录、多列表、断点汇总及 GoLand Keymap 快捷键 |
-| 快捷键 | VS Code 原生快捷键 | 默认使用；可导入单独 GoLand Keymap Profile |
+| 快捷键 | VS Code 原生快捷键或单独 GoLand Keymap Profile | 默认保留 VS Code 键位；Keymap Profile 提供 IntelliJ 键位、`Alt+Left/Right` 历史导航和 GoLand 书签键位 |
+| 共享 Run/Task 配置 | `templates/.vscode` | 已包含 Package/Test/Attach 调试模板，以及构建、测试、覆盖率、竞态、Benchmark、Vet 和 pprof 任务 |
 | `.editorconfig` | EditorConfig | 按项目需要单独安装 |
 | YAML、JSON Schema、Kubernetes Schema | Red Hat YAML；JSON 由 VS Code 内置 | 按项目需要单独安装 |
 | TOML | Even Better TOML / Taplo | 按项目需要单独安装 |
