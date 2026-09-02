@@ -160,6 +160,49 @@ for (const extensionId of [...requiredExtensions, ...fullProfileExtensions]) {
   );
 }
 
+const keymapProfile = await readJson(
+  "profile/jetbrains-style-go-goland-keymap.code-profile",
+);
+const keymapPayload = JSON.parse(keymapProfile.keybindings);
+const keymapKeybindings = JSON.parse(keymapPayload.keybindings);
+requireValue(keymapPayload.platform === 3, "GoLand Keymap Profile 必须标记为 Windows 键位");
+requireValue(
+  keymapKeybindings.some(
+    ({ key, command, when }) =>
+      key === "alt+left" &&
+      command === "workbench.action.navigateBack" &&
+      when === "canNavigateBack",
+  ),
+  "GoLand Keymap Profile 必须将返回绑定为 Alt+Left",
+);
+requireValue(
+  keymapKeybindings.some(
+    ({ key, command, when }) =>
+      key === "alt+right" &&
+      command === "workbench.action.navigateForward" &&
+      when === "canNavigateForward",
+  ),
+  "GoLand Keymap Profile 必须将前进绑定为 Alt+Right",
+);
+requireValue(
+  keymapKeybindings.some(
+    ({ key, command, when }) =>
+      key === "alt+left" &&
+      command === "-workbench.action.previousEditor" &&
+      when === "!terminalFocus",
+  ),
+  "GoLand Keymap Profile 必须移除 Alt+Left 的编辑器标签切换",
+);
+requireValue(
+  keymapKeybindings.some(
+    ({ key, command, when }) =>
+      key === "alt+right" &&
+      command === "-workbench.action.nextEditor" &&
+      when === "!terminalFocus",
+  ),
+  "GoLand Keymap Profile 必须移除 Alt+Right 的编辑器标签切换",
+);
+
 for (const relativePath of [
   "assets/icon.png",
   "assets/fonts/JetBrainsMono-Regular.ttf",

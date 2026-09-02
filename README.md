@@ -65,6 +65,8 @@ profile/jetbrains-style-go.code-profile
 profile/jetbrains-style-go-goland-keymap.code-profile
 ```
 
+该 Keymap Profile 在 Windows 上将位置历史的“返回/前进”设为 `Alt+Left` / `Alt+Right`，并取消 IntelliJ IDEA Keybindings 对这两个按键的编辑器标签切换，避免冲突；`Ctrl+Alt+Left` / `Ctrl+Alt+Right` 不再用于这两个导航命令。
+
 该 Profile 会额外安装 `IntelliJ IDEA Keybindings`。两套按键不能同时启用；切回 VS Code 快捷键时，请在扩展面板禁用该 Keybindings 扩展，再导入默认 Profile。
 
 如果直接安装 VSIX 到已有 Profile，扩展会在首次启动或升级后自动应用当前版本的主题、图标、紧凑菜单、目录密度、字号和 Go 设置，并提示重新加载。若系统未安装 JetBrains Mono，还会提示是否安装扩展内附的官方 2.304 字体文件。也可随时运行 `Goland Style: 应用 GoLand 风格设置`；扩展会保存首次应用前的全局设置，可通过 `Goland Style: 恢复应用前的设置` 撤销并停止后续自动应用。

@@ -17,6 +17,39 @@ if (!runtimeSettings || typeof runtimeSettings !== "object") {
   throw new Error("package.json 缺少 golandStyle.runtimeSettings");
 }
 const settings = { ...configurationDefaults, ...runtimeSettings };
+const windowsPlatform = 3;
+const golandNavigationKeybindings = [
+  {
+    key: "alt+left",
+    command: "-workbench.action.previousEditor",
+    when: "!terminalFocus",
+  },
+  {
+    key: "alt+right",
+    command: "-workbench.action.nextEditor",
+    when: "!terminalFocus",
+  },
+  {
+    key: "alt+left",
+    command: "workbench.action.navigateBack",
+    when: "canNavigateBack",
+  },
+  {
+    key: "alt+right",
+    command: "workbench.action.navigateForward",
+    when: "canNavigateForward",
+  },
+  {
+    key: "ctrl+alt+left",
+    command: "-workbench.action.navigateBack",
+    when: "canNavigateBack",
+  },
+  {
+    key: "ctrl+alt+right",
+    command: "-workbench.action.navigateForward",
+    when: "canNavigateForward",
+  },
+];
 
 const profileDefinitions = [
   {
@@ -36,6 +69,7 @@ const profileDefinitions = [
     shortName: "Go Keymap",
     source: "extensions-goland-keymap.json",
     output: "jetbrains-style-go-goland-keymap.code-profile",
+    keybindings: golandNavigationKeybindings,
   },
 ];
 
@@ -57,6 +91,14 @@ for (const definition of profileDefinitions) {
       settings: JSON.stringify(settings, null, 4),
     }),
     extensions: JSON.stringify(exportedExtensions),
+    ...(definition.keybindings
+      ? {
+          keybindings: JSON.stringify({
+            platform: windowsPlatform,
+            keybindings: JSON.stringify(definition.keybindings, null, 4),
+          }),
+        }
+      : {}),
   };
   const outputPath = path.join(projectDirectory, "profile", definition.output);
   await writeFile(outputPath, `${JSON.stringify(profile, null, 2)}\n`, "utf8");
