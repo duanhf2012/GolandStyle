@@ -18,13 +18,13 @@
 | New UI 深色/浅色外观 | 本扩展主题 + JetBrains 风格文件/产品图标 | 已包含；首次启动或升级后自动应用当前版本设置，也可一键恢复 |
 | JetBrains Mono 排版 | 随扩展附带 JetBrains Mono 2.304 四个基础字形 | 已包含；安装字体命令需用户确认，只安装到当前系统用户 |
 | 简体中文界面 | Microsoft `vscode-language-pack-zh-hans` | 已包含；首次安装后运行“配置显示语言”并选择 `zh-cn` |
-| Project 文件树、搜索、结构视图 | VS Code Explorer、Search、Outline、Breadcrumbs | 内置；主题已校准颜色、缩进和选中态 |
+| Project 文件树、搜索、结构视图 | VS Code Explorer、Search、Outline、Breadcrumbs | 内置；主题已校准颜色、缩进和选中态，隐藏 Problems 着色以保留蓝色修改、绿色新增的 VCS 状态语义 |
 | Go 语义高亮、补全、导航、查找引用 | 官方 Go 扩展 + `gopls` | 已包含 |
 | Rename、Extract、Inline、Quick Fix | 官方 Go 扩展 + `gopls` Code Actions | 已包含；具体重构范围随 `gopls` 演进 |
-| Inspection、静态分析 | `gopls` diagnostics + staticcheck | 已包含 |
+| Inspection、静态分析 | `gopls` diagnostics + staticcheck | 保留编译、语法和类型诊断数据并可在 Problems 中查看；编辑器波浪线和 Staticcheck 风格警告默认关闭，可由用户按需开启 |
 | 参数名、类型等 Inlay Hints | `gopls` inlay hints | 已包含并默认开启 |
 | 格式化、优化 import | `gofumpt` + `goimports` 能力 | 已配置为保存时执行 |
-| Run/Debug、断点、变量、调用栈 | 官方 Go 扩展 + Delve + 本扩展的 `launch.json` 可视化配置编辑器 | 已包含；原生 Run and Debug 侧栏显示配置列表和运行/调试按钮，支持 Go 常用字段与原始 JSONC |
+| Run/Debug、断点、变量、调用栈 | 官方 Go 扩展 + Delve + 本扩展的 `launch.json` 可视化配置编辑器 | 已包含；原生 Run and Debug 侧栏显示配置列表和运行/调试按钮，调试控制条停靠在顶部 Command Center，支持 Go 常用字段与原始 JSONC |
 | Test、子测试、Benchmark、Coverage | 官方 Go 扩展 Test Explorer + 项目任务 | 已包含 |
 | Live Templates | 本扩展 Go Snippets | 已包含 `iferr`、`iferrw`、`gotest`、`gobench`、`gomain` |
 | Bookmarks | 本扩展的 Bookmarks 工具窗口、行号栏装饰和工作区持久化 | 已包含；支持匿名/助记书签、文件与目录、多列表、断点汇总及 GoLand Keymap 快捷键 |
@@ -54,13 +54,13 @@
 | Kubernetes、Helm | Microsoft Kubernetes | 需要或可由扩展安装 `kubectl` / `helm` |
 | 数据库浏览、查询、历史 | SQLTools | 已附 MySQL/MariaDB/TiDB、PostgreSQL/CockroachDB、SQLite 驱动；连接凭据由扩展管理 |
 | XML | Red Hat XML | 补全、校验、格式化和导航 |
-| 拼写检查 | Code Spell Checker | 对注释、字符串和标识符提供额外检查，可能需要按项目维护词典 |
 
 这些扩展不会随 VSIX 默认自动安装，因为它们可能需要账号、外部服务、数据库凭据、Docker/SSH/Kubernetes 权限，或引入额外侧边栏和后台进程。
 
 ## 可选工具策略
 
 - Goland Style 不再自动安装 Todo Tree、Error Lens、Buf、REST Client、Makefile、YAML/TOML 或 EditorConfig。
+- 不默认安装 Code Spell Checker，避免 Go 包名、标识符和 import 路径出现 GoLand 默认界面没有的拼写波浪线；需要英文拼写检查时可按项目单独安装。
 - 需要这些能力时，在项目实际使用对应文件、服务或工具链后，再从扩展市场单独安装；这样单个插件失败不会影响基础 Go 开发和调试。
 
 ## 不重复安装的能力

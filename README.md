@@ -76,13 +76,13 @@ sh ./scripts/install.sh
 
 - JetBrains New UI 风格深色和浅色主题；
 - JetBrains 风格文件图标与产品图标；
-- 左侧 Activity Bar、左侧主侧栏、底部 Panel，以及隐藏的辅助侧栏；
+- 左侧 Activity Bar、左侧主侧栏、底部 Panel、隐藏的辅助侧栏，以及用于承载调试控制按钮的顶部 Command Center；
 - 多标签、不使用预览标签、修改标签高亮、紧凑目录树；
 - JetBrains Mono `13.5px / 21px`，编辑器和终端分别设置合适字号；
 - 关闭 Minimap、Breadcrumbs、彩虹括号和非 ASCII 黄色高亮框；
 - 开启当前缩进指引、参数提示、Inlay Hints、CodeLens、平滑滚动和 `120` 列标尺；
 - Go 文件保存时格式化并显式整理 import；
-- `gopls` 语义色、Staticcheck 和常用 Inlay Hints。
+- `gopls` 语义色、类型诊断和常用 Inlay Hints；默认关闭 Staticcheck 风格警告，减少命名类波浪线。
 
 第一次安装或升级后，扩展会自动应用当前版本的外观和 Go 设置并提示重新加载。应用前的全局设置会被保存，可随时运行：
 
@@ -94,6 +94,10 @@ sh ./scripts/install.sh
 | `Goland Style: 修复 Go 跳转（gopls）` | 检查官方 Go 扩展、工作区信任和语言服务状态，并尝试重启 `gopls` |
 
 字体安装会先显示确认提示。没有安装 JetBrains Mono 时，VS Code 会回退到 Consolas；扩展附带字体遵循 `assets/fonts/OFL.txt` 中的 SIL Open Font License 1.1。
+
+资源管理器默认隐藏 Problems 的黄色警告计数和着色，让文件名优先显示 GoLand 风格的 VCS 状态：修改为蓝色、新增为绿色。Go 编辑器不显示诊断波浪线，但编译、语法和类型诊断数据仍保留在 Problems 列表中；如需恢复行内波浪线，将 Go 语言设置中的 `editor.renderValidationDecorations` 改为 `on`。如需恢复 Staticcheck，可在用户设置的 `gopls` 对象中将 `ui.diagnostic.staticcheck` 改为 `true`。Go import 路径关闭 `namespace` 语义覆盖，使整段路径保持与 GoLand 一致的字符串绿色。
+
+调试会话启动后，继续、暂停、单步、重启和停止按钮显示在窗口顶部的 Command Center，不再悬浮遮挡编辑器。未启动调试时仍可通过左侧“运行和调试”、编辑器运行入口或快捷键启动配置。
 
 ## GoLand 风格书签
 
@@ -121,6 +125,8 @@ Bookmarks 工具窗口按工作区保存书签，并提供以下能力：
 `Shift+F11` 打开的弹窗支持直接键入字母跳转到对应助记书签。
 
 GoLand Keymap Profile 会启用完整书签键位。Windows/Linux 默认如下：
+
+数字书签使用 `[Digit0]` … `[Digit9]` 物理键扫描码注册，因此在不同键盘布局和输入法下仍显示并使用普通的顶排数字键，不会因 `Shift+数字` 被解析成符号而失效。
 
 | 操作 | 快捷键 |
 | --- | --- |
@@ -254,7 +260,7 @@ VSIX 只声明四个核心依赖：
 
 EditorConfig、YAML/TOML、Buf/Protobuf、REST Client、TODO、Makefile 等工具按项目需要单独安装，避免无关扩展、外部 CLI 下载和后台进程影响基础 Go 开发。
 
-Full Profile 额外提供 GitLens、GitHub Pull Requests、Container Tools、Dev Containers、Remote SSH、Kubernetes、SQLTools 及常用数据库驱动、XML 和拼写检查。这些扩展可能需要账号、外部程序或连接权限，因此不会随 VSIX 自动安装。
+Full Profile 额外提供 GitLens、GitHub Pull Requests、Container Tools、Dev Containers、Remote SSH、Kubernetes、SQLTools 及常用数据库驱动和 XML。这些扩展可能需要账号、外部程序或连接权限，因此不会随 VSIX 自动安装。Code Spell Checker 不再包含在 Profile 中，避免对 Go 包名、标识符和 import 路径显示与 GoLand 不一致的拼写波浪线。
 
 ## 常见问题
 

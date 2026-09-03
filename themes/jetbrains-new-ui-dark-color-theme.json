@@ -242,9 +242,15 @@
     "typeParameter": "#AFBF7E",
     "parameter": "#BCBEC4",
     "variable": "#BCBEC4",
-    "variable.readonly": "#C77DBB",
+    "variable.readonly": {
+      "foreground": "#9876AA",
+      "fontStyle": "italic"
+    },
     "property": "#BCBEC4",
-    "enumMember": "#C77DBB",
+    "enumMember": {
+      "foreground": "#9876AA",
+      "fontStyle": "italic"
+    },
     "function": "#B09D79",
     "function.declaration": "#56A8F5",
     "method": "#B09D79",
@@ -253,10 +259,10 @@
     "label": "#CF8E6D",
     "comment": {
       "foreground": "#7A7E85",
-      "fontStyle": "italic"
+      "fontStyle": ""
     },
-    "string": "#6AAB73",
-    "number": "#2AACB8",
+    "string": "#6A8759",
+    "number": "#6897BB",
     "regexp": "#6FAFBD",
     "operator": "#BCBEC4",
     "decorator": "#BBB529"
@@ -269,7 +275,7 @@
       ],
       "settings": {
         "foreground": "#7A7E85",
-        "fontStyle": "italic"
+        "fontStyle": ""
       }
     },
     {
@@ -281,7 +287,7 @@
         "keyword.operator.new"
       ],
       "settings": {
-        "foreground": "#CF8E6D"
+        "foreground": "#CC7832"
       }
     },
     {
@@ -292,7 +298,7 @@
         "punctuation.definition.string"
       ],
       "settings": {
-        "foreground": "#6AAB73"
+        "foreground": "#6A8759"
       }
     },
     {
@@ -302,7 +308,7 @@
         "constant.language.nil"
       ],
       "settings": {
-        "foreground": "#2AACB8"
+        "foreground": "#6897BB"
       }
     },
     {
@@ -348,9 +354,15 @@
     {
       "scope": [
         "constant.other",
-        "variable.other.constant",
-        "entity.name.tag"
+        "variable.other.constant"
       ],
+      "settings": {
+        "foreground": "#9876AA",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "scope": "entity.name.tag",
       "settings": {
         "foreground": "#C77DBB"
       }

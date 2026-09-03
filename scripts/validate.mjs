@@ -38,7 +38,6 @@ const fullProfileExtensions = [
   "mtxr.sqltools-driver-pg",
   "mtxr.sqltools-driver-sqlite",
   "redhat.vscode-xml",
-  "streetsidesoftware.code-spell-checker",
 ];
 
 requireValue(manifest.name === "jetbrains-style-go-vscode", "扩展名称不正确");
@@ -183,7 +182,7 @@ for (let digit = 0; digit <= 9; digit += 1) {
   requireValue(
     bookmarkKeybindings.some(
       ({ key, command, when }) =>
-        key === `ctrl+shift+${digit}` &&
+        key === `ctrl+shift+[Digit${digit}]` &&
         command === `jetbrainsStyleGo.bookmarks.toggle${digit}` &&
         when?.includes("editorTextFocus"),
     ),
@@ -192,7 +191,8 @@ for (let digit = 0; digit <= 9; digit += 1) {
   requireValue(
     bookmarkKeybindings.some(
       ({ key, command }) =>
-        key === `ctrl+${digit}` && command === `jetbrainsStyleGo.bookmarks.goTo${digit}`,
+        key === `ctrl+[Digit${digit}]` &&
+        command === `jetbrainsStyleGo.bookmarks.goTo${digit}`,
     ),
     `缺少数字书签快捷键 Ctrl+${digit}`,
   );
@@ -244,6 +244,11 @@ requireValue(
 requireValue(defaults["editor.fontSize"] === 13.5, "截图基准字号应为 13.5");
 requireValue(defaults["editor.lineHeight"] === 21, "截图基准行高应为 21");
 requireValue(defaults["window.zoomLevel"] === 0, "截图基准窗口缩放应为 0");
+requireValue(defaults["window.commandCenter"] === true, "应启用顶部 Command Center");
+requireValue(
+  defaults["debug.toolBarLocation"] === "commandCenter",
+  "调试工具栏应显示在顶部 Command Center",
+);
 requireValue(defaults["workbench.tree.indent"] === 16, "Project 树缩进应为 16");
 requireValue(
   defaults["workbench.tree.renderIndentGuides"] === "none",
@@ -257,6 +262,22 @@ requireValue(
 requireValue(
   defaults["editor.bracketPairColorization.enabled"] === false,
   "应关闭与 GoLand 不一致的彩虹括号",
+);
+requireValue(
+  defaults["problems.decorations.enabled"] === false,
+  "Project 树不应使用 Problems 警告颜色覆盖 GoLand 风格的 VCS 状态颜色",
+);
+requireValue(
+  runtimeSettings.gopls?.["ui.diagnostic.staticcheck"] === false,
+  "应默认关闭 Staticcheck 风格诊断，避免弱警告波浪线干扰阅读",
+);
+requireValue(
+  runtimeSettings.gopls?.["ui.semanticTokenTypes"]?.namespace === false,
+  "应关闭 gopls 的 namespace 语义覆盖，使 import 路径保持统一字符串颜色",
+);
+requireValue(
+  runtimeSettings["[go]"]?.["editor.renderValidationDecorations"] === "off",
+  "Go 编辑器应隐藏诊断波浪线",
 );
 requireValue(
   !Object.hasOwn(defaults, "editor.lineNumbersMinChars"),
@@ -284,6 +305,13 @@ requireValue(darkTheme.colors["sideBar.background"] === "#191A1C", "Project 树�
 requireValue(darkTheme.colors["list.activeSelectionBackground"] === "#33353B", "目录选中色未匹配截图");
 requireValue(darkTheme.colors["tab.activeBackground"] === "#233558", "活动页签色未匹配截图");
 requireValue(darkTheme.colors["editor.lineHighlightBackground"] === "#1F2024", "当前行颜色未匹配新截图");
+requireValue(darkTheme.semanticTokenColors.string === "#6A8759", "GoLand 导入字符串颜色未匹配截图");
+requireValue(darkTheme.semanticTokenColors.number === "#6897BB", "GoLand 数字颜色未匹配截图");
+requireValue(
+  darkTheme.semanticTokenColors["variable.readonly"]?.foreground === "#9876AA" &&
+    darkTheme.semanticTokenColors["variable.readonly"]?.fontStyle === "italic",
+  "GoLand 常量标识符颜色或样式未匹配截图",
+);
 
 const snippets = await readJson("snippets/go.json");
 for (const [name, snippet] of Object.entries(snippets)) {
@@ -318,6 +346,12 @@ for (const extensionId of [...requiredExtensions, ...fullProfileExtensions]) {
     `Full Profile 缺少 ${extensionId}`,
   );
 }
+requireValue(
+  !fullExtensions.some(
+    ({ identifier }) => identifier.id === "streetsidesoftware.code-spell-checker",
+  ),
+  "Full Profile 不应包含会给 Go 标识符和 import 路径添加拼写波浪线的 Code Spell Checker",
+);
 
 const keymapProfile = await readJson(
   "profile/jetbrains-style-go-goland-keymap.code-profile",
@@ -393,6 +427,14 @@ for (const relativePath of [
   await access(path.join(projectDirectory, relativePath));
   await readJson(relativePath);
 }
+
+const templateSettings = await readJson("templates/.vscode/settings.json");
+requireValue(
+  templateSettings.gopls?.["ui.diagnostic.staticcheck"] === false &&
+    templateSettings.gopls?.["ui.semanticTokenTypes"]?.namespace === false &&
+    templateSettings["[go]"]?.["editor.renderValidationDecorations"] === "off",
+  "项目模板的 gopls 诊断与 import 语义色设置未和扩展默认值同步",
+);
 
 console.log(
   `校验通过：${themes.length} 个主题、${manifest.extensionPack.length} 个核心扩展依赖、${fullExtensions.length} 个 Full Profile 扩展、${Object.keys(snippets).length} 个 Go 模板。`,

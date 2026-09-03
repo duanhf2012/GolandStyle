@@ -62,9 +62,5 @@
   {
     "id": "redhat.vscode-xml",
     "displayName": "XML"
-  },
-  {
-    "id": "streetsidesoftware.code-spell-checker",
-    "displayName": "Code Spell Checker"
   }
 ]

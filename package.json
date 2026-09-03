@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://github.com/duanhf2012/GolandStyle/issues"
   },
-  "version": "0.4.1",
+  "version": "0.4.2",
   "publisher": "goland-style",
   "icon": "assets/icon.png",
   "license": "SEE LICENSE IN LICENSE",
@@ -80,7 +80,10 @@
         "formatting.gofumpt": true,
         "ui.completion.usePlaceholders": true,
         "ui.semanticTokens": true,
-        "ui.diagnostic.staticcheck": true,
+        "ui.semanticTokenTypes": {
+          "namespace": false
+        },
+        "ui.diagnostic.staticcheck": false,
         "ui.inlayhint.hints": {
           "assignVariableTypes": true,
           "compositeLiteralFields": true,
@@ -97,6 +100,7 @@
         "editor.codeActionsOnSave": {
           "source.organizeImports": "explicit"
         },
+        "editor.renderValidationDecorations": "off",
         "editor.semanticHighlighting.enabled": true,
         "editor.suggest.snippetsPreventQuickSuggestions": false
       },
@@ -444,102 +448,102 @@
         "when": "config.golandStyle.bookmarks.golandKeybindings && focusedView == jetbrainsStyleGo.bookmarksView"
       },
       {
-        "key": "ctrl+shift+0",
+        "key": "ctrl+shift+[Digit0]",
         "command": "jetbrainsStyleGo.bookmarks.toggle0",
         "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
       },
       {
-        "key": "ctrl+shift+1",
+        "key": "ctrl+shift+[Digit1]",
         "command": "jetbrainsStyleGo.bookmarks.toggle1",
         "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
       },
       {
-        "key": "ctrl+shift+2",
+        "key": "ctrl+shift+[Digit2]",
         "command": "jetbrainsStyleGo.bookmarks.toggle2",
         "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
       },
       {
-        "key": "ctrl+shift+3",
+        "key": "ctrl+shift+[Digit3]",
         "command": "jetbrainsStyleGo.bookmarks.toggle3",
         "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
       },
       {
-        "key": "ctrl+shift+4",
+        "key": "ctrl+shift+[Digit4]",
         "command": "jetbrainsStyleGo.bookmarks.toggle4",
         "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
       },
       {
-        "key": "ctrl+shift+5",
+        "key": "ctrl+shift+[Digit5]",
         "command": "jetbrainsStyleGo.bookmarks.toggle5",
         "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
       },
       {
-        "key": "ctrl+shift+6",
+        "key": "ctrl+shift+[Digit6]",
         "command": "jetbrainsStyleGo.bookmarks.toggle6",
         "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
       },
       {
-        "key": "ctrl+shift+7",
+        "key": "ctrl+shift+[Digit7]",
         "command": "jetbrainsStyleGo.bookmarks.toggle7",
         "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
       },
       {
-        "key": "ctrl+shift+8",
+        "key": "ctrl+shift+[Digit8]",
         "command": "jetbrainsStyleGo.bookmarks.toggle8",
         "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
       },
       {
-        "key": "ctrl+shift+9",
+        "key": "ctrl+shift+[Digit9]",
         "command": "jetbrainsStyleGo.bookmarks.toggle9",
         "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
       },
       {
-        "key": "ctrl+0",
+        "key": "ctrl+[Digit0]",
         "command": "jetbrainsStyleGo.bookmarks.goTo0",
         "when": "config.golandStyle.bookmarks.golandKeybindings"
       },
       {
-        "key": "ctrl+1",
+        "key": "ctrl+[Digit1]",
         "command": "jetbrainsStyleGo.bookmarks.goTo1",
         "when": "config.golandStyle.bookmarks.golandKeybindings"
       },
       {
-        "key": "ctrl+2",
+        "key": "ctrl+[Digit2]",
         "command": "jetbrainsStyleGo.bookmarks.goTo2",
         "when": "config.golandStyle.bookmarks.golandKeybindings"
       },
       {
-        "key": "ctrl+3",
+        "key": "ctrl+[Digit3]",
         "command": "jetbrainsStyleGo.bookmarks.goTo3",
         "when": "config.golandStyle.bookmarks.golandKeybindings"
       },
       {
-        "key": "ctrl+4",
+        "key": "ctrl+[Digit4]",
         "command": "jetbrainsStyleGo.bookmarks.goTo4",
         "when": "config.golandStyle.bookmarks.golandKeybindings"
       },
       {
-        "key": "ctrl+5",
+        "key": "ctrl+[Digit5]",
         "command": "jetbrainsStyleGo.bookmarks.goTo5",
         "when": "config.golandStyle.bookmarks.golandKeybindings"
       },
       {
-        "key": "ctrl+6",
+        "key": "ctrl+[Digit6]",
         "command": "jetbrainsStyleGo.bookmarks.goTo6",
         "when": "config.golandStyle.bookmarks.golandKeybindings"
       },
       {
-        "key": "ctrl+7",
+        "key": "ctrl+[Digit7]",
         "command": "jetbrainsStyleGo.bookmarks.goTo7",
         "when": "config.golandStyle.bookmarks.golandKeybindings"
       },
       {
-        "key": "ctrl+8",
+        "key": "ctrl+[Digit8]",
         "command": "jetbrainsStyleGo.bookmarks.goTo8",
         "when": "config.golandStyle.bookmarks.golandKeybindings"
       },
       {
-        "key": "ctrl+9",
+        "key": "ctrl+[Digit9]",
         "command": "jetbrainsStyleGo.bookmarks.goTo9",
         "when": "config.golandStyle.bookmarks.golandKeybindings"
       }
@@ -756,7 +760,7 @@
       "workbench.layoutControl.enabled": false,
       "workbench.navigationControl.enabled": false,
       "window.zoomLevel": 0,
-      "window.commandCenter": false,
+      "window.commandCenter": true,
       "breadcrumbs.enabled": false,
       "explorer.compactFolders": false,
       "files.autoSave": "off",
@@ -800,6 +804,8 @@
         120
       ],
       "diffEditor.ignoreTrimWhitespace": false,
+      "debug.toolBarLocation": "commandCenter",
+      "problems.decorations.enabled": false,
       "problems.defaultViewMode": "tree",
       "terminal.integrated.tabs.enabled": true,
       "terminal.integrated.defaultLocation": "view",

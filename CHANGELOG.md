@@ -1,9 +1,15 @@
 # Changelog
 
-## Unreleased
+## 0.4.2
 
 - 重构 README，将安装、Profile、视觉设置、Bookmarks、运行配置、快捷键、Snippets、项目模板和常见问题整理为完整使用手册。
 - 新增实际 VS Code 整体界面、Bookmarks 与运行/调试配置截图，并补充功能覆盖矩阵和发布元数据。
+- 深色与浅色主题的代码注释改为正体显示，与 GoLand 默认注释样式保持一致。
+- 资源管理器隐藏 Problems 警告计数与黄色着色，保留 GoLand 风格的蓝色修改、绿色新增文件状态；默认关闭 Staticcheck 命名类波浪线，同时保留编译、语法和类型诊断。
+- 深色主题的关键字、字符串、数字和常量标识符按 GoLand 截图校准；常量使用 GoLand 的紫色斜体，关闭 import 路径末段的 `namespace` 异色覆盖，并从 Full Profile 移除会额外产生拼写波浪线的 Code Spell Checker。
+- 启用顶部 Command Center，并将调试继续、单步、重启和停止工具栏停靠到窗口顶部，减少对编辑器内容的遮挡并贴近 GoLand 操作位置。
+- Go 编辑器隐藏所有诊断波浪线，诊断结果仍保留在 Problems 列表中供需要时查看。
+- 数字书签改用与键盘布局无关的物理数字键扫描码，修复部分电脑上 `Ctrl+Shift+数字` 被解析为符号后无法触发的问题。
 
 ## 0.4.1
 
