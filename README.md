@@ -124,7 +124,7 @@ Bookmarks 工具窗口按工作区保存书签，并提供以下能力：
 
 `Shift+F11` 打开的弹窗支持直接键入字母跳转到对应助记书签。
 
-GoLand Keymap Profile 会启用完整书签键位。Windows/Linux 默认如下：
+扩展安装后会默认启用完整书签键位；无需额外导入 GoLand Keymap Profile。Windows/Linux 默认如下：
 
 数字书签使用 `[Digit0]` … `[Digit9]` 物理键扫描码注册，因此在不同键盘布局和输入法下仍显示并使用普通的顶排数字键，不会因 `Shift+数字` 被解析成符号而失效。
 
@@ -140,11 +140,11 @@ GoLand Keymap Profile 会启用完整书签键位。Windows/Linux 默认如下�
 
 macOS 对应键位为 `F3`、`Option+F3`、`Command+F3`、`Command+2` 和 `Control+0` … `Control+9`；数字书签仍使用 `Control+Shift+0` … `Control+Shift+9` 设置或取消。
 
-也可以不导入 Keymap Profile，只在设置中启用 `golandStyle.bookmarks.golandKeybindings`。相关设置如下：
+如需恢复 VS Code 原生数字键位，可在设置中关闭 `golandStyle.bookmarks.golandKeybindings`。相关设置如下：
 
 | 设置 | 默认值 | 说明 |
 | --- | --- | --- |
-| `golandStyle.bookmarks.golandKeybindings` | `false` | 启用 GoLand 默认书签快捷键 |
+| `golandStyle.bookmarks.golandKeybindings` | `true` | 启用 GoLand 默认书签快捷键 |
 | `golandStyle.bookmarks.askBeforeReplacingMnemonic` | `true` | 覆盖已被使用的数字或字母前请求确认 |
 | `golandStyle.bookmarks.showOnlyLineBookmarksInPopup` | `true` | `Shift+F11` 弹窗默认只显示代码行书签 |
 
@@ -280,7 +280,7 @@ GoLand 自带运行时中的 JetBrains Mono 不会自动注册为 Windows 系统
 
 ### `Alt+2` 或其他书签快捷键没有反应
 
-确认已经导入 GoLand Keymap Profile，或手动开启 `golandStyle.bookmarks.golandKeybindings`。如果系统、输入法或其他扩展占用了按键，可在 `Preferences: Open Keyboard Shortcuts` 中搜索对应命令检查冲突。
+确认 `golandStyle.bookmarks.golandKeybindings` 没有被手动关闭。如果系统、输入法或其他扩展占用了按键，可在 `Preferences: Open Keyboard Shortcuts` 中搜索对应命令检查冲突。
 
 ## 视觉基准
 

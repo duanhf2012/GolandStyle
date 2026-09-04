@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.3
+
+- 安装扩展后默认启用 GoLand 书签快捷键，顶排 `Ctrl+Shift+0` 至 `Ctrl+Shift+9` 可直接设置或取消数字书签，`Ctrl+0` 至 `Ctrl+9` 可直接跳转；仍可通过 `golandStyle.bookmarks.golandKeybindings` 关闭。
+
 ## 0.4.2
 
 - 重构 README，将安装、Profile、视觉设置、Bookmarks、运行配置、快捷键、Snippets、项目模板和常见问题整理为完整使用手册。

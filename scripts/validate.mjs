@@ -158,8 +158,8 @@ for (const commandId of bookmarkCommandIds) {
 }
 const bookmarkConfiguration = manifest.contributes?.configuration?.properties;
 requireValue(
-  bookmarkConfiguration?.["golandStyle.bookmarks.golandKeybindings"]?.default === false,
-  "核心 Profile 不应默认覆盖 VS Code 书签快捷键",
+  bookmarkConfiguration?.["golandStyle.bookmarks.golandKeybindings"]?.default === true,
+  "安装扩展后必须默认启用 GoLand 书签快捷键",
 );
 const bookmarkKeybindings = manifest.contributes?.keybindings ?? [];
 for (const [key, command] of [

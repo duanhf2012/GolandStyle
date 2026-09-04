@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://github.com/duanhf2012/GolandStyle/issues"
   },
-  "version": "0.4.2",
+  "version": "0.4.3",
   "publisher": "goland-style",
   "icon": "assets/icon.png",
   "license": "SEE LICENSE IN LICENSE",
@@ -395,8 +395,8 @@
       "properties": {
         "golandStyle.bookmarks.golandKeybindings": {
           "type": "boolean",
-          "default": false,
-          "description": "启用 GoLand 默认书签快捷键；GoLand Keymap Profile 会自动开启。"
+          "default": true,
+          "description": "启用 GoLand 默认书签快捷键；安装扩展后默认开启，可关闭以恢复 VS Code 原生数字键位。"
         },
         "golandStyle.bookmarks.askBeforeReplacingMnemonic": {
           "type": "boolean",

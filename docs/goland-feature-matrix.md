@@ -28,7 +28,7 @@
 | Test、子测试、Benchmark、Coverage | 官方 Go 扩展 Test Explorer + 项目任务 | 已包含 |
 | Live Templates | 本扩展 Go Snippets | 已包含 `iferr`、`iferrw`、`gotest`、`gobench`、`gomain` |
 | Bookmarks | 本扩展的 Bookmarks 工具窗口、行号栏装饰和工作区持久化 | 已包含；支持匿名/助记书签、文件与目录、多列表、断点汇总及 GoLand Keymap 快捷键 |
-| 快捷键 | VS Code 原生快捷键或单独 GoLand Keymap Profile | 默认保留 VS Code 键位；Keymap Profile 提供 IntelliJ 键位、`Alt+Left/Right` 历史导航和 GoLand 书签键位 |
+| 快捷键 | VS Code 原生快捷键或单独 GoLand Keymap Profile | 默认启用 GoLand 书签键位；其他导航仍保留 VS Code 键位，Keymap Profile 额外提供 IntelliJ 键位和 `Alt+Left/Right` 历史导航 |
 | 共享 Run/Task 配置 | `templates/.vscode` | 已包含 Package/Test/Attach 调试模板，以及构建、测试、覆盖率、竞态、Benchmark、Vet 和 pprof 任务 |
 | `.editorconfig` | EditorConfig | 按项目需要单独安装 |
 | YAML、JSON Schema、Kubernetes Schema | Red Hat YAML；JSON 由 VS Code 内置 | 按项目需要单独安装 |
