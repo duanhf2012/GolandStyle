@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.5
+
+- 默认关闭 VS Code 内置 AI 功能，移除编辑器右键菜单中的 Chat、Inline Chat、说明和评审入口；用户可将 `chat.disableAIFeatures` 改为 `false` 重新启用。
+- 将官方 Go 扩展散落在编辑器右键菜单中的 5 个常用操作收进“Go 工具”子菜单，保留添加 import、结构体标签、切换测试文件和光标处运行/调试测试。
+- `Go: Show All Commands...` 为官方 Go 扩展固定入口，继续保留在顶层，便于访问其他低频命令。
+
 ## 0.4.4
 
 - 新增 GoLand 风格“复制引用”：编辑器右键菜单和 `Ctrl+Alt+Shift+C` 可复制项目相对路径及当前行号，选中多行时包含行范围。

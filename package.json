@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://github.com/duanhf2012/GolandStyle/issues"
   },
-  "version": "0.4.4",
+  "version": "0.4.5",
   "publisher": "goland-style",
   "icon": "assets/icon.png",
   "license": "SEE LICENSE IN LICENSE",
@@ -77,21 +77,21 @@
       "go.toolsManagement.autoUpdate": false,
       "go.toolsManagement.checkForUpdates": "proxy",
       "go.editorContextMenuCommands": {
-        "toggleTestFile": true,
-        "addTags": true,
+        "toggleTestFile": false,
+        "addTags": false,
         "removeTags": false,
-        "fillStruct": true,
+        "fillStruct": false,
         "implCursor": false,
-        "testAtCursor": true,
+        "testAtCursor": false,
         "testFile": false,
         "testPackage": false,
         "generateTestForFunction": false,
         "generateTestForFile": false,
         "generateTestForPackage": false,
-        "addImport": true,
+        "addImport": false,
         "testCoverage": false,
         "playground": false,
-        "debugTestAtCursor": true,
+        "debugTestAtCursor": false,
         "benchmarkAtCursor": false,
         "compilerDetails": false
       },
@@ -159,6 +159,36 @@
         "command": "jetbrainsStyleGo.copyReference",
         "title": "复制引用",
         "category": "Goland Style"
+      },
+      {
+        "command": "jetbrainsStyleGo.go.addImport",
+        "title": "添加 Import",
+        "category": "Goland Style: Go 工具",
+        "enablement": "editorLangId == go"
+      },
+      {
+        "command": "jetbrainsStyleGo.go.addTags",
+        "title": "添加结构体标签",
+        "category": "Goland Style: Go 工具",
+        "enablement": "editorLangId == go"
+      },
+      {
+        "command": "jetbrainsStyleGo.go.toggleTestFile",
+        "title": "切换源文件/测试文件",
+        "category": "Goland Style: Go 工具",
+        "enablement": "editorLangId == go"
+      },
+      {
+        "command": "jetbrainsStyleGo.go.testAtCursor",
+        "title": "运行光标处测试",
+        "category": "Goland Style: Go 工具",
+        "enablement": "editorLangId == go"
+      },
+      {
+        "command": "jetbrainsStyleGo.go.debugTestAtCursor",
+        "title": "调试光标处测试",
+        "category": "Goland Style: Go 工具",
+        "enablement": "editorLangId == go"
       },
       {
         "command": "jetbrainsStyleGo.runConfigurations.open",
@@ -612,6 +642,10 @@
       {
         "id": "jetbrainsStyleGo.bookmarksMenu",
         "label": "书签"
+      },
+      {
+        "id": "jetbrainsStyleGo.goToolsMenu",
+        "label": "Go 工具"
       }
     ],
     "menus": {
@@ -721,6 +755,11 @@
         {
           "submenu": "jetbrainsStyleGo.copyPasteSpecial",
           "group": "9_cutcopypaste@3"
+        },
+        {
+          "submenu": "jetbrainsStyleGo.goToolsMenu",
+          "when": "editorLangId == go",
+          "group": "8_goland@1"
         }
       ],
       "jetbrainsStyleGo.bookmarksMenu": [
@@ -745,6 +784,50 @@
         {
           "command": "jetbrainsStyleGo.copyReference",
           "group": "navigation@1"
+        }
+      ],
+      "jetbrainsStyleGo.goToolsMenu": [
+        {
+          "command": "jetbrainsStyleGo.go.addImport",
+          "group": "1_edit@1"
+        },
+        {
+          "command": "jetbrainsStyleGo.go.addTags",
+          "group": "1_edit@2"
+        },
+        {
+          "command": "jetbrainsStyleGo.go.toggleTestFile",
+          "group": "2_test@1"
+        },
+        {
+          "command": "jetbrainsStyleGo.go.testAtCursor",
+          "group": "2_test@2"
+        },
+        {
+          "command": "jetbrainsStyleGo.go.debugTestAtCursor",
+          "group": "2_test@3"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "jetbrainsStyleGo.go.addImport",
+          "when": "false"
+        },
+        {
+          "command": "jetbrainsStyleGo.go.addTags",
+          "when": "false"
+        },
+        {
+          "command": "jetbrainsStyleGo.go.toggleTestFile",
+          "when": "false"
+        },
+        {
+          "command": "jetbrainsStyleGo.go.testAtCursor",
+          "when": "false"
+        },
+        {
+          "command": "jetbrainsStyleGo.go.debugTestAtCursor",
+          "when": "false"
         }
       ],
       "editor/lineNumber/context": [
@@ -803,6 +886,7 @@
       }
     ],
     "configurationDefaults": {
+      "chat.disableAIFeatures": true,
       "workbench.colorTheme": "JetBrains New UI Dark (Unofficial)",
       "workbench.iconTheme": "jetbrains-file-icon-theme-dark",
       "workbench.productIconTheme": "jetbrains-product-icon-theme",

@@ -102,6 +102,7 @@ const context = {
       version: "test",
       contributes: {
         configurationDefaults: {
+          "chat.disableAIFeatures": true,
           "editor.fontSize": 13.5,
           "editor.lineHeight": 21,
         },
@@ -133,21 +134,35 @@ assert(commands.has("jetbrainsStyleGo.applySettings"));
 assert(commands.has("jetbrainsStyleGo.restoreSettings"));
 assert(commands.has("jetbrainsStyleGo.installFont"));
 assert(commands.has("jetbrainsStyleGo.repairGoNavigation"));
+for (const commandId of [
+  "jetbrainsStyleGo.go.addImport",
+  "jetbrainsStyleGo.go.addTags",
+  "jetbrainsStyleGo.go.toggleTestFile",
+  "jetbrainsStyleGo.go.testAtCursor",
+  "jetbrainsStyleGo.go.debugTestAtCursor",
+]) {
+  assert(commands.has(commandId));
+}
+await commands.get("jetbrainsStyleGo.go.addImport")();
+assert(executedCommands.includes("go.import.add"));
 await new Promise((resolve) => setImmediate(resolve));
 assert.equal(globalSettings.get("editor.fontSize"), 13.5);
 assert.equal(globalSettings.get("editor.lineHeight"), 21);
+assert.equal(globalSettings.get("chat.disableAIFeatures"), true);
 assert.equal(globalSettings.get("go.useLanguageServer"), true);
 assert.equal(globalState.get("appliedSettingsVersion"), "test");
 
 await commands.get("jetbrainsStyleGo.applySettings")();
 assert.equal(globalSettings.get("editor.fontSize"), 13.5);
 assert.equal(globalSettings.get("editor.lineHeight"), 21);
+assert.equal(globalSettings.get("chat.disableAIFeatures"), true);
 assert.equal(globalSettings.get("go.useLanguageServer"), true);
 assert(executedCommands.includes("workbench.action.closeAuxiliaryBar"));
 
 await commands.get("jetbrainsStyleGo.restoreSettings")();
 assert.equal(globalSettings.get("editor.fontSize"), 15);
 assert.equal(globalSettings.has("editor.lineHeight"), false);
+assert.equal(globalSettings.has("chat.disableAIFeatures"), false);
 assert.equal(globalSettings.has("go.useLanguageServer"), false);
 assert.equal(globalState.has("settingsBackup"), false);
 assert(updates.length >= 4);

@@ -169,6 +169,34 @@ requireValue(
   "书签命令不应继续占用编辑器顶层右键菜单",
 );
 requireValue(
+  manifest.contributes?.submenus?.some(
+    ({ id, label }) => id === "jetbrainsStyleGo.goToolsMenu" && label === "Go 工具",
+  ) &&
+    contributionMenus["editor/context"]?.some(
+      ({ submenu, when }) =>
+        submenu === "jetbrainsStyleGo.goToolsMenu" && when === "editorLangId == go",
+    ),
+  "Go 编辑器右键菜单缺少 Go 工具子菜单",
+);
+for (const commandId of [
+  "jetbrainsStyleGo.go.addImport",
+  "jetbrainsStyleGo.go.addTags",
+  "jetbrainsStyleGo.go.toggleTestFile",
+  "jetbrainsStyleGo.go.testAtCursor",
+  "jetbrainsStyleGo.go.debugTestAtCursor",
+]) {
+  requireValue(
+    contributedCommands.some(({ command }) => command === commandId) &&
+      contributionMenus["jetbrainsStyleGo.goToolsMenu"]?.some(
+        ({ command }) => command === commandId,
+      ) &&
+      contributionMenus.commandPalette?.some(
+        ({ command, when }) => command === commandId && when === "false",
+      ),
+    `Go 工具子菜单缺少或重复暴露 ${commandId}`,
+  );
+}
+requireValue(
   contributionMenus["view/title"]?.some(
     ({ command, when }) =>
       command === "jetbrainsStyleGo.runConfigurations.open" &&
@@ -345,10 +373,6 @@ for (const commandName of [
   "testAtCursor",
   "addImport",
   "debugTestAtCursor",
-]) {
-  requireValue(compactGoContextMenu?.[commandName] === true, `Go 右键菜单应保留 ${commandName}`);
-}
-for (const commandName of [
   "removeTags",
   "implCursor",
   "testFile",
@@ -361,7 +385,10 @@ for (const commandName of [
   "benchmarkAtCursor",
   "compilerDetails",
 ]) {
-  requireValue(compactGoContextMenu?.[commandName] === false, `Go 右键菜单应隐藏 ${commandName}`);
+  requireValue(
+    compactGoContextMenu?.[commandName] === false,
+    `官方 Go 扩展顶层右键菜单应隐藏 ${commandName}`,
+  );
 }
 requireValue(
   !Object.hasOwn(defaults, "editor.lineNumbersMinChars"),
@@ -517,7 +544,8 @@ requireValue(
   templateSettings.gopls?.["ui.diagnostic.staticcheck"] === false &&
     templateSettings.gopls?.["ui.semanticTokenTypes"]?.namespace === false &&
     templateSettings["[go]"]?.["editor.renderValidationDecorations"] === "off" &&
-    templateSettings["go.editorContextMenuCommands"]?.addImport === true &&
+    templateSettings["go.editorContextMenuCommands"]?.addImport === false &&
+    templateSettings["go.editorContextMenuCommands"]?.toggleTestFile === false &&
     templateSettings["go.editorContextMenuCommands"]?.playground === false,
   "项目模板的 gopls 诊断与 import 语义色设置未和扩展默认值同步",
 );

@@ -19,6 +19,7 @@
 | Bookmarks | 匿名、数字、字母、文件和目录书签，多列表管理、断点汇总、持久化及代码行位置跟随 |
 | 运行/调试配置 | 在原生“运行和调试”侧栏集中浏览配置，通过表单编辑 `launch.json`，并直接运行或调试 |
 | 测试与任务 | Test Explorer、Benchmark、Coverage，以及构建、测试、竞态检测、Vet 和性能分析任务模板 |
+| 精简 AI 菜单 | 默认关闭 VS Code 内置 AI 功能，隐藏编辑器右键菜单中的 Chat、Inline Chat、说明和评审入口；可通过设置重新启用 |
 | 可撤销设置 | 自动应用主题和布局前保存用户全局设置，可通过命令恢复并停止后续自动应用 |
 | Profile | Core、Full、GoLand Keymap 三套可导入 Profile，按使用场景控制扩展数量 |
 
@@ -115,7 +116,7 @@ service/adminservice/AdminPlayerService.go:42
 扩展保留 VS Code 常用的导航、查找引用、重构、剪切/复制/粘贴和调试入口，同时做两项安全精简：
 
 - 本扩展的匿名书签、助记书签、书签弹窗和 Bookmarks 工具窗口统一收进“书签”子菜单；
-- Go 扩展只在右键菜单保留添加 import、添加结构体标签、填充结构体、运行/调试光标处测试、切换源文件/测试文件，其他低频命令仍可从命令面板或 Test Explorer 使用。
+- 官方 Go 扩展散落的高频入口统一收进“Go 工具”子菜单，其中包含添加 import、添加结构体标签、切换源文件/测试文件，以及光标处运行/调试测试。其他低频命令仍可从 `Go: Show All Commands...`、命令面板或 Test Explorer 使用。
 
 VS Code 的内置菜单和其他扩展（例如 Chat）只能由各自的公开设置控制；Goland Style 不修改 VS Code 安装文件，也不使用内部存储强行隐藏这些项目，以免升级后菜单损坏。需要恢复 Go 扩展的某个入口时，可在设置中修改 `go.editorContextMenuCommands`。
 
