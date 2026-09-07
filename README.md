@@ -102,7 +102,7 @@ sh ./scripts/install.sh
 
 ## GoLand 风格复制引用
 
-在已保存文件的编辑器中右键选择“复制/粘贴特殊 → 复制引用”，或按 `Ctrl+Alt+Shift+C`，即可复制当前代码位置：
+在已保存文件的编辑器中右键选择“GoLand Style → 复制/粘贴特殊 → 复制引用”，或按 `Ctrl+Alt+Shift+C`，即可复制当前代码位置：
 
 ```text
 service/adminservice/AdminPlayerService.go:42
@@ -112,12 +112,13 @@ service/adminservice/AdminPlayerService.go:42
 
 ## 精简的编辑器右键菜单
 
-扩展保留 VS Code 常用的导航、查找引用、重构、剪切/复制/粘贴和调试入口，同时做两项安全精简：
+扩展保留 VS Code 常用的导航、查找引用、重构、剪切/复制/粘贴和调试入口，并把本扩展可控的功能统一收进靠上的“GoLand Style”总菜单：
 
-- 本扩展的匿名书签、助记书签、书签弹窗和 Bookmarks 工具窗口统一收进“书签”子菜单；
-- Go 扩展只在右键菜单保留添加 import、添加结构体标签、填充结构体、运行/调试光标处测试、切换源文件/测试文件，其他低频命令仍可从命令面板或 Test Explorer 使用。
+- “复制/粘贴特殊”包含复制代码引用；
+- “书签”包含匿名书签、助记书签、书签弹窗和 Bookmarks 工具窗口；
+- “Go 工具”包含添加 import、添加结构体标签、切换源文件/测试文件，以及光标处运行/调试测试。
 
-VS Code 的内置菜单和其他扩展（例如 Chat）只能由各自的公开设置控制；Goland Style 不修改 VS Code 安装文件，也不使用内部存储强行隐藏这些项目，以免升级后菜单损坏。需要恢复 Go 扩展的某个入口时，可在设置中修改 `go.editorContextMenuCommands`。
+官方 Go 扩展原先位于底部的对应顶层入口默认关闭，低频命令仍可从“Go: Show All Commands...”、命令面板或 Test Explorer 使用。VS Code 将原生剪切、复制、粘贴固定在 `9_cutcopypaste` 分组；普通扩展只能给自己贡献的菜单排序，无法把这些内置项目移动到上方。Goland Style 因此不添加一套重复的剪切/复制/粘贴，以免菜单反而更长。其他扩展（例如 Chat）的菜单也只能由各自的公开设置控制。
 
 ## GoLand 风格书签
 
