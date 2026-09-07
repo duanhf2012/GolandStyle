@@ -27,8 +27,8 @@
 | Run/Debug、断点、变量、调用栈 | 官方 Go 扩展 + Delve + 本扩展的 `launch.json` 可视化配置编辑器 | 已包含；原生 Run and Debug 侧栏显示配置列表和运行/调试按钮，调试控制条停靠在顶部 Command Center，支持 Go 常用字段与原始 JSONC |
 | Test、子测试、Benchmark、Coverage | 官方 Go 扩展 Test Explorer + 项目任务 | 已包含 |
 | Live Templates | 本扩展 Go Snippets | 已包含 `iferr`、`iferrw`、`gotest`、`gobench`、`gomain` |
-| Copy Reference | 本扩展的“GoLand Style → 复制/粘贴特殊 → 复制引用” | 已包含；`Ctrl+Alt+Shift+C` 复制项目相对路径和当前行号，支持选区行范围 |
-| 编辑器右键菜单 | VS Code 内置菜单 + 本扩展“GoLand Style”总菜单 | 已包含；复制引用、书签和 5 个高频 Go 操作归入一个靠上的分类；VS Code 原生剪切/复制/粘贴位置不支持由扩展移动 |
+| Copy Reference | 本扩展的“复制/粘贴特殊 → 复制引用” | 已包含；`Ctrl+Alt+Shift+C` 复制项目相对路径和当前行号，支持选区行范围 |
+| 编辑器右键菜单 | VS Code 内置菜单 + 本扩展书签子菜单 + Go 扩展菜单白名单 | 已包含；保留常用导航、编辑、重构、调试和 6 个高频 Go 操作，其他扩展菜单不使用非公开方式强制隐藏 |
 | Bookmarks | 本扩展的 Bookmarks 工具窗口、行号栏装饰和工作区持久化 | 已包含；支持匿名/助记书签、文件与目录、多列表、断点汇总及 GoLand Keymap 快捷键 |
 | 快捷键 | VS Code 原生快捷键或单独 GoLand Keymap Profile | 默认启用 GoLand 书签键位；其他导航仍保留 VS Code 键位，Keymap Profile 额外提供 IntelliJ 键位和 `Alt+Left/Right` 历史导航 |
 | 共享 Run/Task 配置 | `templates/.vscode` | 已包含 Package/Test/Attach 调试模板，以及构建、测试、覆盖率、竞态、Benchmark、Vet 和 pprof 任务 |

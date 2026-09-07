@@ -20,13 +20,6 @@ const bundledFonts = [
   ["JetBrainsMono-Italic.ttf", "JetBrains Mono Italic (TrueType)"],
   ["JetBrainsMono-BoldItalic.ttf", "JetBrains Mono Bold Italic (TrueType)"],
 ];
-const goContextMenuCommandProxies = {
-  "jetbrainsStyleGo.go.addImport": "go.import.add",
-  "jetbrainsStyleGo.go.addTags": "go.add.tags",
-  "jetbrainsStyleGo.go.toggleTestFile": "go.toggle.test.file",
-  "jetbrainsStyleGo.go.testAtCursor": "go.test.cursor",
-  "jetbrainsStyleGo.go.debugTestAtCursor": "go.debug.cursor",
-};
 
 function fontTargetDirectory() {
   if (process.platform === "win32") {
@@ -299,23 +292,10 @@ async function repairGoNavigation() {
   }
 }
 
-function activateGoContextMenu(context) {
-  for (const [commandId, targetCommandId] of Object.entries(
-    goContextMenuCommandProxies,
-  )) {
-    context.subscriptions.push(
-      vscode.commands.registerCommand(commandId, (...args) =>
-        vscode.commands.executeCommand(targetCommandId, ...args),
-      ),
-    );
-  }
-}
-
 function activate(context) {
   activateBookmarks(vscode, context);
   activateCopyReference(vscode, context);
   activateRunConfigurationEditor(vscode, context);
-  activateGoContextMenu(context);
   context.subscriptions.push(
     vscode.commands.registerCommand("jetbrainsStyleGo.applySettings", () =>
       applySettings(context),

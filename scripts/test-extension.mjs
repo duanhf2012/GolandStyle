@@ -133,17 +133,6 @@ assert(commands.has("jetbrainsStyleGo.applySettings"));
 assert(commands.has("jetbrainsStyleGo.restoreSettings"));
 assert(commands.has("jetbrainsStyleGo.installFont"));
 assert(commands.has("jetbrainsStyleGo.repairGoNavigation"));
-for (const commandId of [
-  "jetbrainsStyleGo.go.addImport",
-  "jetbrainsStyleGo.go.addTags",
-  "jetbrainsStyleGo.go.toggleTestFile",
-  "jetbrainsStyleGo.go.testAtCursor",
-  "jetbrainsStyleGo.go.debugTestAtCursor",
-]) {
-  assert(commands.has(commandId));
-}
-await commands.get("jetbrainsStyleGo.go.addImport")();
-assert(executedCommands.includes("go.import.add"));
 await new Promise((resolve) => setImmediate(resolve));
 assert.equal(globalSettings.get("editor.fontSize"), 13.5);
 assert.equal(globalSettings.get("editor.lineHeight"), 21);

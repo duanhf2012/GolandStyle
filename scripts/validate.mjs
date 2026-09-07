@@ -132,38 +132,21 @@ requireValue(
   "缺少复制/粘贴特殊子菜单",
 );
 requireValue(
-  manifest.contributes?.submenus?.some(
-    ({ id, label }) =>
-      id === "jetbrainsStyleGo.editorContextMenu" && label === "GoLand Style",
+  contributionMenus["editor/context"]?.some(
+    ({ submenu }) => submenu === "jetbrainsStyleGo.copyPasteSpecial",
   ) &&
-    contributionMenus["editor/context"]?.some(
-      ({ submenu, group }) =>
-        submenu === "jetbrainsStyleGo.editorContextMenu" && group === "2_goland@1",
-    ),
-  "编辑器右键菜单缺少靠上的 GoLand Style 总入口",
-);
-for (const submenuId of [
-  "jetbrainsStyleGo.copyPasteSpecial",
-  "jetbrainsStyleGo.bookmarksMenu",
-  "jetbrainsStyleGo.goToolsMenu",
-]) {
-  requireValue(
-    contributionMenus["jetbrainsStyleGo.editorContextMenu"]?.some(
-      ({ submenu }) => submenu === submenuId,
-    ),
-    `GoLand Style 总入口缺少 ${submenuId}`,
-  );
-}
-requireValue(
     contributionMenus["jetbrainsStyleGo.copyPasteSpecial"]?.some(
       ({ command }) => command === "jetbrainsStyleGo.copyReference",
     ),
-  "复制/粘贴特殊子菜单缺少复制引用入口",
+  "编辑器右键菜单缺少复制引用入口",
 );
 requireValue(
   manifest.contributes?.submenus?.some(
     ({ id, label }) => id === "jetbrainsStyleGo.bookmarksMenu" && label === "书签",
-  ),
+  ) &&
+    contributionMenus["editor/context"]?.some(
+      ({ submenu }) => submenu === "jetbrainsStyleGo.bookmarksMenu",
+    ),
   "编辑器右键菜单缺少书签子菜单",
 );
 for (const commandId of [
@@ -180,28 +163,11 @@ for (const commandId of [
   );
 }
 requireValue(
-  contributionMenus["editor/context"]?.length === 1,
-  "编辑器顶层右键菜单只应保留一个 GoLand Style 总入口",
+  !contributionMenus["editor/context"]?.some(
+    ({ command }) => command?.startsWith("jetbrainsStyleGo.bookmarks."),
+  ),
+  "书签命令不应继续占用编辑器顶层右键菜单",
 );
-const goProxyCommands = [
-  "jetbrainsStyleGo.go.addImport",
-  "jetbrainsStyleGo.go.addTags",
-  "jetbrainsStyleGo.go.toggleTestFile",
-  "jetbrainsStyleGo.go.testAtCursor",
-  "jetbrainsStyleGo.go.debugTestAtCursor",
-];
-for (const commandId of goProxyCommands) {
-  requireValue(
-    contributedCommands.some(({ command }) => command === commandId) &&
-      contributionMenus["jetbrainsStyleGo.goToolsMenu"]?.some(
-        ({ command }) => command === commandId,
-      ) &&
-      contributionMenus.commandPalette?.some(
-        ({ command, when }) => command === commandId && when === "false",
-      ),
-    `Go 工具子菜单缺少或重复暴露 ${commandId}`,
-  );
-}
 requireValue(
   contributionMenus["view/title"]?.some(
     ({ command, when }) =>
@@ -379,6 +345,10 @@ for (const commandName of [
   "testAtCursor",
   "addImport",
   "debugTestAtCursor",
+]) {
+  requireValue(compactGoContextMenu?.[commandName] === true, `Go 右键菜单应保留 ${commandName}`);
+}
+for (const commandName of [
   "removeTags",
   "implCursor",
   "testFile",
@@ -391,10 +361,7 @@ for (const commandName of [
   "benchmarkAtCursor",
   "compilerDetails",
 ]) {
-  requireValue(
-    compactGoContextMenu?.[commandName] === false,
-    `Go 扩展顶层右键菜单应隐藏 ${commandName}`,
-  );
+  requireValue(compactGoContextMenu?.[commandName] === false, `Go 右键菜单应隐藏 ${commandName}`);
 }
 requireValue(
   !Object.hasOwn(defaults, "editor.lineNumbersMinChars"),
@@ -550,8 +517,7 @@ requireValue(
   templateSettings.gopls?.["ui.diagnostic.staticcheck"] === false &&
     templateSettings.gopls?.["ui.semanticTokenTypes"]?.namespace === false &&
     templateSettings["[go]"]?.["editor.renderValidationDecorations"] === "off" &&
-    templateSettings["go.editorContextMenuCommands"]?.addImport === false &&
-    templateSettings["go.editorContextMenuCommands"]?.toggleTestFile === false &&
+    templateSettings["go.editorContextMenuCommands"]?.addImport === true &&
     templateSettings["go.editorContextMenuCommands"]?.playground === false,
   "项目模板的 gopls 诊断与 import 语义色设置未和扩展默认值同步",
 );
