@@ -111,6 +111,64 @@ requireValue(
 );
 const contributionMenus = manifest.contributes?.menus ?? {};
 requireValue(
+  contributedCommands.some(({ command }) => command === "jetbrainsStyleGo.copyReference"),
+  "缺少复制代码引用命令",
+);
+requireValue(
+  manifest.contributes?.keybindings?.some(
+    ({ key, mac, command, when }) =>
+      key === "ctrl+alt+shift+c" &&
+      mac === "cmd+alt+shift+c" &&
+      command === "jetbrainsStyleGo.copyReference" &&
+      when?.includes("editorTextFocus"),
+  ),
+  "复制代码引用快捷键未匹配 GoLand",
+);
+requireValue(
+  manifest.contributes?.submenus?.some(
+    ({ id, label }) =>
+      id === "jetbrainsStyleGo.copyPasteSpecial" && label === "复制/粘贴特殊",
+  ),
+  "缺少复制/粘贴特殊子菜单",
+);
+requireValue(
+  contributionMenus["editor/context"]?.some(
+    ({ submenu }) => submenu === "jetbrainsStyleGo.copyPasteSpecial",
+  ) &&
+    contributionMenus["jetbrainsStyleGo.copyPasteSpecial"]?.some(
+      ({ command }) => command === "jetbrainsStyleGo.copyReference",
+    ),
+  "编辑器右键菜单缺少复制引用入口",
+);
+requireValue(
+  manifest.contributes?.submenus?.some(
+    ({ id, label }) => id === "jetbrainsStyleGo.bookmarksMenu" && label === "书签",
+  ) &&
+    contributionMenus["editor/context"]?.some(
+      ({ submenu }) => submenu === "jetbrainsStyleGo.bookmarksMenu",
+    ),
+  "编辑器右键菜单缺少书签子菜单",
+);
+for (const commandId of [
+  "jetbrainsStyleGo.bookmarks.toggle",
+  "jetbrainsStyleGo.bookmarks.toggleMnemonic",
+  "jetbrainsStyleGo.bookmarks.show",
+  "jetbrainsStyleGo.bookmarks.openView",
+]) {
+  requireValue(
+    contributionMenus["jetbrainsStyleGo.bookmarksMenu"]?.some(
+      ({ command }) => command === commandId,
+    ),
+    `书签子菜单缺少 ${commandId}`,
+  );
+}
+requireValue(
+  !contributionMenus["editor/context"]?.some(
+    ({ command }) => command?.startsWith("jetbrainsStyleGo.bookmarks."),
+  ),
+  "书签命令不应继续占用编辑器顶层右键菜单",
+);
+requireValue(
   contributionMenus["view/title"]?.some(
     ({ command, when }) =>
       command === "jetbrainsStyleGo.runConfigurations.open" &&
@@ -279,6 +337,32 @@ requireValue(
   runtimeSettings["[go]"]?.["editor.renderValidationDecorations"] === "off",
   "Go 编辑器应隐藏诊断波浪线",
 );
+const compactGoContextMenu = runtimeSettings["go.editorContextMenuCommands"];
+for (const commandName of [
+  "toggleTestFile",
+  "addTags",
+  "fillStruct",
+  "testAtCursor",
+  "addImport",
+  "debugTestAtCursor",
+]) {
+  requireValue(compactGoContextMenu?.[commandName] === true, `Go 右键菜单应保留 ${commandName}`);
+}
+for (const commandName of [
+  "removeTags",
+  "implCursor",
+  "testFile",
+  "testPackage",
+  "generateTestForFunction",
+  "generateTestForFile",
+  "generateTestForPackage",
+  "testCoverage",
+  "playground",
+  "benchmarkAtCursor",
+  "compilerDetails",
+]) {
+  requireValue(compactGoContextMenu?.[commandName] === false, `Go 右键菜单应隐藏 ${commandName}`);
+}
 requireValue(
   !Object.hasOwn(defaults, "editor.lineNumbersMinChars"),
   "editor.lineNumbersMinChars 未被 VS Code 注册，不能作为扩展默认配置",
@@ -432,7 +516,9 @@ const templateSettings = await readJson("templates/.vscode/settings.json");
 requireValue(
   templateSettings.gopls?.["ui.diagnostic.staticcheck"] === false &&
     templateSettings.gopls?.["ui.semanticTokenTypes"]?.namespace === false &&
-    templateSettings["[go]"]?.["editor.renderValidationDecorations"] === "off",
+    templateSettings["[go]"]?.["editor.renderValidationDecorations"] === "off" &&
+    templateSettings["go.editorContextMenuCommands"]?.addImport === true &&
+    templateSettings["go.editorContextMenuCommands"]?.playground === false,
   "项目模板的 gopls 诊断与 import 语义色设置未和扩展默认值同步",
 );
 

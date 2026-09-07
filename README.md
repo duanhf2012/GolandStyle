@@ -15,6 +15,7 @@
 | 视觉 | 深色/浅色 JetBrains New UI 风格主题、文件图标、产品图标、紧凑布局和 JetBrains Mono 排版 |
 | Go 开发 | 官方 Go 扩展、`gopls`、Delve、语义高亮、Inlay Hints、保存格式化和整理 import |
 | 导航 | 默认保留 VS Code 键位；可导入 GoLand Keymap，启用 `Ctrl+B`、`Shift+F6`、`Alt+Left/Right` 等习惯 |
+| 代码引用 | 右键“复制/粘贴特殊 → 复制引用”，或按 `Ctrl+Alt+Shift+C`，复制项目相对路径和行号 |
 | Bookmarks | 匿名、数字、字母、文件和目录书签，多列表管理、断点汇总、持久化及代码行位置跟随 |
 | 运行/调试配置 | 在原生“运行和调试”侧栏集中浏览配置，通过表单编辑 `launch.json`，并直接运行或调试 |
 | 测试与任务 | Test Explorer、Benchmark、Coverage，以及构建、测试、竞态检测、Vet 和性能分析任务模板 |
@@ -98,6 +99,25 @@ sh ./scripts/install.sh
 资源管理器默认隐藏 Problems 的黄色警告计数和着色，让文件名优先显示 GoLand 风格的 VCS 状态：修改为蓝色、新增为绿色。Go 编辑器不显示诊断波浪线，但编译、语法和类型诊断数据仍保留在 Problems 列表中；如需恢复行内波浪线，将 Go 语言设置中的 `editor.renderValidationDecorations` 改为 `on`。如需恢复 Staticcheck，可在用户设置的 `gopls` 对象中将 `ui.diagnostic.staticcheck` 改为 `true`。Go import 路径关闭 `namespace` 语义覆盖，使整段路径保持与 GoLand 一致的字符串绿色。
 
 调试会话启动后，继续、暂停、单步、重启和停止按钮显示在窗口顶部的 Command Center，不再悬浮遮挡编辑器。未启动调试时仍可通过左侧“运行和调试”、编辑器运行入口或快捷键启动配置。
+
+## GoLand 风格复制引用
+
+在已保存文件的编辑器中右键选择“复制/粘贴特殊 → 复制引用”，或按 `Ctrl+Alt+Shift+C`，即可复制当前代码位置：
+
+```text
+service/adminservice/AdminPlayerService.go:42
+```
+
+选中多行时会复制行范围，例如 `service/adminservice/AdminPlayerService.go:42-48`。工作区内使用项目相对路径，便于粘贴到聊天、Issue、终端和代码评审；工作区外的文件回退为绝对路径。macOS 快捷键为 `Command+Option+Shift+C`。
+
+## 精简的编辑器右键菜单
+
+扩展保留 VS Code 常用的导航、查找引用、重构、剪切/复制/粘贴和调试入口，同时做两项安全精简：
+
+- 本扩展的匿名书签、助记书签、书签弹窗和 Bookmarks 工具窗口统一收进“书签”子菜单；
+- Go 扩展只在右键菜单保留添加 import、添加结构体标签、填充结构体、运行/调试光标处测试、切换源文件/测试文件，其他低频命令仍可从命令面板或 Test Explorer 使用。
+
+VS Code 的内置菜单和其他扩展（例如 Chat）只能由各自的公开设置控制；Goland Style 不修改 VS Code 安装文件，也不使用内部存储强行隐藏这些项目，以免升级后菜单损坏。需要恢复 Go 扩展的某个入口时，可在设置中修改 `go.editorContextMenuCommands`。
 
 ## GoLand 风格书签
 

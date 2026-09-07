@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://github.com/duanhf2012/GolandStyle/issues"
   },
-  "version": "0.4.3",
+  "version": "0.4.4",
   "publisher": "goland-style",
   "icon": "assets/icon.png",
   "license": "SEE LICENSE IN LICENSE",
@@ -76,6 +76,25 @@
       },
       "go.toolsManagement.autoUpdate": false,
       "go.toolsManagement.checkForUpdates": "proxy",
+      "go.editorContextMenuCommands": {
+        "toggleTestFile": true,
+        "addTags": true,
+        "removeTags": false,
+        "fillStruct": true,
+        "implCursor": false,
+        "testAtCursor": true,
+        "testFile": false,
+        "testPackage": false,
+        "generateTestForFunction": false,
+        "generateTestForFile": false,
+        "generateTestForPackage": false,
+        "addImport": true,
+        "testCoverage": false,
+        "playground": false,
+        "debugTestAtCursor": true,
+        "benchmarkAtCursor": false,
+        "compilerDetails": false
+      },
       "gopls": {
         "formatting.gofumpt": true,
         "ui.completion.usePlaceholders": true,
@@ -134,6 +153,11 @@
       {
         "command": "jetbrainsStyleGo.repairGoNavigation",
         "title": "修复 Go 跳转（gopls）",
+        "category": "Goland Style"
+      },
+      {
+        "command": "jetbrainsStyleGo.copyReference",
+        "title": "复制引用",
         "category": "Goland Style"
       },
       {
@@ -412,6 +436,12 @@
     },
     "keybindings": [
       {
+        "key": "ctrl+alt+shift+c",
+        "mac": "cmd+alt+shift+c",
+        "command": "jetbrainsStyleGo.copyReference",
+        "when": "editorTextFocus"
+      },
+      {
         "key": "f11",
         "mac": "f3",
         "command": "jetbrainsStyleGo.bookmarks.toggle",
@@ -574,6 +604,16 @@
         }
       ]
     },
+    "submenus": [
+      {
+        "id": "jetbrainsStyleGo.copyPasteSpecial",
+        "label": "复制/粘贴特殊"
+      },
+      {
+        "id": "jetbrainsStyleGo.bookmarksMenu",
+        "label": "书签"
+      }
+    ],
     "menus": {
       "editor/title": [
         {
@@ -675,12 +715,36 @@
       ],
       "editor/context": [
         {
-          "command": "jetbrainsStyleGo.bookmarks.toggle",
+          "submenu": "jetbrainsStyleGo.bookmarksMenu",
           "group": "navigation@90"
         },
         {
+          "submenu": "jetbrainsStyleGo.copyPasteSpecial",
+          "group": "9_cutcopypaste@3"
+        }
+      ],
+      "jetbrainsStyleGo.bookmarksMenu": [
+        {
+          "command": "jetbrainsStyleGo.bookmarks.toggle",
+          "group": "navigation@1"
+        },
+        {
           "command": "jetbrainsStyleGo.bookmarks.toggleMnemonic",
-          "group": "navigation@91"
+          "group": "navigation@2"
+        },
+        {
+          "command": "jetbrainsStyleGo.bookmarks.show",
+          "group": "navigation@3"
+        },
+        {
+          "command": "jetbrainsStyleGo.bookmarks.openView",
+          "group": "navigation@4"
+        }
+      ],
+      "jetbrainsStyleGo.copyPasteSpecial": [
+        {
+          "command": "jetbrainsStyleGo.copyReference",
+          "group": "navigation@1"
         }
       ],
       "editor/lineNumber/context": [
@@ -819,10 +883,11 @@
     "prepare:dist": "node ./scripts/prepare-dist.mjs",
     "check:js": "node --check ./extension.js",
     "check:bookmarks": "node --check ./bookmarks.js && node ./scripts/test-bookmarks.mjs",
+    "check:copy-reference": "node --check ./copy-reference.js && node ./scripts/test-copy-reference.mjs",
     "check:run-config": "node --check ./run-config-editor.js && node --check ./media/run-config-editor.js && node ./scripts/test-run-config-editor.mjs",
     "check:runtime": "node ./scripts/test-extension.mjs",
     "check": "node ./scripts/validate.mjs",
-    "test": "npm run build:profile && npm run check:js && npm run check:bookmarks && npm run check:run-config && npm run check:runtime && npm run check",
+    "test": "npm run build:profile && npm run check:js && npm run check:bookmarks && npm run check:copy-reference && npm run check:run-config && npm run check:runtime && npm run check",
     "package": "npm run test && npm run prepare:dist && vsce package --allow-missing-repository --out dist/Goland-Style.vsix",
     "publish": "npm run test && vsce publish"
   },

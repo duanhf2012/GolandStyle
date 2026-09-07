@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.4
+
+- 新增 GoLand 风格“复制引用”：编辑器右键菜单和 `Ctrl+Alt+Shift+C` 可复制项目相对路径及当前行号，选中多行时包含行范围。
+- 精简 Go 编辑器右键菜单：书签操作合并到子菜单，Go 扩展仅保留添加 import、结构体标签/填充、光标处运行/调试测试和切换测试文件等高频入口。
+
 ## 0.4.3
 
 - 安装扩展后默认启用 GoLand 书签快捷键，顶排 `Ctrl+Shift+0` 至 `Ctrl+Shift+9` 可直接设置或取消数字书签，`Ctrl+0` 至 `Ctrl+9` 可直接跳转；仍可通过 `golandStyle.bookmarks.golandKeybindings` 关闭。

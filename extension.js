@@ -5,6 +5,7 @@ const path = require("node:path");
 const { promisify } = require("node:util");
 const { execFile: execFileCallback } = require("node:child_process");
 const { activateBookmarks } = require("./bookmarks");
+const { activateCopyReference } = require("./copy-reference");
 const { activateRunConfigurationEditor } = require("./run-config-editor");
 
 const execFile = promisify(execFileCallback);
@@ -293,6 +294,7 @@ async function repairGoNavigation() {
 
 function activate(context) {
   activateBookmarks(vscode, context);
+  activateCopyReference(vscode, context);
   activateRunConfigurationEditor(vscode, context);
   context.subscriptions.push(
     vscode.commands.registerCommand("jetbrainsStyleGo.applySettings", () =>
