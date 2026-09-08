@@ -68,6 +68,9 @@ const bookmarkCommandIds = [
 ];
 const contributedCommands = manifest.contributes?.commands ?? [];
 for (const commandId of [
+  "jetbrainsStyleGo.usages.find",
+  "jetbrainsStyleGo.usages.refresh",
+  "jetbrainsStyleGo.usages.clear",
   "jetbrainsStyleGo.runConfigurations.open",
   "jetbrainsStyleGo.runConfigurations.refresh",
   "jetbrainsStyleGo.runConfigurations.editItem",
@@ -79,6 +82,21 @@ for (const commandId of [
     `缺少运行配置命令 ${commandId}`,
   );
 }
+requireValue(
+  manifest.activationEvents?.includes("onCommand:jetbrainsStyleGo.usages.find") &&
+    manifest.activationEvents?.includes("onView:jetbrainsStyleGo.findUsagesView"),
+  "缺少查找用法命令或工具窗口激活事件",
+);
+const findUsagesContainer = manifest.contributes?.viewsContainers?.panel?.find(
+  ({ id }) => id === "jetbrainsStyleGo-usages",
+);
+requireValue(findUsagesContainer, "查找用法必须位于底部 Panel 工具窗口");
+requireValue(
+  manifest.contributes?.views?.["jetbrainsStyleGo-usages"]?.some(
+    ({ id }) => id === "jetbrainsStyleGo.findUsagesView",
+  ),
+  "缺少 GoLand 风格查找用法树",
+);
 const runConfigurationEditor = manifest.contributes?.customEditors?.find(
   ({ viewType }) => viewType === "jetbrainsStyleGo.runConfigurationEditor",
 );
@@ -114,6 +132,45 @@ requireValue(
   contributedCommands.some(({ command }) => command === "jetbrainsStyleGo.copyReference"),
   "缺少复制代码引用命令",
 );
+requireValue(
+  manifest.contributes?.keybindings?.some(
+    ({ key, command, when }) =>
+      key === "alt+f7" &&
+      command === "jetbrainsStyleGo.usages.find" &&
+      when?.includes("editorLangId == go"),
+  ),
+  "查找用法快捷键必须匹配 GoLand 的 Alt+F7",
+);
+requireValue(
+  manifest.contributes?.keybindings?.some(
+    ({ key, command, when }) =>
+      key === "shift+alt+f7" &&
+      command === "jetbrainsStyleGo.usages.find" &&
+      when?.includes("editorLangId == go"),
+  ),
+  "查找用法必须提供无冲突的 Shift+Alt+F7 备用快捷键",
+);
+requireValue(
+  contributionMenus["editor/context"]?.some(
+    ({ command, when }) =>
+      command === "jetbrainsStyleGo.usages.find" &&
+      when?.includes("editorLangId == go"),
+  ),
+  "Go 编辑器右键菜单缺少查找用法入口",
+);
+for (const commandId of [
+  "jetbrainsStyleGo.usages.find",
+  "jetbrainsStyleGo.usages.refresh",
+  "jetbrainsStyleGo.usages.clear",
+]) {
+  requireValue(
+    contributionMenus["view/title"]?.some(
+      ({ command, when }) =>
+        command === commandId && when === "view == jetbrainsStyleGo.findUsagesView",
+    ),
+    `查找用法标题栏缺少 ${commandId}`,
+  );
+}
 requireValue(
   manifest.contributes?.keybindings?.some(
     ({ key, mac, command, when }) =>
@@ -249,7 +306,7 @@ requireValue(
 );
 const bookmarkKeybindings = manifest.contributes?.keybindings ?? [];
 for (const [key, command] of [
-  ["f11", "jetbrainsStyleGo.bookmarks.toggle"],
+  ["shift+alt+b", "jetbrainsStyleGo.bookmarks.toggle"],
   ["ctrl+f11", "jetbrainsStyleGo.bookmarks.toggleMnemonic"],
   ["shift+f11", "jetbrainsStyleGo.bookmarks.show"],
   ["alt+2", "jetbrainsStyleGo.bookmarks.openView"],
@@ -264,6 +321,13 @@ for (const [key, command] of [
     `GoLand 书签快捷键 ${key} 未正确注册`,
   );
 }
+requireValue(
+  !bookmarkKeybindings.some(
+    ({ key, command }) =>
+      key === "f11" && command.startsWith("jetbrainsStyleGo.bookmarks."),
+  ),
+  "书签功能不得占用调试单步进入使用的 F11",
+);
 for (let digit = 0; digit <= 9; digit += 1) {
   requireValue(
     bookmarkKeybindings.some(
@@ -334,6 +398,10 @@ requireValue(defaults["window.commandCenter"] === true, "应启用顶部 Command
 requireValue(
   defaults["debug.toolBarLocation"] === "commandCenter",
   "调试工具栏应显示在顶部 Command Center",
+);
+requireValue(
+  defaults["chat.disableAIFeatures"] === true,
+  "应默认关闭内置 AI 功能以精简编辑器右键菜单",
 );
 requireValue(defaults["workbench.tree.indent"] === 16, "Project 树缩进应为 16");
 requireValue(
@@ -512,11 +580,31 @@ requireValue(
   ),
   "GoLand Keymap Profile 必须移除 Alt+Right 的编辑器标签切换",
 );
+requireValue(
+  keymapKeybindings.some(
+    ({ key, command, when }) =>
+      key === "alt+f7" &&
+      command === "jetbrainsStyleGo.usages.find" &&
+      when?.includes("editorLangId == go"),
+  ),
+  "GoLand Keymap Profile 必须将 Alt+F7 绑定到查找用法",
+);
+requireValue(
+  keymapKeybindings.some(
+    ({ key, command, when }) =>
+      key === "shift+alt+f7" &&
+      command === "jetbrainsStyleGo.usages.find" &&
+      when?.includes("editorLangId == go"),
+  ),
+  "GoLand Keymap Profile 必须提供 Shift+Alt+F7 备用查找用法键位",
+);
 
 for (const relativePath of [
   "assets/icon.png",
   "assets/bookmark.svg",
+  "assets/usages.svg",
   "bookmarks.js",
+  "find-usages.js",
   "run-config-editor.js",
   "media/run-config-editor.css",
   "media/run-config-editor.js",

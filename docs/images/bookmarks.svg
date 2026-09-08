@@ -72,7 +72,7 @@
   <g font-family="Segoe UI, sans-serif" font-size="13">
     <text x="32" y="689" fill="#BCBEC4">设置：Ctrl+Shift+数字</text>
     <text x="270" y="689" fill="#BCBEC4">跳转：Ctrl+数字</text>
-    <text x="468" y="689" fill="#BCBEC4">匿名：F11</text>
+    <text x="468" y="689" fill="#BCBEC4">匿名：Shift+Alt+B</text>
     <text x="610" y="689" fill="#BCBEC4">助记：Ctrl+F11</text>
     <text x="810" y="689" fill="#BCBEC4">列表：Alt+2</text>
     <text x="968" y="689" fill="#BCBEC4">弹窗：Shift+F11</text>

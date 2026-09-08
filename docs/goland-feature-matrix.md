@@ -2,7 +2,7 @@
 
 本项目以 GoLand 的日常 Go 开发工作流为目标，不宣称复制 JetBrains 的专有实现。核心只使用 VS Code 内置能力、官方 Go 扩展、微软简体中文包和两套视觉图标主题；其他第三方工具不自动安装。
 
-[返回 README](../README.md) · [查看运行配置实际截图](images/run-configurations.png) · [查看书签实际截图](images/bookmarks.png)
+[返回 README](../README.md) · [查看查找用法说明](../README.md#goland-风格查找用法) · [查看运行配置实际截图](images/run-configurations.png) · [查看书签实际截图](images/bookmarks.png)
 
 状态说明：
 
@@ -19,7 +19,8 @@
 | JetBrains Mono 排版 | 随扩展附带 JetBrains Mono 2.304 四个基础字形 | 已包含；安装字体命令需用户确认，只安装到当前系统用户 |
 | 简体中文界面 | Microsoft `vscode-language-pack-zh-hans` | 已包含；首次安装后运行“配置显示语言”并选择 `zh-cn` |
 | Project 文件树、搜索、结构视图 | VS Code Explorer、Search、Outline、Breadcrumbs | 内置；主题已校准颜色、缩进和选中态，隐藏 Problems 着色以保留蓝色修改、绿色新增的 VCS 状态语义 |
-| Go 语义高亮、补全、导航、查找引用 | 官方 Go 扩展 + `gopls` | 已包含 |
+| Go 语义高亮、补全、导航、查找引用 | 官方 Go 扩展 + `gopls` | 已包含；原生 `Shift+F12` 查找引用仍可使用 |
+| GoLand 风格查找用法 | 本扩展底部“查找用法”工具窗口 + `gopls` | 已包含；`Alt+F7` 或备用 `Shift+Alt+F7` 查询，结果按声明/写入/读取、工作区、目录、文件、接收器结构体和函数/方法分组，单击代码位置可精确跳转 |
 | Rename、Extract、Inline、Quick Fix | 官方 Go 扩展 + `gopls` Code Actions | 已包含；具体重构范围随 `gopls` 演进 |
 | Inspection、静态分析 | `gopls` diagnostics + staticcheck | 保留编译、语法和类型诊断数据并可在 Problems 中查看；编辑器波浪线和 Staticcheck 风格警告默认关闭，可由用户按需开启 |
 | 参数名、类型等 Inlay Hints | `gopls` inlay hints | 已包含并默认开启 |
@@ -30,7 +31,7 @@
 | Copy Reference | 本扩展的“复制/粘贴特殊 → 复制引用” | 已包含；`Ctrl+Alt+Shift+C` 复制项目相对路径和当前行号，支持选区行范围 |
 | 编辑器右键菜单 | VS Code 内置菜单 + 本扩展书签与 Go 工具子菜单 | 已包含；5 个高频 Go 操作统一收进“Go 工具”，其他扩展菜单不使用非公开方式强制隐藏 |
 | Bookmarks | 本扩展的 Bookmarks 工具窗口、行号栏装饰和工作区持久化 | 已包含；支持匿名/助记书签、文件与目录、多列表、断点汇总及 GoLand Keymap 快捷键 |
-| 快捷键 | VS Code 原生快捷键或单独 GoLand Keymap Profile | 默认启用 GoLand 书签键位；其他导航仍保留 VS Code 键位，Keymap Profile 额外提供 IntelliJ 键位和 `Alt+Left/Right` 历史导航 |
+| 快捷键 | VS Code 原生快捷键或单独 GoLand Keymap Profile | 默认启用 GoLand 书签键位；`F11` 专用于调试单步进入，匿名书签改为 `Shift+Alt+B`；Keymap Profile 额外提供 IntelliJ 键位和 `Alt+Left/Right` 历史导航 |
 | 共享 Run/Task 配置 | `templates/.vscode` | 已包含 Package/Test/Attach 调试模板，以及构建、测试、覆盖率、竞态、Benchmark、Vet 和 pprof 任务 |
 | `.editorconfig` | EditorConfig | 按项目需要单独安装 |
 | YAML、JSON Schema、Kubernetes Schema | Red Hat YAML；JSON 由 VS Code 内置 | 按项目需要单独安装 |

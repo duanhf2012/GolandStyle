@@ -6,6 +6,7 @@ const { promisify } = require("node:util");
 const { execFile: execFileCallback } = require("node:child_process");
 const { activateBookmarks } = require("./bookmarks");
 const { activateCopyReference } = require("./copy-reference");
+const { activateFindUsages } = require("./find-usages");
 const { activateRunConfigurationEditor } = require("./run-config-editor");
 
 const execFile = promisify(execFileCallback);
@@ -314,6 +315,7 @@ function activateGoContextMenu(context) {
 function activate(context) {
   activateBookmarks(vscode, context);
   activateCopyReference(vscode, context);
+  activateFindUsages(vscode, context);
   activateRunConfigurationEditor(vscode, context);
   activateGoContextMenu(context);
   context.subscriptions.push(

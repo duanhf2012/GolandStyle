@@ -15,6 +15,7 @@
 | 视觉 | 深色/浅色 JetBrains New UI 风格主题、文件图标、产品图标、紧凑布局和 JetBrains Mono 排版 |
 | Go 开发 | 官方 Go 扩展、`gopls`、Delve、语义高亮、Inlay Hints、保存格式化和整理 import |
 | 导航 | 默认保留 VS Code 键位；可导入 GoLand Keymap，启用 `Ctrl+B`、`Shift+F6`、`Alt+Left/Right` 等习惯 |
+| 查找用法 | `Alt+F7` 或无冲突备用键 `Shift+Alt+F7` 打开底部工具窗口，按声明/写入/读取、目录、文件、结构体和函数分层浏览 `gopls` 引用 |
 | 代码引用 | 右键“复制/粘贴特殊 → 复制引用”，或按 `Ctrl+Alt+Shift+C`，复制项目相对路径和行号 |
 | Bookmarks | 匿名、数字、字母、文件和目录书签，多列表管理、断点汇总、持久化及代码行位置跟随 |
 | 运行/调试配置 | 在原生“运行和调试”侧栏集中浏览配置，通过表单编辑 `launch.json`，并直接运行或调试 |
@@ -94,12 +95,40 @@ sh ./scripts/install.sh
 | `Goland Style: 恢复应用前的设置` | 恢复第一次应用前的全局值，并停止后续自动应用 |
 | `Goland Style: 安装 JetBrains Mono 字体` | 将附带的 JetBrains Mono 2.304 四个基础字形安装到当前系统用户 |
 | `Goland Style: 修复 Go 跳转（gopls）` | 检查官方 Go 扩展、工作区信任和语言服务状态，并尝试重启 `gopls` |
+| `Goland Style: 查找用法` | 在底部打开按读写类型和代码容器分组的 Go 引用结果 |
 
 字体安装会先显示确认提示。没有安装 JetBrains Mono 时，VS Code 会回退到 Consolas；扩展附带字体遵循 `assets/fonts/OFL.txt` 中的 SIL Open Font License 1.1。
 
 资源管理器默认隐藏 Problems 的黄色警告计数和着色，让文件名优先显示 GoLand 风格的 VCS 状态：修改为蓝色、新增为绿色。Go 编辑器不显示诊断波浪线，但编译、语法和类型诊断数据仍保留在 Problems 列表中；如需恢复行内波浪线，将 Go 语言设置中的 `editor.renderValidationDecorations` 改为 `on`。如需恢复 Staticcheck，可在用户设置的 `gopls` 对象中将 `ui.diagnostic.staticcheck` 改为 `true`。Go import 路径关闭 `namespace` 语义覆盖，使整段路径保持与 GoLand 一致的字符串绿色。
 
 调试会话启动后，继续、暂停、单步、重启和停止按钮显示在窗口顶部的 Command Center，不再悬浮遮挡编辑器。未启动调试时仍可通过左侧“运行和调试”、编辑器运行入口或快捷键启动配置。
+
+## GoLand 风格查找用法
+
+在 Go 标识符上按 `Alt+F7`，或在编辑器右键菜单选择“查找用法”，底部会打开独立的“查找用法”工具窗口。若 IntelliJ Keymap 等扩展占用了 `Alt+F7`，可直接使用备用键 `Shift+Alt+F7`。它不会替换 VS Code 原生的 `Shift+F12` 查找引用；两种方式可以并存。
+
+结果按以下层次组织：
+
+```text
+SeasonScore
+├─ 声明
+├─ 写入值
+│  └─ 工作区 → 目录 → 文件 → 接收器结构体 → 函数/方法 → 代码位置
+└─ 读取值
+   └─ 工作区 → 目录 → 文件 → 接收器结构体 → 函数/方法 → 代码位置
+```
+
+引用搜索、符号识别和读写标记均复用官方 Go 扩展的 `gopls` 结果。单击最末级代码位置会打开文件并选中对应标识符；标题栏提供重新查找、刷新、清空和全部折叠。没有接收器的普通函数会直接显示在文件下，包级引用也会保留为文件级结果。
+
+少数无法由语言服务器明确标记的复合表达式会根据赋值语法进行保守分类。结果范围仍受当前 `gopls` 工作区和 Go build 配置约束，例如互斥平台构建标签中的文件不会同时出现在一次查询里。
+
+| 入口或操作 | 使用方式 |
+| --- | --- |
+| 查找光标处标识符的用法 | `Alt+F7`；若被其他扩展占用则使用 `Shift+Alt+F7` |
+| 从编辑器右键打开 | Go 文件中选择“查找用法” |
+| 跳转到某个结果 | 单击最末级代码位置 |
+| 重新查询当前符号 | 工具窗口标题栏的搜索按钮 |
+| 刷新 / 清空 / 折叠 | 使用工具窗口标题栏对应按钮 |
 
 ## GoLand 风格复制引用
 
@@ -113,12 +142,13 @@ service/adminservice/AdminPlayerService.go:42
 
 ## 精简的编辑器右键菜单
 
-扩展保留 VS Code 常用的导航、查找引用、重构、剪切/复制/粘贴和调试入口，同时做两项安全精简：
+扩展保留 VS Code 常用的导航、查找引用、重构、剪切/复制/粘贴和调试入口，同时做以下安全精简：
 
+- 使用公开的 `chat.disableAIFeatures` 设置默认隐藏 Chat、Inline Chat、说明和评审入口；需要 AI 功能时可将该设置改为 `false`；
 - 本扩展的匿名书签、助记书签、书签弹窗和 Bookmarks 工具窗口统一收进“书签”子菜单；
 - 官方 Go 扩展散落的高频入口统一收进“Go 工具”子菜单，其中包含添加 import、添加结构体标签、切换源文件/测试文件，以及光标处运行/调试测试。其他低频命令仍可从 `Go: Show All Commands...`、命令面板或 Test Explorer 使用。
 
-VS Code 的内置菜单和其他扩展（例如 Chat）只能由各自的公开设置控制；Goland Style 不修改 VS Code 安装文件，也不使用内部存储强行隐藏这些项目，以免升级后菜单损坏。需要恢复 Go 扩展的某个入口时，可在设置中修改 `go.editorContextMenuCommands`。
+Goland Style 只使用 VS Code 和相关扩展的公开设置，不修改 VS Code 安装文件，也不使用内部存储强行隐藏菜单，以免升级后损坏。需要恢复 Go 扩展的某个入口时，可在设置中修改 `go.editorContextMenuCommands`。
 
 ## GoLand 风格书签
 
@@ -141,7 +171,7 @@ Bookmarks 工具窗口按工作区保存书签，并提供以下能力：
 1. 在代码行按 `Ctrl+Shift+数字` 设置或取消数字书签。
 2. 在任意位置按 `Ctrl+数字` 跳转到对应书签。
 3. 按 `Alt+2` 打开 Bookmarks 工具窗口，浏览所有行、文件、目录书签和断点。
-4. 需要匿名书签时按 `F11`；需要数字或字母助记符选择器时按 `Ctrl+F11`。
+4. 需要匿名书签时按 `Shift+Alt+B`；需要数字或字母助记符选择器时按 `Ctrl+F11`。
 
 `Shift+F11` 打开的弹窗支持直接键入字母跳转到对应助记书签。
 
@@ -151,7 +181,7 @@ Bookmarks 工具窗口按工作区保存书签，并提供以下能力：
 
 | 操作 | 快捷键 |
 | --- | --- |
-| 切换匿名行书签 | `F11` |
+| 切换匿名行书签 | `Shift+Alt+B` |
 | 添加或修改数字/字母助记书签 | `Ctrl+F11` |
 | 直接设置/取消数字书签 | `Ctrl+Shift+0` … `Ctrl+Shift+9` |
 | 显示行书签弹窗 | `Shift+F11` |
@@ -159,7 +189,7 @@ Bookmarks 工具窗口按工作区保存书签，并提供以下能力：
 | 跳转到数字书签 | `Ctrl+0` … `Ctrl+9` |
 | 工具窗口中跳到下一个/上一个书签 | `Ctrl+Alt+Down` / `Ctrl+Alt+Up` |
 
-macOS 对应键位为 `F3`、`Option+F3`、`Command+F3`、`Command+2` 和 `Control+0` … `Control+9`；数字书签仍使用 `Control+Shift+0` … `Control+Shift+9` 设置或取消。
+macOS 对应键位为 `Shift+Option+B`、`Option+F3`、`Command+F3`、`Command+2` 和 `Control+0` … `Control+9`；数字书签仍使用 `Control+Shift+0` … `Control+Shift+9` 设置或取消。
 
 如需恢复 VS Code 原生数字键位，可在设置中关闭 `golandStyle.bookmarks.golandKeybindings`。相关设置如下：
 
@@ -217,6 +247,7 @@ macOS 对应键位为 `F3`、`Option+F3`、`Command+F3`、`Command+2` 和 `Contr
 | 分类 | 用户命令 |
 | --- | --- |
 | 外观与环境 | 应用 GoLand 风格设置、恢复应用前的设置、安装 JetBrains Mono 字体、修复 Go 跳转（gopls） |
+| 查找用法 | 查找用法；工具窗口内可重新查找、刷新、清空和全部折叠 |
 | 运行配置 | 编辑运行/调试配置；列表内提供编辑、刷新、运行和调试操作 |
 | 行书签 | 切换匿名书签、切换助记书签、显示行书签、下一个/上一个行书签、当前编辑器中的下一个/上一个行书签 |
 | 书签资源 | 添加或删除文件/目录书签、添加文件/目录助记书签、重命名、删除、移除助记符、移动和排序 |
@@ -231,8 +262,10 @@ macOS 对应键位为 `F3`、`Option+F3`、`Command+F3`、`Command+2` 和 `Contr
 | --- | --- |
 | 跳转到定义 | `F12` |
 | 查找引用 | `Shift+F12` |
+| GoLand 风格查找用法 | `Alt+F7`，备用 `Shift+Alt+F7` |
 | 重命名 | `F2` |
 | 快速修复 | `Ctrl+.` |
+| 调试单步进入 | `F11` |
 
 GoLand Keymap Profile 会额外安装 `IntelliJ IDEA Keybindings`，并把 Windows 的位置历史导航调整为：
 
@@ -365,7 +398,7 @@ profile/jetbrains-style-go-goland-keymap.code-profile
 profile/jetbrains-style-go-full.code-profile
 ```
 
-`npm test` 会重新生成三套 Profile，并检查核心/完整扩展依赖、主题、参考色、字体参数、Snippets、Bookmarks、运行配置 JSONC 保真、扩展运行时设置和项目模板。
+`npm test` 会重新生成三套 Profile，并检查核心/完整扩展依赖、主题、参考色、字体参数、Snippets、Bookmarks、查找用法的读写分类与符号分组、运行配置 JSONC 保真、扩展运行时设置和项目模板；同时验证书签命令不会占用调试单步进入所需的 `F11`。
 
 Marketplace 发布流程见 [发布说明](docs/publishing.md)。
 

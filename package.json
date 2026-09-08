@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://github.com/duanhf2012/GolandStyle/issues"
   },
-  "version": "0.4.5",
+  "version": "0.5.0",
   "publisher": "goland-style",
   "icon": "assets/icon.png",
   "license": "SEE LICENSE IN LICENSE",
@@ -18,6 +18,8 @@
   "main": "./extension.js",
   "activationEvents": [
     "onStartupFinished",
+    "onCommand:jetbrainsStyleGo.usages.find",
+    "onView:jetbrainsStyleGo.findUsagesView",
     "onCommand:jetbrainsStyleGo.runConfigurations.open",
     "onCustomEditor:jetbrainsStyleGo.runConfigurationEditor",
     "onView:jetbrainsStyleGo.runConfigurationsView"
@@ -159,6 +161,25 @@
         "command": "jetbrainsStyleGo.copyReference",
         "title": "复制引用",
         "category": "Goland Style"
+      },
+      {
+        "command": "jetbrainsStyleGo.usages.find",
+        "title": "查找用法",
+        "category": "Goland Style",
+        "icon": "$(search)",
+        "enablement": "editorLangId == go"
+      },
+      {
+        "command": "jetbrainsStyleGo.usages.refresh",
+        "title": "刷新查找用法",
+        "category": "Goland Style",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "jetbrainsStyleGo.usages.clear",
+        "title": "清空查找用法",
+        "category": "Goland Style",
+        "icon": "$(clear-all)"
       },
       {
         "command": "jetbrainsStyleGo.go.addImport",
@@ -466,14 +487,26 @@
     },
     "keybindings": [
       {
+        "key": "alt+f7",
+        "mac": "alt+f7",
+        "command": "jetbrainsStyleGo.usages.find",
+        "when": "editorTextFocus && editorLangId == go && editorHasReferenceProvider"
+      },
+      {
+        "key": "shift+alt+f7",
+        "mac": "shift+alt+f7",
+        "command": "jetbrainsStyleGo.usages.find",
+        "when": "editorTextFocus && editorLangId == go && editorHasReferenceProvider"
+      },
+      {
         "key": "ctrl+alt+shift+c",
         "mac": "cmd+alt+shift+c",
         "command": "jetbrainsStyleGo.copyReference",
         "when": "editorTextFocus"
       },
       {
-        "key": "f11",
-        "mac": "f3",
+        "key": "shift+alt+b",
+        "mac": "shift+alt+b",
         "command": "jetbrainsStyleGo.bookmarks.toggle",
         "when": "config.golandStyle.bookmarks.golandKeybindings && editorTextFocus"
       },
@@ -615,6 +648,13 @@
           "title": "Bookmarks",
           "icon": "assets/bookmark.svg"
         }
+      ],
+      "panel": [
+        {
+          "id": "jetbrainsStyleGo-usages",
+          "title": "查找用法",
+          "icon": "assets/usages.svg"
+        }
       ]
     },
     "views": {
@@ -631,6 +671,12 @@
         {
           "id": "jetbrainsStyleGo.bookmarksView",
           "name": "Bookmarks"
+        }
+      ],
+      "jetbrainsStyleGo-usages": [
+        {
+          "id": "jetbrainsStyleGo.findUsagesView",
+          "name": "查找用法"
         }
       ]
     },
@@ -664,6 +710,21 @@
         }
       ],
       "view/title": [
+        {
+          "command": "jetbrainsStyleGo.usages.find",
+          "when": "view == jetbrainsStyleGo.findUsagesView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "jetbrainsStyleGo.usages.refresh",
+          "when": "view == jetbrainsStyleGo.findUsagesView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "jetbrainsStyleGo.usages.clear",
+          "when": "view == jetbrainsStyleGo.findUsagesView",
+          "group": "navigation@3"
+        },
         {
           "command": "jetbrainsStyleGo.runConfigurations.open",
           "when": "view == jetbrainsStyleGo.runConfigurationsView",
@@ -748,6 +809,11 @@
         }
       ],
       "editor/context": [
+        {
+          "command": "jetbrainsStyleGo.usages.find",
+          "when": "editorLangId == go && editorHasReferenceProvider",
+          "group": "navigation@80"
+        },
         {
           "submenu": "jetbrainsStyleGo.bookmarksMenu",
           "group": "navigation@90"
@@ -863,6 +929,10 @@
     },
     "viewsWelcome": [
       {
+        "view": "jetbrainsStyleGo.findUsagesView",
+        "contents": "在 Go 标识符上按 [Alt+F7](command:jetbrainsStyleGo.usages.find) 查找用法。"
+      },
+      {
         "view": "jetbrainsStyleGo.runConfigurationsView",
         "contents": "当前工作区还没有运行配置。\n[创建运行/调试配置](command:jetbrainsStyleGo.runConfigurations.open)"
       }
@@ -968,10 +1038,11 @@
     "check:js": "node --check ./extension.js",
     "check:bookmarks": "node --check ./bookmarks.js && node ./scripts/test-bookmarks.mjs",
     "check:copy-reference": "node --check ./copy-reference.js && node ./scripts/test-copy-reference.mjs",
+    "check:find-usages": "node --check ./find-usages.js && node ./scripts/test-find-usages.mjs",
     "check:run-config": "node --check ./run-config-editor.js && node --check ./media/run-config-editor.js && node ./scripts/test-run-config-editor.mjs",
     "check:runtime": "node ./scripts/test-extension.mjs",
     "check": "node ./scripts/validate.mjs",
-    "test": "npm run build:profile && npm run check:js && npm run check:bookmarks && npm run check:copy-reference && npm run check:run-config && npm run check:runtime && npm run check",
+    "test": "npm run build:profile && npm run check:js && npm run check:bookmarks && npm run check:copy-reference && npm run check:find-usages && npm run check:run-config && npm run check:runtime && npm run check",
     "package": "npm run test && npm run prepare:dist && vsce package --allow-missing-repository --out dist/Goland-Style.vsix",
     "publish": "npm run test && vsce publish"
   },

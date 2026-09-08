@@ -40,6 +40,16 @@ const golandNavigationKeybindings = [
     when: "canNavigateForward",
   },
   {
+    key: "alt+f7",
+    command: "jetbrainsStyleGo.usages.find",
+    when: "editorTextFocus && editorLangId == go && editorHasReferenceProvider",
+  },
+  {
+    key: "shift+alt+f7",
+    command: "jetbrainsStyleGo.usages.find",
+    when: "editorTextFocus && editorLangId == go && editorHasReferenceProvider",
+  },
+  {
     key: "ctrl+alt+left",
     command: "-workbench.action.navigateBack",
     when: "canNavigateBack",

@@ -12,6 +12,7 @@ const globalSettings = new Map([["editor.fontSize", 15]]);
 const updates = [];
 let bookmarksActivated = false;
 let copyReferenceActivated = false;
+let findUsagesActivated = false;
 let runConfigurationEditorActivated = false;
 
 const configuration = {
@@ -82,6 +83,13 @@ wrapper(
         },
       };
     }
+    if (id === "./find-usages") {
+      return {
+        activateFindUsages() {
+          findUsagesActivated = true;
+        },
+      };
+    }
     if (id === "./run-config-editor") {
       return {
         activateRunConfigurationEditor() {
@@ -129,6 +137,7 @@ const context = {
 extensionModule.exports.activate(context);
 assert.equal(bookmarksActivated, true);
 assert.equal(copyReferenceActivated, true);
+assert.equal(findUsagesActivated, true);
 assert.equal(runConfigurationEditorActivated, true);
 assert(commands.has("jetbrainsStyleGo.applySettings"));
 assert(commands.has("jetbrainsStyleGo.restoreSettings"));
