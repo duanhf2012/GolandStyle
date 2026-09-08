@@ -373,10 +373,13 @@ class FindUsagesManager {
       const occurrences = await this.analyzeLocations(references, definitions);
       if (requestNumber !== this.requestNumber) return;
       const root = buildUsageTree(symbolName, occurrences);
+      // 首次使用时先让底部视图完成创建，再发布树数据。否则隐藏视图可能
+      // 只渲染出父节点计数，却错过默认展开节点的首轮子节点刷新。
+      await this.vscode.commands.executeCommand(`${viewId}.focus`);
+      if (requestNumber !== this.requestNumber) return;
       this.provider.setRoot(root);
       this.treeView.message = undefined;
       this.treeView.description = `${root.count}`;
-      await this.vscode.commands.executeCommand(`${viewId}.focus`);
       if (references.length === 0) {
         await this.vscode.window.showInformationMessage(`未找到“${symbolName}”的用法。`);
       }

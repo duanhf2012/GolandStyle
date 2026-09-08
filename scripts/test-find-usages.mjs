@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
 
+const eventOrder = [];
+
 const require = createRequire(import.meta.url);
 const {
   activateFindUsages,
@@ -39,7 +41,9 @@ class EventEmitter {
     this.event = () => ({ dispose() {} });
   }
 
-  fire() {}
+  fire() {
+    eventOrder.push("treeDataChanged");
+  }
   dispose() {}
 }
 
@@ -177,6 +181,9 @@ const vscode = {
     },
     async executeCommand(id, uri) {
       executedCommands.push(id);
+      if (id === "jetbrainsStyleGo.findUsagesView.focus") {
+        eventOrder.push("viewFocused");
+      }
       if (id === "vscode.executeReferenceProvider") return [declaration, write, read, read];
       if (id === "vscode.executeDefinitionProvider") return [declaration];
       if (id === "vscode.executeDocumentSymbolProvider") return symbols.get(uri.toString());
@@ -249,6 +256,11 @@ const readCategory = manager.provider.root.children[2];
 const readFile = readCategory.children[0].children[0].children[0];
 assert.equal(readFile.children[0].label, "Read");
 assert(executedCommands.includes("jetbrainsStyleGo.findUsagesView.focus"));
+assert.deepEqual(
+  eventOrder.slice(0, 2),
+  ["viewFocused", "treeDataChanged"],
+  "首次查找必须先创建并聚焦视图，再发布树数据",
+);
 
 const locationNode = readFile.children[0].children[0];
 const treeItem = treeProvider.getTreeItem(locationNode);
