@@ -20,7 +20,7 @@
 | 简体中文界面 | Microsoft `vscode-language-pack-zh-hans` | 已包含；首次安装后运行“配置显示语言”并选择 `zh-cn` |
 | Project 文件树、搜索、结构视图 | VS Code Explorer、Search、Outline、Breadcrumbs | 内置；主题已校准颜色、缩进和选中态，隐藏 Problems 着色以保留蓝色修改、绿色新增的 VCS 状态语义 |
 | Go 语义高亮、补全、导航、查找引用 | 官方 Go 扩展 + `gopls` | 已包含；原生 `Shift+F12` 查找引用仍可使用 |
-| GoLand 风格查找用法 | 本扩展底部“查找用法”工具窗口 + `gopls` | 已包含；`Alt+F7` 或备用 `Shift+Alt+F7` 查询，结果按声明/写入/读取、工作区、目录、文件、接收器结构体和函数/方法分组，单击代码位置可精确跳转 |
+| GoLand 风格查找用法 | 本扩展底部“查找用法”工具窗口 + `gopls` | 已包含；`Alt+F7` 查询，结果按声明/写入/读取、工作区、目录、文件、接收器结构体和函数/方法分组，单击代码位置可精确跳转；`Shift+Alt+F7` 保留原生“查找所有引用” |
 | Rename、Extract、Inline、Quick Fix | 官方 Go 扩展 + `gopls` Code Actions | 已包含；具体重构范围随 `gopls` 演进 |
 | Inspection、静态分析 | `gopls` diagnostics + staticcheck | 保留编译、语法和类型诊断数据并可在 Problems 中查看；编辑器波浪线和 Staticcheck 风格警告默认关闭，可由用户按需开启 |
 | 参数名、类型等 Inlay Hints | `gopls` inlay hints | 已包含并默认开启 |

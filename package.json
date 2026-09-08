@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://github.com/duanhf2012/GolandStyle/issues"
   },
-  "version": "0.5.0",
+  "version": "0.5.1",
   "publisher": "goland-style",
   "icon": "assets/icon.png",
   "license": "SEE LICENSE IN LICENSE",
@@ -489,14 +489,20 @@
       {
         "key": "alt+f7",
         "mac": "alt+f7",
+        "command": "-references-view.findReferences",
+        "when": "editorHasReferenceProvider"
+      },
+      {
+        "key": "alt+f7",
+        "mac": "alt+f7",
         "command": "jetbrainsStyleGo.usages.find",
         "when": "editorTextFocus && editorLangId == go && editorHasReferenceProvider"
       },
       {
         "key": "shift+alt+f7",
         "mac": "shift+alt+f7",
-        "command": "jetbrainsStyleGo.usages.find",
-        "when": "editorTextFocus && editorLangId == go && editorHasReferenceProvider"
+        "command": "references-view.findReferences",
+        "when": "editorTextFocus && editorHasReferenceProvider"
       },
       {
         "key": "ctrl+alt+shift+c",

@@ -41,13 +41,18 @@ const golandNavigationKeybindings = [
   },
   {
     key: "alt+f7",
+    command: "-references-view.findReferences",
+    when: "editorHasReferenceProvider",
+  },
+  {
+    key: "alt+f7",
     command: "jetbrainsStyleGo.usages.find",
     when: "editorTextFocus && editorLangId == go && editorHasReferenceProvider",
   },
   {
     key: "shift+alt+f7",
-    command: "jetbrainsStyleGo.usages.find",
-    when: "editorTextFocus && editorLangId == go && editorHasReferenceProvider",
+    command: "references-view.findReferences",
+    when: "editorTextFocus && editorHasReferenceProvider",
   },
   {
     key: "ctrl+alt+left",

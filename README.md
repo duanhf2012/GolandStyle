@@ -15,7 +15,7 @@
 | 视觉 | 深色/浅色 JetBrains New UI 风格主题、文件图标、产品图标、紧凑布局和 JetBrains Mono 排版 |
 | Go 开发 | 官方 Go 扩展、`gopls`、Delve、语义高亮、Inlay Hints、保存格式化和整理 import |
 | 导航 | 默认保留 VS Code 键位；可导入 GoLand Keymap，启用 `Ctrl+B`、`Shift+F6`、`Alt+Left/Right` 等习惯 |
-| 查找用法 | `Alt+F7` 或无冲突备用键 `Shift+Alt+F7` 打开底部工具窗口，按声明/写入/读取、目录、文件、结构体和函数分层浏览 `gopls` 引用 |
+| 查找用法 | `Alt+F7` 打开底部工具窗口，按声明/写入/读取、目录、文件、结构体和函数分层浏览 `gopls` 引用；`Shift+Alt+F7` 保留原生“查找所有引用” |
 | 代码引用 | 右键“复制/粘贴特殊 → 复制引用”，或按 `Ctrl+Alt+Shift+C`，复制项目相对路径和行号 |
 | Bookmarks | 匿名、数字、字母、文件和目录书签，多列表管理、断点汇总、持久化及代码行位置跟随 |
 | 运行/调试配置 | 在原生“运行和调试”侧栏集中浏览配置，通过表单编辑 `launch.json`，并直接运行或调试 |
@@ -105,7 +105,7 @@ sh ./scripts/install.sh
 
 ## GoLand 风格查找用法
 
-在 Go 标识符上按 `Alt+F7`，或在编辑器右键菜单选择“查找用法”，底部会打开独立的“查找用法”工具窗口。若 IntelliJ Keymap 等扩展占用了 `Alt+F7`，可直接使用备用键 `Shift+Alt+F7`。它不会替换 VS Code 原生的 `Shift+F12` 查找引用；两种方式可以并存。
+在 Go 标识符上按 `Alt+F7`，或在编辑器右键菜单选择“查找用法”，底部会打开独立的“查找用法”工具窗口。扩展会解除 IntelliJ Keybindings 对 `Alt+F7` 的原生引用绑定，避免同键冲突；`Shift+Alt+F7` 改为打开 VS Code 原生“查找所有引用”，原生 `Shift+F12` 也仍可使用。
 
 结果按以下层次组织：
 
@@ -124,7 +124,8 @@ SeasonScore
 
 | 入口或操作 | 使用方式 |
 | --- | --- |
-| 查找光标处标识符的用法 | `Alt+F7`；若被其他扩展占用则使用 `Shift+Alt+F7` |
+| 查找光标处标识符的用法 | `Alt+F7` |
+| 打开 VS Code 原生“查找所有引用” | `Shift+Alt+F7` 或 `Shift+F12` |
 | 从编辑器右键打开 | Go 文件中选择“查找用法” |
 | 跳转到某个结果 | 单击最末级代码位置 |
 | 重新查询当前符号 | 工具窗口标题栏的搜索按钮 |
@@ -262,7 +263,8 @@ macOS 对应键位为 `Shift+Option+B`、`Option+F3`、`Command+F3`、`Command+2
 | --- | --- |
 | 跳转到定义 | `F12` |
 | 查找引用 | `Shift+F12` |
-| GoLand 风格查找用法 | `Alt+F7`，备用 `Shift+Alt+F7` |
+| GoLand 风格查找用法 | `Alt+F7` |
+| VS Code 原生查找所有引用 | `Shift+Alt+F7` 或 `Shift+F12` |
 | 重命名 | `F2` |
 | 快速修复 | `Ctrl+.` |
 | 调试单步进入 | `F11` |

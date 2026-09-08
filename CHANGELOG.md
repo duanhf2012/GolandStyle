@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.1
+
+- 将 `Alt+F7` 固定为本插件的 GoLand 风格“查找用法”，并解除 IntelliJ Keybindings 扩展在相同按键上的原生引用绑定。
+- 将 `Shift+Alt+F7` 调整为 VS Code 原生“查找所有引用”，与仍然可用的 `Shift+F12` 并存。
+
 ## 0.5.0
 
 - 新增 GoLand 风格“查找用法”底部工具窗口；在 Go 标识符上按 `Alt+F7`、无冲突备用键 `Shift+Alt+F7`，或使用编辑器右键菜单即可打开。

@@ -144,11 +144,20 @@ requireValue(
 requireValue(
   manifest.contributes?.keybindings?.some(
     ({ key, command, when }) =>
-      key === "shift+alt+f7" &&
-      command === "jetbrainsStyleGo.usages.find" &&
-      when?.includes("editorLangId == go"),
+      key === "alt+f7" &&
+      command === "-references-view.findReferences" &&
+      when === "editorHasReferenceProvider",
   ),
-  "查找用法必须提供无冲突的 Shift+Alt+F7 备用快捷键",
+  "必须移除 IntelliJ Keybindings 对 Alt+F7 的原生引用绑定",
+);
+requireValue(
+  manifest.contributes?.keybindings?.some(
+    ({ key, command, when }) =>
+      key === "shift+alt+f7" &&
+      command === "references-view.findReferences" &&
+      when?.includes("editorHasReferenceProvider"),
+  ),
+  "Shift+Alt+F7 必须保留 VS Code 原生查找所有引用",
 );
 requireValue(
   contributionMenus["editor/context"]?.some(
@@ -592,11 +601,20 @@ requireValue(
 requireValue(
   keymapKeybindings.some(
     ({ key, command, when }) =>
-      key === "shift+alt+f7" &&
-      command === "jetbrainsStyleGo.usages.find" &&
-      when?.includes("editorLangId == go"),
+      key === "alt+f7" &&
+      command === "-references-view.findReferences" &&
+      when === "editorHasReferenceProvider",
   ),
-  "GoLand Keymap Profile 必须提供 Shift+Alt+F7 备用查找用法键位",
+  "GoLand Keymap Profile 必须移除 Alt+F7 的原生引用绑定",
+);
+requireValue(
+  keymapKeybindings.some(
+    ({ key, command, when }) =>
+      key === "shift+alt+f7" &&
+      command === "references-view.findReferences" &&
+      when?.includes("editorHasReferenceProvider"),
+  ),
+  "GoLand Keymap Profile 必须将 Shift+Alt+F7 绑定到原生查找所有引用",
 );
 
 for (const relativePath of [
