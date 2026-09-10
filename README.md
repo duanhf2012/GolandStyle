@@ -85,6 +85,7 @@ sh ./scripts/install.sh
 - 关闭 Minimap、Breadcrumbs、彩虹括号和非 ASCII 黄色高亮框；
 - 开启当前缩进指引、参数提示、Inlay Hints、CodeLens、平滑滚动和 `120` 列标尺；
 - Go 文件保存时格式化并显式整理 import；
+- `Ctrl+P` 和文件搜索包含工程目录内被 `.gitignore`、父目录或全局 Git ignore 忽略的文件；用户明确配置的 `files.exclude` / `search.exclude` 仍然生效；
 - `gopls` 语义色、类型诊断和常用 Inlay Hints；默认关闭 Staticcheck 风格警告，减少命名类波浪线。
 
 第一次安装或升级后，扩展会自动应用当前版本的外观和 Go 设置并提示重新加载。应用前的全局设置会被保存，可随时运行：
@@ -337,6 +338,12 @@ GoLand 自带运行时中的 JetBrains Mono 不会自动注册为 Windows 系统
 ### `Alt+2` 或其他书签快捷键没有反应
 
 确认 `golandStyle.bookmarks.golandKeybindings` 没有被手动关闭。如果系统、输入法或其他扩展占用了按键，可在 `Preferences: Open Keyboard Shortcuts` 中搜索对应命令检查冲突。
+
+### 资源管理器中的文件无法通过 `Ctrl+P` 找到
+
+未提交或未暂存的文件本身不会被 `Ctrl+P` 排除；常见原因是文件匹配了项目 `.gitignore`、父目录 ignore 或全局 Git ignore。Goland Style 默认关闭这三类 ignore 对文件搜索的过滤，因此只要文件位于当前打开的工程目录中，就能被 `Ctrl+P` 找到。
+
+用户或项目显式设置的 `files.exclude` / `search.exclude` 仍会生效。如果某个文件依然不出现，请在设置中检查这两项；修改搜索规则后，可执行 `Developer: Reload Window` 让文件缓存立即重建。
 
 ## 视觉基准
 

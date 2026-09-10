@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://github.com/duanhf2012/GolandStyle/issues"
   },
-  "version": "0.5.2",
+  "version": "0.5.3",
   "publisher": "goland-style",
   "icon": "assets/icon.png",
   "license": "SEE LICENSE IN LICENSE",
@@ -991,6 +991,9 @@
       "files.trimTrailingWhitespace": true,
       "files.insertFinalNewline": true,
       "search.smartCase": true,
+      "search.useIgnoreFiles": false,
+      "search.useParentIgnoreFiles": false,
+      "search.useGlobalIgnoreFiles": false,
       "editor.fontFamily": "'JetBrains Mono', JetBrainsMono, Consolas, 'Courier New', monospace",
       "editor.fontSize": 13.5,
       "editor.lineHeight": 21,

@@ -113,6 +113,9 @@ const context = {
           "chat.disableAIFeatures": true,
           "editor.fontSize": 13.5,
           "editor.lineHeight": 21,
+          "search.useIgnoreFiles": false,
+          "search.useParentIgnoreFiles": false,
+          "search.useGlobalIgnoreFiles": false,
         },
       },
       golandStyle: {
@@ -159,6 +162,9 @@ assert.equal(globalSettings.get("editor.fontSize"), 13.5);
 assert.equal(globalSettings.get("editor.lineHeight"), 21);
 assert.equal(globalSettings.get("chat.disableAIFeatures"), true);
 assert.equal(globalSettings.get("go.useLanguageServer"), true);
+assert.equal(globalSettings.get("search.useIgnoreFiles"), false);
+assert.equal(globalSettings.get("search.useParentIgnoreFiles"), false);
+assert.equal(globalSettings.get("search.useGlobalIgnoreFiles"), false);
 assert.equal(globalState.get("appliedSettingsVersion"), "test");
 
 await commands.get("jetbrainsStyleGo.applySettings")();
@@ -166,6 +172,9 @@ assert.equal(globalSettings.get("editor.fontSize"), 13.5);
 assert.equal(globalSettings.get("editor.lineHeight"), 21);
 assert.equal(globalSettings.get("chat.disableAIFeatures"), true);
 assert.equal(globalSettings.get("go.useLanguageServer"), true);
+assert.equal(globalSettings.get("search.useIgnoreFiles"), false);
+assert.equal(globalSettings.get("search.useParentIgnoreFiles"), false);
+assert.equal(globalSettings.get("search.useGlobalIgnoreFiles"), false);
 assert(executedCommands.includes("workbench.action.closeAuxiliaryBar"));
 
 await commands.get("jetbrainsStyleGo.restoreSettings")();
@@ -173,6 +182,9 @@ assert.equal(globalSettings.get("editor.fontSize"), 15);
 assert.equal(globalSettings.has("editor.lineHeight"), false);
 assert.equal(globalSettings.has("chat.disableAIFeatures"), false);
 assert.equal(globalSettings.has("go.useLanguageServer"), false);
+assert.equal(globalSettings.has("search.useIgnoreFiles"), false);
+assert.equal(globalSettings.has("search.useParentIgnoreFiles"), false);
+assert.equal(globalSettings.has("search.useGlobalIgnoreFiles"), false);
 assert.equal(globalState.has("settingsBackup"), false);
 assert(updates.length >= 4);
 

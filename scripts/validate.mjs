@@ -20,6 +20,17 @@ const manifest = await readJson("package.json");
 const defaults = manifest.contributes?.configurationDefaults;
 const runtimeSettings = manifest.golandStyle?.runtimeSettings;
 const profileDefaults = { ...defaults, ...runtimeSettings };
+
+for (const setting of [
+  "search.useIgnoreFiles",
+  "search.useParentIgnoreFiles",
+  "search.useGlobalIgnoreFiles",
+]) {
+  requireValue(
+    defaults?.[setting] === false,
+    `${setting} 必须关闭，确保 Ctrl+P 可查找工程目录中的 Git 忽略文件`,
+  );
+}
 const requiredExtensions = [
   "MS-CEINTL.vscode-language-pack-zh-hans",
   "golang.go",
