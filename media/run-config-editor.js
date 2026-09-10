@@ -104,13 +104,14 @@
       <label>启动前任务</label>
       <input data-field="preLaunchTask" list="task-list" value="${escapeHtml(textValue(config.preLaunchTask))}" placeholder="tasks.json 中的任务名称">
       <datalist id="task-list">${tasks.map((task) => `<option value="${escapeHtml(task)}"></option>`).join("")}</datalist>
-      <label>控制台</label>
+      <label>日志输出位置</label>
       <select data-field="console">
         ${option("", "调试器默认", config.console || "")}
-        ${option("integratedTerminal", "集成终端", config.console)}
-        ${option("internalConsole", "调试控制台", config.console)}
+        ${option("integratedTerminal", "集成终端（查找并保留上下文）", config.console)}
+        ${option("internalConsole", "调试控制台（筛选匹配行）", config.console)}
         ${option("externalTerminal", "外部终端", config.console)}
       </select>
+      <div class="hint">推荐使用集成终端：Ctrl+F 只定位并高亮日志，不会过滤上下文。远程调试会忽略此设置。</div>
       <div class="section-title">附加与远程</div>
       ${field("主机", "host", config.host, { placeholder: "127.0.0.1" })}
       ${field("端口", "port", config.port, { placeholder: "2345" })}
@@ -234,6 +235,7 @@
       request: "launch",
       mode: "auto",
       program: "${workspaceFolder}",
+      console: "integratedTerminal",
     });
     selectedIndex = model.configurations.length - 1;
     markDirty("已新增配置，单击“应用”保存");

@@ -170,6 +170,22 @@ requireValue(
   ),
   "Shift+Alt+F7 必须保留 VS Code 原生查找所有引用",
 );
+for (const { key, command } of [
+  { key: "enter", command: "-workbench.action.terminal.findPrevious" },
+  { key: "shift+enter", command: "-workbench.action.terminal.findNext" },
+  { key: "enter", command: "workbench.action.terminal.findNext" },
+  { key: "shift+enter", command: "workbench.action.terminal.findPrevious" },
+]) {
+  requireValue(
+    manifest.contributes?.keybindings?.some(
+      (binding) =>
+        binding.key === key &&
+        binding.command === command &&
+        binding.when === "terminalFindInputFocused",
+    ),
+    `终端查找快捷键缺少 ${key} -> ${command}`,
+  );
+}
 requireValue(
   contributionMenus["editor/context"]?.some(
     ({ command, when }) =>
@@ -413,6 +429,10 @@ requireValue(
 );
 requireValue(defaults["editor.fontSize"] === 13.5, "截图基准字号应为 13.5");
 requireValue(defaults["editor.lineHeight"] === 21, "截图基准行高应为 21");
+requireValue(
+  defaults["terminal.integrated.scrollback"] === 100000,
+  "集成终端必须保留足够日志行，方便查找上下文",
+);
 requireValue(defaults["window.zoomLevel"] === 0, "截图基准窗口缩放应为 0");
 requireValue(defaults["window.commandCenter"] === true, "应启用顶部 Command Center");
 requireValue(
@@ -503,6 +523,26 @@ requireValue(darkTheme.colors["editor.background"] === "#191A1C", "编辑器背�
 requireValue(darkTheme.colors["sideBar.background"] === "#191A1C", "Project 树背景未匹配截图");
 requireValue(darkTheme.colors["list.activeSelectionBackground"] === "#33353B", "目录选中色未匹配截图");
 requireValue(darkTheme.colors["tab.activeBackground"] === "#233558", "活动页签色未匹配截图");
+for (const themePath of [
+  "themes/jetbrains-new-ui-dark-color-theme.json",
+  "themes/jetbrains-new-ui-light-color-theme.json",
+]) {
+  const theme = await readJson(themePath);
+  for (const colorId of [
+    "terminal.findMatchBackground",
+    "terminal.findMatchBorder",
+    "terminal.findMatchHighlightBackground",
+    "terminal.findMatchHighlightBorder",
+    "terminalOverviewRuler.findMatchForeground",
+  ]) {
+    requireValue(theme.colors[colorId], `${themePath} 缺少 ${colorId}`);
+  }
+  requireValue(
+    theme.colors["terminal.findMatchBackground"] !==
+      theme.colors["terminal.findMatchHighlightBackground"],
+    `${themePath} 当前命中与其他命中必须使用不同颜色`,
+  );
+}
 requireValue(darkTheme.colors["editor.lineHighlightBackground"] === "#1F2024", "当前行颜色未匹配新截图");
 requireValue(darkTheme.semanticTokenColors.string === "#6A8759", "GoLand 导入字符串颜色未匹配截图");
 requireValue(darkTheme.semanticTokenColors.number === "#6897BB", "GoLand 数字颜色未匹配截图");
@@ -656,9 +696,31 @@ for (const relativePath of [
   await readJson(relativePath);
 }
 
+const runConfigWebviewScript = await readFile(
+  path.join(projectDirectory, "media/run-config-editor.js"),
+  "utf8",
+);
+requireValue(
+  runConfigWebviewScript.includes('console: "integratedTerminal"') &&
+    runConfigWebviewScript.includes("查找并保留上下文") &&
+    runConfigWebviewScript.includes("筛选匹配行"),
+  "运行配置编辑器必须默认使用集成终端，并说明不同控制台的查找行为",
+);
+
+const templateLaunch = await readJson("templates/.vscode/launch.json");
+const localLaunchConfigurations = templateLaunch.configurations.filter(
+  ({ type, request }) => type === "go" && request === "launch",
+);
+requireValue(
+  localLaunchConfigurations.length > 0 &&
+    localLaunchConfigurations.every(({ console }) => console === "integratedTerminal"),
+  "项目模板中的本地 Go 启动配置必须默认输出到集成终端",
+);
+
 const templateSettings = await readJson("templates/.vscode/settings.json");
 requireValue(
-  templateSettings.gopls?.["ui.diagnostic.staticcheck"] === false &&
+  templateSettings["terminal.integrated.scrollback"] === 100000 &&
+    templateSettings.gopls?.["ui.diagnostic.staticcheck"] === false &&
     templateSettings.gopls?.["ui.semanticTokenTypes"]?.namespace === false &&
     templateSettings["[go]"]?.["editor.renderValidationDecorations"] === "off" &&
     templateSettings["go.editorContextMenuCommands"]?.addImport === false &&

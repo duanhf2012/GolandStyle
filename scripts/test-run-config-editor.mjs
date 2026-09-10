@@ -57,6 +57,11 @@ assert.deepEqual(updatedParsed.value.configurations[0].customDebuggerField, {
 assert.equal(updatedParsed.value.configurations[0].name, "Go: Launch Package");
 assert.equal(updatedParsed.value.configurations[0].cwd, "${workspaceFolder}/cmd/server");
 assert.deepEqual(updatedParsed.value.configurations[0].args, ["--config", "dev.yaml"]);
+assert.equal(
+  updatedParsed.value.configurations[0].console,
+  undefined,
+  "保存已有配置时不能自动迁移日志输出位置",
+);
 
 const withSecondConfiguration = updateLaunchText(updated, {
   ...nextModel,

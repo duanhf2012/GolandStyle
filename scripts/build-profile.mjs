@@ -20,6 +20,26 @@ const settings = { ...configurationDefaults, ...runtimeSettings };
 const windowsPlatform = 3;
 const golandNavigationKeybindings = [
   {
+    key: "enter",
+    command: "-workbench.action.terminal.findPrevious",
+    when: "terminalFindInputFocused",
+  },
+  {
+    key: "shift+enter",
+    command: "-workbench.action.terminal.findNext",
+    when: "terminalFindInputFocused",
+  },
+  {
+    key: "enter",
+    command: "workbench.action.terminal.findNext",
+    when: "terminalFindInputFocused",
+  },
+  {
+    key: "shift+enter",
+    command: "workbench.action.terminal.findPrevious",
+    when: "terminalFindInputFocused",
+  },
+  {
     key: "alt+left",
     command: "-workbench.action.previousEditor",
     when: "!terminalFocus",
