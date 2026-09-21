@@ -52,7 +52,7 @@ function deduplicateLocations(locations) {
   return [...unique.values()];
 }
 
-function findContainingContext(vscode, document, symbols, position) {
+function findContainingContext(vscode, symbols, position) {
   const candidates = [];
   const visit = (symbol, depth = 0) => {
     const range = symbol.range || symbol.location?.range;
@@ -66,37 +66,16 @@ function findContainingContext(vscode, document, symbols, position) {
   );
 
   const kinds = vscode.SymbolKind;
-  const typeKinds = new Set([kinds.Struct, kinds.Class, kinds.Interface, kinds.Enum]);
   const callableKinds = new Set([kinds.Function, kinds.Method, kinds.Constructor]);
-  const type = candidates.find(({ symbol }) => typeKinds.has(symbol.kind))?.symbol;
-  const callable = candidates.find(({ symbol }) => callableKinds.has(symbol.kind))?.symbol;
-  let typeName = type?.name;
-  let callableName = callable?.name;
-
-  if (callable && !typeName) {
-    const range = callable.range || callable.location?.range;
-    const firstLines = document
-      .getText(range)
-      .slice(0, 500)
-      .replace(/\r?\n/g, " ");
-    const receiver = firstLines.match(
-      /\bfunc\s*\(\s*(?:[A-Za-z_]\w*\s+)?\*?\s*([A-Za-z_]\w*)/,
-    );
-    if (receiver) typeName = receiver[1];
-  }
+  let callableName = candidates.find(({ symbol }) => callableKinds.has(symbol.kind))?.symbol?.name;
 
   if (callableName) {
     const qualified = callableName.match(/^\(\*?([^)]+)\)\.([^\s(]+)/);
-    if (qualified) {
-      typeName ||= qualified[1];
-      callableName = qualified[2];
-    }
+    if (qualified) callableName = qualified[2];
   }
 
   return {
-    typeName,
     callableName,
-    callableKind: callable?.kind,
   };
 }
 
@@ -194,14 +173,6 @@ function buildUsageTree(symbolName, occurrences) {
       resourceUri: occurrence.uri,
       expanded: false,
     });
-    if (occurrence.typeName) {
-      parent = addGroup(parent, `type:${occurrence.typeName}`, {
-        kind: "type",
-        label: occurrence.typeName,
-        icon: "symbol-struct",
-        expanded: false,
-      });
-    }
     if (occurrence.callableName) {
       parent = addGroup(parent, `callable:${occurrence.callableName}`, {
         kind: "callable",
@@ -437,7 +408,6 @@ class FindUsagesManager {
       return locations.map((location) => {
         const context = findContainingContext(
           this.vscode,
-          document,
           symbols || [],
           location.range.start,
         );

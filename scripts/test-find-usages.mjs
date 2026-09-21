@@ -250,8 +250,7 @@ assert.deepEqual(
 const writeCategory = manager.provider.root.children[1];
 const writeFile = writeCategory.children[0].children[0].children[0];
 assert.equal(writeFile.label, "Arena.go");
-assert.equal(writeFile.children[0].label, "ArenaInfo");
-assert.equal(writeFile.children[0].children[0].label, "Reset");
+assert.equal(writeFile.children[0].label, "Reset");
 const readCategory = manager.provider.root.children[2];
 const readFile = readCategory.children[0].children[0].children[0];
 assert.equal(readFile.children[0].label, "Read");
