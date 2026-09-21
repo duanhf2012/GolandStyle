@@ -41,6 +41,7 @@ function managedSettings(context) {
   const compactContextMenu = golandStyleSetting("menus.compactEditorContextMenu", true);
   const toolbarInCommandCenter = golandStyleSetting("debug.toolbarInCommandCenter", true);
   const scrollback = golandStyleSetting("terminalFind.scrollback", 100000);
+  const rightClickContextMenu = golandStyleSetting("terminalFind.rightClickContextMenu", true);
   const goLanguageSettings = {
     ...(runtimeSettings["[go]"] || {}),
     "editor.renderValidationDecorations": hideGoDiagnostics ? "off" : "on",
@@ -60,6 +61,12 @@ function managedSettings(context) {
     "window.commandCenter": toolbarInCommandCenter,
     "debug.toolBarLocation": toolbarInCommandCenter ? "commandCenter" : "floating",
     "terminal.integrated.scrollback": scrollback,
+    // Windows 下 VS Code 默认右键为复制/粘贴（剪贴板为空才弹菜单），这里对齐 GoLand 的右键菜单习惯。
+    "terminal.integrated.rightClickBehavior": rightClickContextMenu
+      ? "default"
+      : process.platform === "win32"
+        ? "copyPaste"
+        : "selectWord",
   };
 }
 

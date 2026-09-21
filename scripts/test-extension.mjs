@@ -193,6 +193,7 @@ assert.equal(globalSettings.get("search.useParentIgnoreFiles"), false);
 assert.equal(globalSettings.get("search.useGlobalIgnoreFiles"), false);
 assert.equal(globalSettings.get("debug.toolBarLocation"), "commandCenter");
 assert.equal(globalSettings.get("terminal.integrated.scrollback"), 100000);
+assert.equal(globalSettings.get("terminal.integrated.rightClickBehavior"), "default");
 assert.equal(globalState.get("appliedSettingsVersion"), "test");
 
 globalSettings.set("golandStyle.search.includeIgnoredFiles", false);
@@ -200,6 +201,7 @@ globalSettings.set("golandStyle.editor.hideGoDiagnostics", false);
 globalSettings.set("golandStyle.menus.compactEditorContextMenu", false);
 globalSettings.set("golandStyle.debug.toolbarInCommandCenter", false);
 globalSettings.set("golandStyle.terminalFind.scrollback", 25000);
+globalSettings.set("golandStyle.terminalFind.rightClickContextMenu", false);
 configurationListener({ affectsConfiguration: (key) => key === "golandStyle" });
 await new Promise((resolve) => setImmediate(resolve));
 assert.equal(globalSettings.get("search.useIgnoreFiles"), true);
@@ -208,6 +210,10 @@ assert.equal(globalSettings.get("chat.disableAIFeatures"), false);
 assert.equal(globalSettings.get("debug.toolBarLocation"), "floating");
 assert.equal(globalSettings.get("window.commandCenter"), false);
 assert.equal(globalSettings.get("terminal.integrated.scrollback"), 25000);
+assert.equal(
+  globalSettings.get("terminal.integrated.rightClickBehavior"),
+  process.platform === "win32" ? "copyPaste" : "selectWord",
+);
 
 await commands.get("jetbrainsStyleGo.applySettings")();
 assert.equal(globalSettings.get("editor.fontSize"), 13.5);
@@ -219,6 +225,10 @@ assert.equal(globalSettings.get("search.useParentIgnoreFiles"), true);
 assert.equal(globalSettings.get("search.useGlobalIgnoreFiles"), true);
 assert.equal(globalSettings.get("debug.toolBarLocation"), "floating");
 assert.equal(globalSettings.get("terminal.integrated.scrollback"), 25000);
+assert.equal(
+  globalSettings.get("terminal.integrated.rightClickBehavior"),
+  process.platform === "win32" ? "copyPaste" : "selectWord",
+);
 assert(executedCommands.includes("workbench.action.closeAuxiliaryBar"));
 
 await commands.get("jetbrainsStyleGo.restoreSettings")();
@@ -230,6 +240,7 @@ assert.equal(globalSettings.has("search.useIgnoreFiles"), false);
 assert.equal(globalSettings.has("search.useParentIgnoreFiles"), false);
 assert.equal(globalSettings.has("search.useGlobalIgnoreFiles"), false);
 assert.equal(globalState.has("settingsBackup"), false);
+assert.equal(globalSettings.has("terminal.integrated.rightClickBehavior"), false);
 assert(updates.length >= 4);
 
 console.log("扩展设置应用与恢复测试通过。");

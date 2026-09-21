@@ -556,6 +556,12 @@
             "maximum": 1000000,
             "scope": "window",
             "description": "集成终端保留的历史行数。较大的值方便搜索长时间运行服务的日志上下文，但会占用更多内存。"
+          },
+          "golandStyle.terminalFind.rightClickContextMenu": {
+            "type": "boolean",
+            "default": true,
+            "scope": "window",
+            "description": "在终端中右键直接打开上下文菜单（GoLand 风格）。关闭后恢复 VS Code 原生行为：Windows 下右键复制或粘贴，仅剪贴板为空时才弹出菜单。"
           }
         }
       },
