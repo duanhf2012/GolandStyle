@@ -28,6 +28,47 @@ const goContextMenuCommandProxies = {
   "jetbrainsStyleGo.go.testAtCursor": "go.test.cursor",
   "jetbrainsStyleGo.go.debugTestAtCursor": "go.debug.cursor",
 };
+const unifiedSettingsQuery = "@ext:goland-style.jetbrains-style-go-vscode";
+
+function golandStyleSetting(key, fallback) {
+  return vscode.workspace.getConfiguration("golandStyle").get(key, fallback);
+}
+
+function managedSettings(context) {
+  const runtimeSettings = context.extension.packageJSON.golandStyle?.runtimeSettings || {};
+  const includeIgnoredFiles = golandStyleSetting("search.includeIgnoredFiles", true);
+  const hideGoDiagnostics = golandStyleSetting("editor.hideGoDiagnostics", true);
+  const compactContextMenu = golandStyleSetting("menus.compactEditorContextMenu", true);
+  const toolbarInCommandCenter = golandStyleSetting("debug.toolbarInCommandCenter", true);
+  const scrollback = golandStyleSetting("terminalFind.scrollback", 100000);
+  const goLanguageSettings = {
+    ...(runtimeSettings["[go]"] || {}),
+    "editor.renderValidationDecorations": hideGoDiagnostics ? "off" : "on",
+  };
+  const compactGoCommands = runtimeSettings["go.editorContextMenuCommands"] || {};
+  const goContextMenuCommands = Object.fromEntries(
+    Object.keys(compactGoCommands).map((key) => [key, !compactContextMenu]),
+  );
+
+  return {
+    "chat.disableAIFeatures": compactContextMenu,
+    "search.useIgnoreFiles": !includeIgnoredFiles,
+    "search.useParentIgnoreFiles": !includeIgnoredFiles,
+    "search.useGlobalIgnoreFiles": !includeIgnoredFiles,
+    "go.editorContextMenuCommands": goContextMenuCommands,
+    "[go]": goLanguageSettings,
+    "window.commandCenter": toolbarInCommandCenter,
+    "debug.toolBarLocation": toolbarInCommandCenter ? "commandCenter" : "floating",
+    "terminal.integrated.scrollback": scrollback,
+  };
+}
+
+async function syncUnifiedSettings(context) {
+  const configuration = vscode.workspace.getConfiguration();
+  for (const [key, value] of Object.entries(managedSettings(context))) {
+    await configuration.update(key, value, vscode.ConfigurationTarget.Global);
+  }
+}
 
 function fontTargetDirectory() {
   if (process.platform === "win32") {
@@ -155,6 +196,7 @@ async function applySettings(context, { automatic = false } = {}) {
   const defaults = {
     ...packageJSON.contributes.configurationDefaults,
     ...packageJSON.golandStyle?.runtimeSettings,
+    ...managedSettings(context),
   };
   const existingBackup = context.globalState.get(backupKey);
 
@@ -221,6 +263,7 @@ async function restoreSettings(context) {
 async function applyCurrentVersionIfNeeded(context) {
   const version = context.extension.packageJSON.version;
   if (
+    !golandStyleSetting("general.autoApplyUpdates", true) ||
     context.globalState.get(automaticApplyDisabledKey) ||
     context.globalState.get(appliedVersionKey) === version
   ) {
@@ -319,6 +362,12 @@ function activate(context) {
   activateRunConfigurationEditor(vscode, context);
   activateGoContextMenu(context);
   context.subscriptions.push(
+    vscode.commands.registerCommand("jetbrainsStyleGo.openSettings", () =>
+      vscode.commands.executeCommand(
+        "workbench.action.openSettings",
+        unifiedSettingsQuery,
+      ),
+    ),
     vscode.commands.registerCommand("jetbrainsStyleGo.applySettings", () =>
       applySettings(context),
     ),
@@ -332,6 +381,12 @@ function activate(context) {
       repairGoNavigation(),
     ),
   );
+  const settingsListener = vscode.workspace.onDidChangeConfiguration?.((event) => {
+    if (event.affectsConfiguration("golandStyle")) {
+      void syncUnifiedSettings(context);
+    }
+  });
+  if (settingsListener) context.subscriptions.push(settingsListener);
   void applyCurrentVersionIfNeeded(context);
   void offerFontInstallation(context);
   void warnIfWorkspaceIsRestricted();

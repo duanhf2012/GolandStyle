@@ -12,6 +12,7 @@
   let parseErrors = [];
   let dirty = false;
   let statusText = "";
+  let defaultConsole = "integratedTerminal";
 
   const knownFields = new Set([
     "name", "type", "request", "mode", "program", "cwd", "output", "envFile",
@@ -34,6 +35,19 @@
 
   function currentConfiguration() {
     return model.configurations[selectedIndex];
+  }
+
+  function consoleDefaultFor(config) {
+    if (Object.hasOwn(config, "console")) return config.console || "";
+    if (config.request === "attach" || config.mode === "remote" || config.mode === "core") {
+      return "";
+    }
+    return defaultConsole === "debuggerDefault" ? "" : defaultConsole;
+  }
+
+  function applyConsoleDefault(config) {
+    const value = consoleDefaultFor(config);
+    if (!Object.hasOwn(config, "console") && value) config.console = value;
   }
 
   function option(value, label, current) {
@@ -68,6 +82,7 @@
     if (!config) {
       return `<div class="empty">还没有运行配置。单击左上角的“＋”创建一个 Go 配置。</div>`;
     }
+    const selectedConsole = consoleDefaultFor(config);
     const advancedCount = Object.keys(config).filter((key) => !knownFields.has(key)).length;
     return `<div class="form">
       ${field("名称", "name", config.name, { placeholder: "Go: Launch Package" })}
@@ -106,10 +121,10 @@
       <datalist id="task-list">${tasks.map((task) => `<option value="${escapeHtml(task)}"></option>`).join("")}</datalist>
       <label>日志输出位置</label>
       <select data-field="console">
-        ${option("", "调试器默认", config.console || "")}
-        ${option("integratedTerminal", "集成终端（查找并保留上下文）", config.console)}
-        ${option("internalConsole", "调试控制台（筛选匹配行）", config.console)}
-        ${option("externalTerminal", "外部终端", config.console)}
+        ${option("", "调试器默认", selectedConsole)}
+        ${option("integratedTerminal", "集成终端（查找并保留上下文）", selectedConsole)}
+        ${option("internalConsole", "调试控制台（筛选匹配行）", selectedConsole)}
+        ${option("externalTerminal", "外部终端", selectedConsole)}
       </select>
       <div class="hint">推荐使用集成终端：Ctrl+F 只定位并高亮日志，不会过滤上下文。远程调试会忽略此设置。</div>
       <div class="section-title">附加与远程</div>
@@ -229,14 +244,15 @@
   }
 
   function addConfiguration() {
-    model.configurations.push({
+    const configuration = {
       name: `Go: Launch Package${model.configurations.length ? ` ${model.configurations.length + 1}` : ""}`,
       type: "go",
       request: "launch",
       mode: "auto",
       program: "${workspaceFolder}",
-      console: "integratedTerminal",
-    });
+    };
+    applyConsoleDefault(configuration);
+    model.configurations.push(configuration);
     selectedIndex = model.configurations.length - 1;
     markDirty("已新增配置，单击“应用”保存");
     render();
@@ -338,6 +354,8 @@
     if (message?.type === "state") {
       sourceText = message.text;
       model = clone(message.model);
+      defaultConsole = message.defaultConsole || "integratedTerminal";
+      model.configurations.forEach(applyConsoleDefault);
       tasks = message.tasks || [];
       file = message.file || "";
       workspace = message.workspace || "";

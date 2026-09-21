@@ -20,6 +20,13 @@ const manifest = await readJson("package.json");
 const defaults = manifest.contributes?.configurationDefaults;
 const runtimeSettings = manifest.golandStyle?.runtimeSettings;
 const profileDefaults = { ...defaults, ...runtimeSettings };
+const configurationSections = Array.isArray(manifest.contributes?.configuration)
+  ? manifest.contributes.configuration
+  : [manifest.contributes?.configuration].filter(Boolean);
+const unifiedConfiguration = Object.assign(
+  {},
+  ...configurationSections.map((section) => section.properties || {}),
+);
 
 for (const setting of [
   "search.useIgnoreFiles",
@@ -79,6 +86,7 @@ const bookmarkCommandIds = [
 ];
 const contributedCommands = manifest.contributes?.commands ?? [];
 for (const commandId of [
+  "jetbrainsStyleGo.openSettings",
   "jetbrainsStyleGo.usages.find",
   "jetbrainsStyleGo.usages.refresh",
   "jetbrainsStyleGo.usages.clear",
@@ -140,6 +148,13 @@ requireValue(
 );
 const contributionMenus = manifest.contributes?.menus ?? {};
 requireValue(
+  manifest.activationEvents?.includes("onCommand:jetbrainsStyleGo.openSettings") &&
+    contributionMenus["menubar/preferences"]?.some(
+      ({ command }) => command === "jetbrainsStyleGo.openSettings",
+    ),
+  "缺少 Goland Style 统一设置入口",
+);
+requireValue(
   contributedCommands.some(({ command }) => command === "jetbrainsStyleGo.copyReference"),
   "缺少复制代码引用命令",
 );
@@ -148,6 +163,7 @@ requireValue(
     ({ key, command, when }) =>
       key === "alt+f7" &&
       command === "jetbrainsStyleGo.usages.find" &&
+      when?.includes("golandStyle.findUsages.golandKeybindings") &&
       when?.includes("editorLangId == go"),
   ),
   "查找用法快捷键必须匹配 GoLand 的 Alt+F7",
@@ -170,11 +186,18 @@ requireValue(
   ),
   "Shift+Alt+F7 必须保留 VS Code 原生查找所有引用",
 );
+requireValue(
+  manifest.contributes?.keybindings?.some(
+    ({ key, command, when }) =>
+      key === "alt+f7" &&
+      command === "references-view.findReferences" &&
+      when?.includes("!config.golandStyle.findUsages.golandKeybindings"),
+  ),
+  "关闭 GoLand 查找用法键位后必须恢复 Alt+F7 原生引用",
+);
 for (const { key, command } of [
   { key: "enter", command: "-workbench.action.terminal.findPrevious" },
   { key: "shift+enter", command: "-workbench.action.terminal.findNext" },
-  { key: "enter", command: "workbench.action.terminal.findNext" },
-  { key: "shift+enter", command: "workbench.action.terminal.findPrevious" },
 ]) {
   requireValue(
     manifest.contributes?.keybindings?.some(
@@ -184,6 +207,34 @@ for (const { key, command } of [
         binding.when === "terminalFindInputFocused",
     ),
     `终端查找快捷键缺少 ${key} -> ${command}`,
+  );
+}
+for (const { key, command } of [
+  { key: "enter", command: "workbench.action.terminal.findNext" },
+  { key: "shift+enter", command: "workbench.action.terminal.findPrevious" },
+]) {
+  requireValue(
+    manifest.contributes?.keybindings?.some(
+      (binding) =>
+        binding.key === key &&
+        binding.command === command &&
+        binding.when?.includes("config.golandStyle.terminalFind.enterMovesDown"),
+    ),
+    `GoLand 终端查找快捷键缺少 ${key} -> ${command}`,
+  );
+}
+for (const { key, command } of [
+  { key: "enter", command: "workbench.action.terminal.findPrevious" },
+  { key: "shift+enter", command: "workbench.action.terminal.findNext" },
+]) {
+  requireValue(
+    manifest.contributes?.keybindings?.some(
+      (binding) =>
+        binding.key === key &&
+        binding.command === command &&
+        binding.when?.includes("!config.golandStyle.terminalFind.enterMovesDown"),
+    ),
+    `关闭 GoLand 终端查找键位后缺少原生回退 ${key} -> ${command}`,
   );
 }
 requireValue(
@@ -335,11 +386,26 @@ for (const commandId of bookmarkCommandIds) {
     `缺少书签命令 ${commandId}`,
   );
 }
-const bookmarkConfiguration = manifest.contributes?.configuration?.properties;
 requireValue(
-  bookmarkConfiguration?.["golandStyle.bookmarks.golandKeybindings"]?.default === true,
+  unifiedConfiguration["golandStyle.bookmarks.golandKeybindings"]?.default === true,
   "安装扩展后必须默认启用 GoLand 书签快捷键",
 );
+for (const [setting, expectedDefault] of [
+  ["golandStyle.general.autoApplyUpdates", true],
+  ["golandStyle.search.includeIgnoredFiles", true],
+  ["golandStyle.editor.hideGoDiagnostics", true],
+  ["golandStyle.menus.compactEditorContextMenu", true],
+  ["golandStyle.debug.toolbarInCommandCenter", true],
+  ["golandStyle.findUsages.golandKeybindings", true],
+  ["golandStyle.runConfigurations.defaultConsole", "integratedTerminal"],
+  ["golandStyle.terminalFind.enterMovesDown", true],
+  ["golandStyle.terminalFind.scrollback", 100000],
+]) {
+  requireValue(
+    unifiedConfiguration[setting]?.default === expectedDefault,
+    `统一设置缺少 ${setting} 或默认值不正确`,
+  );
+}
 const bookmarkKeybindings = manifest.contributes?.keybindings ?? [];
 for (const [key, command] of [
   ["shift+alt+b", "jetbrainsStyleGo.bookmarks.toggle"],
@@ -603,6 +669,11 @@ requireValue(
   keymapProfileSettings["golandStyle.bookmarks.golandKeybindings"] === true,
   "GoLand Keymap Profile 必须启用书签快捷键",
 );
+requireValue(
+  keymapProfileSettings["golandStyle.findUsages.golandKeybindings"] === true &&
+    keymapProfileSettings["golandStyle.terminalFind.enterMovesDown"] === true,
+  "GoLand Keymap Profile 必须启用查找用法与终端查找键位",
+);
 requireValue(keymapPayload.platform === 3, "GoLand Keymap Profile 必须标记为 Windows 键位");
 requireValue(
   keymapKeybindings.some(
@@ -701,7 +772,8 @@ const runConfigWebviewScript = await readFile(
   "utf8",
 );
 requireValue(
-  runConfigWebviewScript.includes('console: "integratedTerminal"') &&
+  runConfigWebviewScript.includes("applyConsoleDefault") &&
+    runConfigWebviewScript.includes('defaultConsole = "integratedTerminal"') &&
     runConfigWebviewScript.includes("查找并保留上下文") &&
     runConfigWebviewScript.includes("筛选匹配行"),
   "运行配置编辑器必须默认使用集成终端，并说明不同控制台的查找行为",

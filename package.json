@@ -18,6 +18,7 @@
   "main": "./extension.js",
   "activationEvents": [
     "onStartupFinished",
+    "onCommand:jetbrainsStyleGo.openSettings",
     "onCommand:jetbrainsStyleGo.usages.find",
     "onView:jetbrainsStyleGo.findUsagesView",
     "onCommand:jetbrainsStyleGo.runConfigurations.open",
@@ -137,6 +138,12 @@
   },
   "contributes": {
     "commands": [
+      {
+        "command": "jetbrainsStyleGo.openSettings",
+        "title": "打开统一设置",
+        "category": "Goland Style",
+        "icon": "$(settings-gear)"
+      },
       {
         "command": "jetbrainsStyleGo.applySettings",
         "title": "应用 GoLand 风格设置",
@@ -465,26 +472,118 @@
         "priority": "option"
       }
     ],
-    "configuration": {
-      "title": "Goland Style: Bookmarks",
-      "properties": {
-        "golandStyle.bookmarks.golandKeybindings": {
-          "type": "boolean",
-          "default": true,
-          "description": "启用 GoLand 默认书签快捷键；安装扩展后默认开启，可关闭以恢复 VS Code 原生数字键位。"
-        },
-        "golandStyle.bookmarks.askBeforeReplacingMnemonic": {
-          "type": "boolean",
-          "default": true,
-          "description": "覆盖已使用的数字或字母助记符前请求确认。"
-        },
-        "golandStyle.bookmarks.showOnlyLineBookmarksInPopup": {
-          "type": "boolean",
-          "default": true,
-          "description": "Shift+F11 弹窗默认只显示代码行书签。"
+    "configuration": [
+      {
+        "title": "Goland Style: 常规与界面",
+        "order": 10,
+        "properties": {
+          "golandStyle.general.autoApplyUpdates": {
+            "type": "boolean",
+            "default": true,
+            "scope": "window",
+            "description": "扩展升级后自动应用当前版本新增或调整的 GoLand 风格默认设置。关闭后仍可手动运行“应用 GoLand 风格设置”。"
+          },
+          "golandStyle.search.includeIgnoredFiles": {
+            "type": "boolean",
+            "default": true,
+            "scope": "window",
+            "description": "Ctrl+P 和文件搜索包含当前工程中未跟踪或被 Git ignore 的文件；仍尊重 files.exclude 和 search.exclude。"
+          },
+          "golandStyle.editor.hideGoDiagnostics": {
+            "type": "boolean",
+            "default": true,
+            "scope": "window",
+            "description": "隐藏 Go 编辑器中的诊断波浪线，问题仍保留在 Problems 面板中。"
+          },
+          "golandStyle.menus.compactEditorContextMenu": {
+            "type": "boolean",
+            "default": true,
+            "scope": "window",
+            "description": "隐藏内置 AI 项和官方 Go 扩展的低频顶层命令，使用 Goland Style 子菜单保持右键菜单简洁。"
+          },
+          "golandStyle.debug.toolbarInCommandCenter": {
+            "type": "boolean",
+            "default": true,
+            "scope": "window",
+            "description": "调试会话期间将继续、单步、重启和停止按钮放到窗口顶部 Command Center；关闭后恢复浮动调试工具栏。"
+          }
+        }
+      },
+      {
+        "title": "Goland Style: 导航与快捷键",
+        "order": 20,
+        "properties": {
+          "golandStyle.findUsages.golandKeybindings": {
+            "type": "boolean",
+            "default": true,
+            "scope": "window",
+            "description": "使用 Alt+F7 打开 GoLand 风格查找用法，Shift+Alt+F7 打开 VS Code 原生查找所有引用；关闭后 Alt+F7 恢复为原生查找引用。"
+          }
+        }
+      },
+      {
+        "title": "Goland Style: 运行/调试与终端查找",
+        "order": 30,
+        "properties": {
+          "golandStyle.runConfigurations.defaultConsole": {
+            "type": "string",
+            "default": "integratedTerminal",
+            "scope": "window",
+            "enum": [
+              "integratedTerminal",
+              "internalConsole",
+              "externalTerminal",
+              "debuggerDefault"
+            ],
+            "enumDescriptions": [
+              "集成终端：Ctrl+F 定位并高亮日志，同时保留前后上下文（推荐）。",
+              "调试控制台：Ctrl+F 仅保留匹配行，适合快速筛选。",
+              "外部终端：在独立窗口运行，适合交互输入。",
+              "调试器默认：不向新配置写入 console 字段。"
+            ],
+            "description": "可视化运行配置中新建本地 Go 配置时默认使用的日志输出位置。已有配置会保留其显式 console 值。"
+          },
+          "golandStyle.terminalFind.enterMovesDown": {
+            "type": "boolean",
+            "default": true,
+            "scope": "window",
+            "description": "终端查找框中使用 Enter 查找下一项（向下）、Shift+Enter 查找上一项（向上）；关闭后恢复 VS Code 原生的相反方向。"
+          },
+          "golandStyle.terminalFind.scrollback": {
+            "type": "integer",
+            "default": 100000,
+            "minimum": 1000,
+            "maximum": 1000000,
+            "scope": "window",
+            "description": "集成终端保留的历史行数。较大的值方便搜索长时间运行服务的日志上下文，但会占用更多内存。"
+          }
+        }
+      },
+      {
+        "title": "Goland Style: Bookmarks",
+        "order": 40,
+        "properties": {
+          "golandStyle.bookmarks.golandKeybindings": {
+            "type": "boolean",
+            "default": true,
+            "scope": "window",
+            "description": "启用 GoLand 默认书签快捷键；安装扩展后默认开启，可关闭以恢复 VS Code 原生数字键位。"
+          },
+          "golandStyle.bookmarks.askBeforeReplacingMnemonic": {
+            "type": "boolean",
+            "default": true,
+            "scope": "window",
+            "description": "覆盖已使用的数字或字母助记符前请求确认。"
+          },
+          "golandStyle.bookmarks.showOnlyLineBookmarksInPopup": {
+            "type": "boolean",
+            "default": true,
+            "scope": "window",
+            "description": "Shift+F11 弹窗默认只显示代码行书签。"
+          }
         }
       }
-    },
+    ],
     "keybindings": [
       {
         "key": "enter",
@@ -502,13 +601,25 @@
         "key": "enter",
         "mac": "enter",
         "command": "workbench.action.terminal.findNext",
-        "when": "terminalFindInputFocused"
+        "when": "config.golandStyle.terminalFind.enterMovesDown && terminalFindInputFocused"
       },
       {
         "key": "shift+enter",
         "mac": "shift+enter",
         "command": "workbench.action.terminal.findPrevious",
-        "when": "terminalFindInputFocused"
+        "when": "config.golandStyle.terminalFind.enterMovesDown && terminalFindInputFocused"
+      },
+      {
+        "key": "enter",
+        "mac": "enter",
+        "command": "workbench.action.terminal.findPrevious",
+        "when": "!config.golandStyle.terminalFind.enterMovesDown && terminalFindInputFocused"
+      },
+      {
+        "key": "shift+enter",
+        "mac": "shift+enter",
+        "command": "workbench.action.terminal.findNext",
+        "when": "!config.golandStyle.terminalFind.enterMovesDown && terminalFindInputFocused"
       },
       {
         "key": "alt+f7",
@@ -520,13 +631,19 @@
         "key": "alt+f7",
         "mac": "alt+f7",
         "command": "jetbrainsStyleGo.usages.find",
-        "when": "editorTextFocus && editorLangId == go && editorHasReferenceProvider"
+        "when": "config.golandStyle.findUsages.golandKeybindings && editorTextFocus && editorLangId == go && editorHasReferenceProvider"
       },
       {
         "key": "shift+alt+f7",
         "mac": "shift+alt+f7",
         "command": "references-view.findReferences",
-        "when": "editorTextFocus && editorHasReferenceProvider"
+        "when": "config.golandStyle.findUsages.golandKeybindings && editorTextFocus && editorHasReferenceProvider"
+      },
+      {
+        "key": "alt+f7",
+        "mac": "alt+f7",
+        "command": "references-view.findReferences",
+        "when": "!config.golandStyle.findUsages.golandKeybindings && editorTextFocus && editorHasReferenceProvider"
       },
       {
         "key": "ctrl+alt+shift+c",
@@ -725,6 +842,12 @@
       }
     ],
     "menus": {
+      "menubar/preferences": [
+        {
+          "command": "jetbrainsStyleGo.openSettings",
+          "group": "2_configuration@50"
+        }
+      ],
       "editor/title": [
         {
           "command": "jetbrainsStyleGo.runConfigurations.open",
@@ -756,6 +879,11 @@
           "group": "navigation@3"
         },
         {
+          "command": "jetbrainsStyleGo.openSettings",
+          "when": "view == jetbrainsStyleGo.findUsagesView",
+          "group": "navigation@99"
+        },
+        {
           "command": "jetbrainsStyleGo.runConfigurations.open",
           "when": "view == jetbrainsStyleGo.runConfigurationsView",
           "group": "navigation@1"
@@ -766,6 +894,11 @@
           "group": "navigation@2"
         },
         {
+          "command": "jetbrainsStyleGo.openSettings",
+          "when": "view == jetbrainsStyleGo.runConfigurationsView",
+          "group": "navigation@99"
+        },
+        {
           "command": "jetbrainsStyleGo.bookmarks.createList",
           "when": "view == jetbrainsStyleGo.bookmarksView",
           "group": "navigation@1"
@@ -774,6 +907,11 @@
           "command": "jetbrainsStyleGo.bookmarks.bookmarkOpenTabs",
           "when": "view == jetbrainsStyleGo.bookmarksView",
           "group": "navigation@2"
+        },
+        {
+          "command": "jetbrainsStyleGo.openSettings",
+          "when": "view == jetbrainsStyleGo.bookmarksView",
+          "group": "navigation@99"
         }
       ],
       "view/item/context": [

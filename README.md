@@ -22,6 +22,7 @@
 | 测试与任务 | Test Explorer、Benchmark、Coverage，以及构建、测试、竞态检测、Vet 和性能分析任务模板 |
 | 精简 AI 菜单 | 默认关闭 VS Code 内置 AI 功能，隐藏编辑器右键菜单中的 Chat、Inline Chat、说明和评审入口；可通过设置重新启用 |
 | 可撤销设置 | 自动应用主题和布局前保存用户全局设置，可通过命令恢复并停止后续自动应用 |
+| 统一设置 | 在同一页面管理界面、菜单、文件搜索、查找用法键位、运行日志、终端查找和书签选项 |
 | Profile | Core、Full、GoLand Keymap 三套可导入 Profile，按使用场景控制扩展数量 |
 
 完整的 GoLand 能力映射、取舍和平台限制见 [GoLand 功能覆盖矩阵](docs/goland-feature-matrix.md)。
@@ -73,6 +74,25 @@ sh ./scripts/install.sh
 
 独立 Profile 能避免现有用户设置和扩展覆盖主题、字号、图标与按键。Core 和 GoLand Keymap 不应同时作为两套键位使用；切回 VS Code 键位时，请禁用 `IntelliJ IDEA Keybindings` 后重新导入 Core Profile。
 
+## 统一设置入口
+
+安装后通过以下任一入口打开只显示本插件选项的 VS Code 原生设置页：
+
+- 菜单“文件 → 首选项 → Goland Style: 打开统一设置”；
+- 命令面板运行 `Goland Style: 打开统一设置`；
+- “运行配置”“查找用法”或 Bookmarks 工具窗口标题栏右侧的设置按钮。
+
+设置集中分为四组：
+
+| 分组 | 可管理内容 |
+| --- | --- |
+| 常规与界面 | 升级后自动应用、搜索 Git 忽略文件、Go 诊断波浪线、精简右键菜单、顶部调试工具栏 |
+| 导航与快捷键 | `Alt+F7` / `Shift+Alt+F7` 的 GoLand 风格查找用法键位 |
+| 运行/调试与终端查找 | 新建配置的默认日志输出位置、`Enter` / `Shift+Enter` 查找方向、终端历史行数 |
+| Bookmarks | GoLand 书签键位、覆盖助记符确认和书签弹窗内容 |
+
+这些选项会同步到插件功能及其依赖的 VS Code 设置。例如关闭“包含忽略文件”会恢复 Git ignore 过滤；关闭“终端 Enter 向下查找”会恢复 VS Code 原生的相反方向；将默认日志输出位置设为“集成终端”可在 `Ctrl+F` 定位日志时保留上下文。快捷键如被其他扩展占用，仍可在 VS Code 键盘快捷方式页面查看最终冲突结果。
+
 ## 视觉与编辑体验
 
 扩展默认应用以下体验：
@@ -92,6 +112,7 @@ sh ./scripts/install.sh
 
 | 命令 | 作用 |
 | --- | --- |
+| `Goland Style: 打开统一设置` | 在同一页面管理插件的界面、快捷键、运行/调试、终端查找和书签选项 |
 | `Goland Style: 应用 GoLand 风格设置` | 重新应用当前版本的主题、布局、编辑器和 Go 设置 |
 | `Goland Style: 恢复应用前的设置` | 恢复第一次应用前的全局值，并停止后续自动应用 |
 | `Goland Style: 安装 JetBrains Mono 字体` | 将附带的 JetBrains Mono 2.304 四个基础字形安装到当前系统用户 |
@@ -100,7 +121,7 @@ sh ./scripts/install.sh
 
 字体安装会先显示确认提示。没有安装 JetBrains Mono 时，VS Code 会回退到 Consolas；扩展附带字体遵循 `assets/fonts/OFL.txt` 中的 SIL Open Font License 1.1。
 
-资源管理器默认隐藏 Problems 的黄色警告计数和着色，让文件名优先显示 GoLand 风格的 VCS 状态：修改为蓝色、新增为绿色。Go 编辑器不显示诊断波浪线，但编译、语法和类型诊断数据仍保留在 Problems 列表中；如需恢复行内波浪线，将 Go 语言设置中的 `editor.renderValidationDecorations` 改为 `on`。如需恢复 Staticcheck，可在用户设置的 `gopls` 对象中将 `ui.diagnostic.staticcheck` 改为 `true`。Go import 路径关闭 `namespace` 语义覆盖，使整段路径保持与 GoLand 一致的字符串绿色。
+资源管理器默认隐藏 Problems 的黄色警告计数和着色，让文件名优先显示 GoLand 风格的 VCS 状态：修改为蓝色、新增为绿色。Go 编辑器不显示诊断波浪线，但编译、语法和类型诊断数据仍保留在 Problems 列表中；如需恢复行内波浪线，在统一设置中关闭 `golandStyle.editor.hideGoDiagnostics`。如需恢复 Staticcheck，可在用户设置的 `gopls` 对象中将 `ui.diagnostic.staticcheck` 改为 `true`。Go import 路径关闭 `namespace` 语义覆盖，使整段路径保持与 GoLand 一致的字符串绿色。
 
 调试会话启动后，继续、暂停、单步、重启和停止按钮显示在窗口顶部的 Command Center，不再悬浮遮挡编辑器。未启动调试时仍可通过左侧“运行和调试”、编辑器运行入口或快捷键启动配置。
 
@@ -241,6 +262,8 @@ macOS 对应键位为 `Shift+Option+B`、`Option+F3`、`Command+F3`、`Command+2
 | 调试器默认 | 不写入 `console` 字段，由当前 Go 调试器和运行方式决定输出位置。 |
 
 新建的本地 Go 启动配置默认使用“集成终端”。在终端中按 `Ctrl+F` 输入关键字后，按 `Enter` 查找下一项（向下），按 `Shift+Enter` 查找上一项（向上）；当前命中和其他命中使用强弱两级高亮，并在滚动条概览中标记所有匹配位置。这样既能快速找到目标日志，又能保留完整的前后日志用于排查问题。
+
+可在统一设置的“运行/调试与终端查找”分组中修改新配置的默认日志输出位置、查找方向和终端历史行数。修改默认输出位置不会覆盖已有配置中显式保存的 `console` 值。
 
 为便于查看长时间运行服务的日志上下文，扩展将集成终端回滚缓冲区设为 `100000` 行。远程调试会忽略 Go 调试器的 `console` 设置，输出位置仍由远端调试方式决定。
 

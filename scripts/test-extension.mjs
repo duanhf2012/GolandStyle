@@ -7,27 +7,39 @@ const nodeRequire = createRequire(import.meta.url);
 
 const commands = new Map();
 const executedCommands = [];
+const executedCommandCalls = [];
 const globalState = new Map();
 const globalSettings = new Map([["editor.fontSize", 15]]);
 const updates = [];
+let configurationListener;
 let bookmarksActivated = false;
 let copyReferenceActivated = false;
 let findUsagesActivated = false;
 let runConfigurationEditorActivated = false;
 
-const configuration = {
-  inspect(key) {
-    return { globalValue: globalSettings.get(key) };
-  },
-  async update(key, value) {
-    updates.push({ key, value });
-    if (typeof value === "undefined") {
-      globalSettings.delete(key);
-    } else {
-      globalSettings.set(key, value);
-    }
-  },
-};
+function configurationFor(section = "") {
+  const fullKey = (key) => (section ? `${section}.${key}` : key);
+  return {
+    inspect(key) {
+      return { globalValue: globalSettings.get(fullKey(key)) };
+    },
+    get(key, fallback) {
+      const resolved = fullKey(key);
+      return globalSettings.has(resolved) ? globalSettings.get(resolved) : fallback;
+    },
+    async update(key, value) {
+      const resolved = fullKey(key);
+      updates.push({ key: resolved, value });
+      if (typeof value === "undefined") {
+        globalSettings.delete(resolved);
+      } else {
+        globalSettings.set(resolved, value);
+      }
+    },
+  };
+}
+
+const configuration = configurationFor();
 
 const vscode = {
   ConfigurationTarget: { Global: 1 },
@@ -36,8 +48,9 @@ const vscode = {
       commands.set(id, callback);
       return { dispose() {} };
     },
-    async executeCommand(id) {
+    async executeCommand(id, ...args) {
       executedCommands.push(id);
+      executedCommandCalls.push({ id, args });
     },
   },
   window: {
@@ -54,8 +67,12 @@ const vscode = {
   workspace: {
     isTrusted: true,
     workspaceFolders: [],
-    getConfiguration() {
-      return configuration;
+    getConfiguration(section) {
+      return section ? configurationFor(section) : configuration;
+    },
+    onDidChangeConfiguration(callback) {
+      configurationListener = callback;
+      return { dispose() {} };
     },
   },
 };
@@ -143,9 +160,18 @@ assert.equal(copyReferenceActivated, true);
 assert.equal(findUsagesActivated, true);
 assert.equal(runConfigurationEditorActivated, true);
 assert(commands.has("jetbrainsStyleGo.applySettings"));
+assert(commands.has("jetbrainsStyleGo.openSettings"));
 assert(commands.has("jetbrainsStyleGo.restoreSettings"));
 assert(commands.has("jetbrainsStyleGo.installFont"));
 assert(commands.has("jetbrainsStyleGo.repairGoNavigation"));
+await commands.get("jetbrainsStyleGo.openSettings")();
+assert(
+  executedCommandCalls.some(
+    ({ id, args }) =>
+      id === "workbench.action.openSettings" &&
+      args[0] === "@ext:goland-style.jetbrains-style-go-vscode",
+  ),
+);
 for (const commandId of [
   "jetbrainsStyleGo.go.addImport",
   "jetbrainsStyleGo.go.addTags",
@@ -165,16 +191,34 @@ assert.equal(globalSettings.get("go.useLanguageServer"), true);
 assert.equal(globalSettings.get("search.useIgnoreFiles"), false);
 assert.equal(globalSettings.get("search.useParentIgnoreFiles"), false);
 assert.equal(globalSettings.get("search.useGlobalIgnoreFiles"), false);
+assert.equal(globalSettings.get("debug.toolBarLocation"), "commandCenter");
+assert.equal(globalSettings.get("terminal.integrated.scrollback"), 100000);
 assert.equal(globalState.get("appliedSettingsVersion"), "test");
+
+globalSettings.set("golandStyle.search.includeIgnoredFiles", false);
+globalSettings.set("golandStyle.editor.hideGoDiagnostics", false);
+globalSettings.set("golandStyle.menus.compactEditorContextMenu", false);
+globalSettings.set("golandStyle.debug.toolbarInCommandCenter", false);
+globalSettings.set("golandStyle.terminalFind.scrollback", 25000);
+configurationListener({ affectsConfiguration: (key) => key === "golandStyle" });
+await new Promise((resolve) => setImmediate(resolve));
+assert.equal(globalSettings.get("search.useIgnoreFiles"), true);
+assert.equal(globalSettings.get("[go]")["editor.renderValidationDecorations"], "on");
+assert.equal(globalSettings.get("chat.disableAIFeatures"), false);
+assert.equal(globalSettings.get("debug.toolBarLocation"), "floating");
+assert.equal(globalSettings.get("window.commandCenter"), false);
+assert.equal(globalSettings.get("terminal.integrated.scrollback"), 25000);
 
 await commands.get("jetbrainsStyleGo.applySettings")();
 assert.equal(globalSettings.get("editor.fontSize"), 13.5);
 assert.equal(globalSettings.get("editor.lineHeight"), 21);
-assert.equal(globalSettings.get("chat.disableAIFeatures"), true);
+assert.equal(globalSettings.get("chat.disableAIFeatures"), false);
 assert.equal(globalSettings.get("go.useLanguageServer"), true);
-assert.equal(globalSettings.get("search.useIgnoreFiles"), false);
-assert.equal(globalSettings.get("search.useParentIgnoreFiles"), false);
-assert.equal(globalSettings.get("search.useGlobalIgnoreFiles"), false);
+assert.equal(globalSettings.get("search.useIgnoreFiles"), true);
+assert.equal(globalSettings.get("search.useParentIgnoreFiles"), true);
+assert.equal(globalSettings.get("search.useGlobalIgnoreFiles"), true);
+assert.equal(globalSettings.get("debug.toolBarLocation"), "floating");
+assert.equal(globalSettings.get("terminal.integrated.scrollback"), 25000);
 assert(executedCommands.includes("workbench.action.closeAuxiliaryBar"));
 
 await commands.get("jetbrainsStyleGo.restoreSettings")();

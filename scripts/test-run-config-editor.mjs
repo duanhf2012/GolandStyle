@@ -3,6 +3,7 @@ import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
 const {
+  configuredDefaultConsole,
   initialLaunchJson,
   parseLaunchText,
   readRunConfigurations,
@@ -13,6 +14,26 @@ const {
 
 assert.equal(viewType, "jetbrainsStyleGo.runConfigurationEditor");
 assert.deepEqual(parseLaunchText(initialLaunchJson()).errors, []);
+assert.equal(
+  configuredDefaultConsole({
+    workspace: {
+      getConfiguration() {
+        return { get: () => "externalTerminal" };
+      },
+    },
+  }),
+  "externalTerminal",
+);
+assert.equal(
+  configuredDefaultConsole({
+    workspace: {
+      getConfiguration() {
+        return { get: () => "invalid" };
+      },
+    },
+  }),
+  "integratedTerminal",
+);
 
 const source = `{
   // 顶层注释必须保留

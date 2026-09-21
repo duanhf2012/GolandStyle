@@ -11,6 +11,20 @@ const viewType = "jetbrainsStyleGo.runConfigurationEditor";
 const openCommand = "jetbrainsStyleGo.runConfigurations.open";
 const treeViewId = "jetbrainsStyleGo.runConfigurationsView";
 const runCommandPrefix = "jetbrainsStyleGo.runConfigurations";
+const defaultConsoleSetting = "golandStyle.runConfigurations.defaultConsole";
+const supportedDefaultConsoles = new Set([
+  "integratedTerminal",
+  "internalConsole",
+  "externalTerminal",
+  "debuggerDefault",
+]);
+
+function configuredDefaultConsole(vscode) {
+  const value = vscode.workspace
+    .getConfiguration("golandStyle.runConfigurations")
+    .get("defaultConsole", "integratedTerminal");
+  return supportedDefaultConsoles.has(value) ? value : "integratedTerminal";
+}
 
 function parseLaunchText(text) {
   const parseErrors = [];
@@ -329,6 +343,7 @@ class RunConfigurationEditorProvider {
       workspace: folder?.name || "",
       tasks: await this.taskNames(),
       selectedName,
+      defaultConsole: configuredDefaultConsole(this.vscode),
     });
   }
 
@@ -585,6 +600,8 @@ function activateRunConfigurationEditor(vscode, context) {
 
 module.exports = {
   activateRunConfigurationEditor,
+  configuredDefaultConsole,
+  defaultConsoleSetting,
   initialLaunchJson,
   parseLaunchText,
   readRunConfigurations,

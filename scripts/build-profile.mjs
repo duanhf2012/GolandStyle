@@ -32,12 +32,22 @@ const golandNavigationKeybindings = [
   {
     key: "enter",
     command: "workbench.action.terminal.findNext",
-    when: "terminalFindInputFocused",
+    when: "config.golandStyle.terminalFind.enterMovesDown && terminalFindInputFocused",
   },
   {
     key: "shift+enter",
     command: "workbench.action.terminal.findPrevious",
-    when: "terminalFindInputFocused",
+    when: "config.golandStyle.terminalFind.enterMovesDown && terminalFindInputFocused",
+  },
+  {
+    key: "enter",
+    command: "workbench.action.terminal.findPrevious",
+    when: "!config.golandStyle.terminalFind.enterMovesDown && terminalFindInputFocused",
+  },
+  {
+    key: "shift+enter",
+    command: "workbench.action.terminal.findNext",
+    when: "!config.golandStyle.terminalFind.enterMovesDown && terminalFindInputFocused",
   },
   {
     key: "alt+left",
@@ -67,12 +77,17 @@ const golandNavigationKeybindings = [
   {
     key: "alt+f7",
     command: "jetbrainsStyleGo.usages.find",
-    when: "editorTextFocus && editorLangId == go && editorHasReferenceProvider",
+    when: "config.golandStyle.findUsages.golandKeybindings && editorTextFocus && editorLangId == go && editorHasReferenceProvider",
   },
   {
     key: "shift+alt+f7",
     command: "references-view.findReferences",
-    when: "editorTextFocus && editorHasReferenceProvider",
+    when: "config.golandStyle.findUsages.golandKeybindings && editorTextFocus && editorHasReferenceProvider",
+  },
+  {
+    key: "alt+f7",
+    command: "references-view.findReferences",
+    when: "!config.golandStyle.findUsages.golandKeybindings && editorTextFocus && editorHasReferenceProvider",
   },
   {
     key: "ctrl+alt+left",
@@ -106,6 +121,8 @@ const profileDefinitions = [
     output: "jetbrains-style-go-goland-keymap.code-profile",
     settings: {
       "golandStyle.bookmarks.golandKeybindings": true,
+      "golandStyle.findUsages.golandKeybindings": true,
+      "golandStyle.terminalFind.enterMovesDown": true,
     },
     keybindings: golandNavigationKeybindings,
   },
